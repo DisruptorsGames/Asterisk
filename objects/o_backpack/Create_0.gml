@@ -15,7 +15,7 @@ for (var i = 0; i < ds_grid_width(inventory); i++)
 		if (irandom(100) < 25)
 		{
 			var icon = choose(s_apple, s_backpack);
-			inventory[# i, j] = icon_create(icon, 0, make_color_elm(), random(360));
+			inventory[# i, j] = icon_create(icon, 0, make_color_elm(), random(360) div 90);
 		}
 	}
 }

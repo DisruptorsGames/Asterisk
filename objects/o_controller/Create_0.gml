@@ -15,6 +15,8 @@ randomize();
 // local vars
 game = noone;
 // camera
+window_w = 1024;
+window_h = 768;
 base_w = 160;
 base_h = 96;
 width = base_w;
@@ -24,6 +26,13 @@ angle = 0;
 // instances
 switch(room)
 {
+	case r_menu_main:
+		instance_create_depth(0, 0, 0, o_menu_main);
+		base_w = 256;
+		base_h = 224;
+		width = base_w;
+		height = base_h;
+		break;
 	case r_dynamic:
 		instance_create_layer(16, 16, "Instances", o_player);
 	case r_dungeon:
@@ -49,6 +58,6 @@ display_set_gui_size(width, height);
 surface_resize(application_surface, width, height);
 
 // set window
-window_set_size(1024, 768);
+window_set_size(window_w, window_h);
 window_set_position((max_w - 1024) / 2, (max_h - 768) / 2);
 
