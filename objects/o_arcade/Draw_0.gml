@@ -8,7 +8,7 @@ if (global.debug)
 		{
 			var ix = i * width, iy = j * width,
 				value = ds_grid_get(map, i, j),
-				col = grid_free(ix, iy) ? c_blue : c_gray;
+				col = grid_free(ix, iy, 0, 0) ? c_blue : c_gray;
 			draw_rectangle_color(ix, iy, ix + width, iy + height, col, col, col, col, true);
 			draw_text_color_ext(ix, iy, value, c_white, 0.25, f_hud, fa_left);
 		}

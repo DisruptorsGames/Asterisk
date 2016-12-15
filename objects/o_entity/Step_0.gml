@@ -1,6 +1,6 @@
 /// @description Snapping
 var game = o_controller.game;
-move_snap(game.snap_width, game.snap_height);
+move_snap(game.width, game.height);
 
 if (shake)
 {
@@ -22,7 +22,7 @@ if (instance_exists(target) && grid_snapped(target))
 	}
 
 	// find path
-	has_path = mp_grid_path(game.playfield, path, x, y, target.x, target.y, true);
+	has_path = mp_grid_path(game.playfield, path, x + xoffset, y + yoffset, target.x, target.y, false);
 	path_set_precision(path, 8);
 	// delete beginning and unable to move points
 	path_delete_point(path, 0);
@@ -36,7 +36,10 @@ if (instance_exists(target) && grid_snapped(target))
 	if (has_path)
 	{
 		target = noone;
-		path_start(path, 0, path_action_stop, true);
 		alarm[0] = move_time;
 	}
 }
+
+// stop moving
+if (path_position == 1)
+	alarm[0] = -1;

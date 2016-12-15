@@ -14,31 +14,51 @@ if (has_path)
 			draw_text_color_ext(ix, iy, i, c_white, 0.75, f_hud, fa_left);
 	}
 }
-// highlight
-if (point_in_rectangle(mouse_x, mouse_y, bbox_left, bbox_top, bbox_right, bbox_bottom))
-{
-	switch (object_index)
-	{
-		case o_player:
-			shell = c_dkgray;
-			break;
-		case o_enemy:
-			shell = c_gray;
-			break;
-	}
-}
-else
-	shell = c_black;
+
 // entity
-draw_sprite_ext(sprite_index, 0, x + 2, y - 2, shadow_xscale, image_yscale, shadow_angle, c_black, 0.65);
-draw_sprite_ext(sprite_index, 1, x, y, image_xscale, image_yscale, image_angle, shell, image_alpha);
-draw_sprite_ext(sprite_index, 0, x, y, image_xscale, image_yscale, image_angle, image_blend, image_alpha);
+var hovering = point_in_rectangle(mouse_x, mouse_y, bbox_left, bbox_top, bbox_right, bbox_bottom);
+draw_sprite_ext(sprite_index, 0, x - xoffset, y + 2, shadow_xscale, image_yscale, shadow_angle, c_black, 0.65);
+draw_sprite_ext(sprite_index, inv_show ? 0 : 2, x, y, image_xscale, image_yscale, image_angle, image_blend, image_alpha);
+draw_sprite_ext(sprite_index, 1, x, y, image_xscale, image_yscale, image_angle, hovering ? shell : c_black, image_alpha);
 // steps
-draw_text_color_ext(x, y, steps, c_white, 0.75, f_hud, fa_left);
+if (steps > 0)
+	draw_text_color_ext(x, y + yoffset, steps, c_white, 0.75, f_hud, fa_left);
+// ToDo: show where entity can move
+/*for (var i = 0; i < 4; i++)
+{
+	var game = o_controller.game, 
+		ix = x + xoffset + lengthdir_x(game.width, i * 90), 
+		iy = y + yoffset + lengthdir_y(game.height, i * 90);
+	draw_sprite_ext(s_highlight, -1, ix, iy, 1, 1, 0, c_blue, 0.75);
+}*/
 
 // bounding box
 if (global.debug)
 {
 	draw_rectangle_color(bbox_left, bbox_top, bbox_right, bbox_bottom, c_red, c_red, c_red, c_red, true);
-	draw_circle_color(x, y, 1, c_maroon, c_maroon, false);
+	draw_circle_color(x, y, 2, c_maroon, c_maroon, false);
+}
+
+// inventory
+if (instance_exists(owner) && owner.inv_show)
+{
+	for (var i = 0; i < ds_grid_width(inventory); i++)
+	{
+		for (var j = 0; j < ds_grid_height(inventory); j++)
+		{
+			var ix = x + xoffset + i * inv_size, 
+				iy = y + yoffset + j * inv_size, 
+				item = inventory[# i, j],
+				col = item > 0 ? c_red : c_gray;
+			draw_rectangle_color(ix, iy, ix + inv_size, iy + inv_size, $10151a, $10151a, $10151a, $10151a, false);
+			draw_rectangle_color(ix, iy, ix + inv_size, iy + inv_size, c_black, c_black, c_black, c_black, true);
+			// show item
+			draw_circle_color(ix + 4, iy + 4, 1, col, col, false);
+			if (item > 0)
+			{
+				item.x = ix + 4;
+				item.y = iy + 4;
+			}
+		}
+	}
 }

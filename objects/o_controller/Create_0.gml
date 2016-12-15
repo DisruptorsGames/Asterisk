@@ -9,6 +9,9 @@
 
 // globals
 global.debug = false;
+
+randomize();
+
 // local vars
 game = noone;
 // camera
@@ -16,6 +19,7 @@ base_w = 160;
 base_h = 96;
 width = base_w;
 height = base_h;
+angle = 0;
 
 // instances
 switch(room)
