@@ -5,7 +5,7 @@
     "name": "r_dungeon",
     "IsDnD": false,
     "creationCodeFile": "RoomCreationCode.gml",
-    "inheritCode": false,
+    "inheritCode": true,
     "inheritCreationOrder": false,
     "inheritLayers": false,
     "instanceCreationOrderIDs": [
@@ -502,7 +502,7 @@
             "y": 0
         }
     ],
-    "parentId": "00000000-0000-0000-0000-000000000000",
+    "parentId": "01a9ae61-9631-4599-a48f-8213013b0629",
     "physicsSettings": {
         "id": "1629ed1e-19bf-41b5-91f6-e7e4320d60c6",
         "modelName": "GMRoomPhysicsSettings",
@@ -526,10 +526,10 @@
         "id": "a2deb880-3c00-46e0-a14b-6090c4187a8d",
         "modelName": "GMRoomViewSettings",
         "mvc": "1.0",
-        "clearDisplayBuffer": false,
-        "clearViewBackground": false,
+        "clearDisplayBuffer": true,
+        "clearViewBackground": true,
         "enableViews": false,
-        "inheritViewSettings": false
+        "inheritViewSettings": true
     },
     "views": [
         {

@@ -2,7 +2,7 @@
     "id": "67241a11-e60e-454b-bfd4-7f09e311ada2",
     "modelName": "GMSprite",
     "mvc": "1.1",
-    "name": "s_enemy",
+    "name": "s_rat",
     "For3D": false,
     "HTile": false,
     "VTile": false,

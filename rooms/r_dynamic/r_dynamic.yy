@@ -5,7 +5,7 @@
     "name": "r_dynamic",
     "IsDnD": false,
     "creationCodeFile": "RoomCreationCode.gml",
-    "inheritCode": false,
+    "inheritCode": true,
     "inheritCreationOrder": false,
     "inheritLayers": false,
     "instanceCreationOrderIDs": [
@@ -429,7 +429,7 @@
             "y": 0
         }
     ],
-    "parentId": "00000000-0000-0000-0000-000000000000",
+    "parentId": "01a9ae61-9631-4599-a48f-8213013b0629",
     "physicsSettings": {
         "id": "85097a59-a91d-41d5-83aa-9d77ec813269",
         "modelName": "GMRoomPhysicsSettings",
@@ -453,10 +453,10 @@
         "id": "ff62229e-02ca-4a25-a6bd-e2c92a68ba03",
         "modelName": "GMRoomViewSettings",
         "mvc": "1.0",
-        "clearDisplayBuffer": false,
-        "clearViewBackground": false,
+        "clearDisplayBuffer": true,
+        "clearViewBackground": true,
         "enableViews": false,
-        "inheritViewSettings": false
+        "inheritViewSettings": true
     },
     "views": [
         {

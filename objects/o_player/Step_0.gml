@@ -3,6 +3,12 @@ event_inherited();
 
 var game = o_controller.game;
 
+// DEBUG
+if (keyboard_check_pressed(vk_pageup) && max_items < vw / sprite_get_width(s_highlight))
+	max_items++;
+else if (keyboard_check_pressed(vk_pageup) && max_items > 1)
+	max_items--;
+
 if (!inv_show)
 {
 	if (keyboard_check_pressed(up) && grid_free(x, y, 0, 0))

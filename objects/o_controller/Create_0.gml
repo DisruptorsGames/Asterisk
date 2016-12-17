@@ -1,37 +1,39 @@
 /// @description Init
 
 // macros
-#macro vw camera_get_view_width(view_camera[0])
-#macro vh camera_get_view_height(view_camera[0])
-#macro vx camera_get_view_x(view_camera[0])
-#macro vy camera_get_view_y(view_camera[0])
-#macro vt camera_get_view_target(view_camera[0])
+#macro gw display_get_gui_width()
+#macro gh display_get_gui_height()
+#macro sw surface_get_width(application_surface)
+#macro sh surface_get_height(application_surface)
+#macro cam view_camera[camera_get_active()]
+#macro vw camera_get_view_width(cam)
+#macro vh camera_get_view_height(cam)
+#macro vx camera_get_view_x(cam)
+#macro vy camera_get_view_y(cam)
+#macro vt camera_get_view_target(cam)
 
 // globals
 global.debug = false;
 
 randomize();
 
-// local vars
+//
 game = noone;
 // camera
-window_w = 1024;
-window_h = 768;
-base_w = 160;
-base_h = 96;
-width = base_w;
-height = base_h;
-angle = 0;
+cam_a = 0;
+cam_x = 0;
+cam_y = 0;
+cam_w = 160;
+cam_h = 96;
+aspect = cam_w / cam_h;
+resizes = 0;
 
-// instances
 switch(room)
 {
 	case r_menu_main:
 		instance_create_depth(0, 0, 0, o_menu_main);
-		base_w = 256;
-		base_h = 224;
-		width = base_w;
-		height = base_h;
+		cam_w = 256;
+		cam_h = 244;
 		break;
 	case r_dynamic:
 		instance_create_layer(16, 16, "Instances", o_player);
@@ -42,22 +44,15 @@ switch(room)
 		break;
 }
 
-// create camera
-var sw = sprite_get_width(s_player), 
-	sh = sprite_get_height(s_player);
+// camera
 view_enabled = true;
 view_visible[0] = true;
-view_camera[0] = camera_create_view(0, 0, width, height, 0, o_player, -1, -1, 0, 0);
+view_camera[0] = camera_create_view(0, 0, cam_w, cam_h, 0, o_player, -1, -1, 0, 0);
+camera_set_default(cam);
 
-// scale screen
-var max_w = display_get_width(), max_h = display_get_height(),
-	aspect = window_get_fullscreen() ? (max_w / max_h) : (base_w / base_h);
-width = aspect > 1 ? min(base_w, max_w) : (height * aspect);
-height = aspect > 1 ? min(base_h, max_h) : (width / aspect);
-display_set_gui_size(width, height);
-surface_resize(application_surface, width, height);
-
-// set window
-window_set_size(window_w, window_h);
-window_set_position((max_w - 1024) / 2, (max_h - 768) / 2);
-
+// set window size
+if (!window_get_fullscreen())
+{
+	window_set_size(1024, 768);
+	window_set_position((display_get_width() - 1024) / 2, (display_get_height() - 768) / 2);
+}
