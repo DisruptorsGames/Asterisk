@@ -8,8 +8,8 @@ if (has_path)
 	{
 		var ix = path_get_point_x(path, i), iy = path_get_point_y(path, i),
 			col = i < steps ? c_green : c_red;
-		draw_circle_color(ix, iy, 3, c_black, c_black, false);
-		draw_circle_color(ix, iy, 2, col, col, false);
+		draw_circle_color(ix, iy, 2, c_black, c_black, false);
+		draw_circle_color(ix, iy, 1, col, col, false);
 		if (global.debug)
 			draw_text_color_ext(ix, iy, i, c_white, 0.75, f_hud, fa_left);
 	}
@@ -17,20 +17,11 @@ if (has_path)
 
 // entity
 var hovering = point_in_rectangle(mouse_x, mouse_y, bbox_left, bbox_top, bbox_right, bbox_bottom);
-draw_sprite_ext(sprite_index, 0, x - xoffset, y + 2, shadow_xscale, image_yscale, shadow_angle, c_black, 0.65);
-draw_sprite_ext(sprite_index, inv_show ? 0 : 2, x, y, image_xscale, image_yscale, image_angle, image_blend, image_alpha);
-draw_sprite_ext(sprite_index, 1, x, y, image_xscale, image_yscale, image_angle, hovering ? shell : c_black, image_alpha);
+draw_sprite_ext(sprite_index, image_index, x, y - 6, shadow_xscale, image_yscale, shadow_angle, c_black, 0.65);
+draw_sprite_ext(sprite_index, image_index, x, y, image_xscale, image_yscale, image_angle, image_blend, image_alpha);
 // steps
 if (steps > 0)
 	draw_text_color_ext(x, y + yoffset, steps, c_white, 0.75, f_hud, fa_left);
-// ToDo: show where entity can move
-/*for (var i = 0; i < 4; i++)
-{
-	var game = o_controller.game, 
-		ix = x + xoffset + lengthdir_x(game.width, i * 90), 
-		iy = y + yoffset + lengthdir_y(game.height, i * 90);
-	draw_sprite_ext(s_highlight, -1, ix, iy, 1, 1, 0, c_blue, 0.75);
-}*/
 
 // bounding box
 if (global.debug)

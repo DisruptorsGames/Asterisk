@@ -1,7 +1,9 @@
 /// @description Controls
 event_inherited();
 
-var game = o_controller.game;
+var game = o_controller.game,
+	keys = keyboard_check_pressed(up) || keyboard_check_pressed(down) 
+		|| keyboard_check_pressed(left) || keyboard_check_pressed(right);
 
 // DEBUG
 if (keyboard_check_pressed(vk_pageup) && max_items < vw / sprite_get_width(s_highlight))
@@ -16,18 +18,26 @@ if (!inv_show)
 	else if (keyboard_check_pressed(down) && grid_free(x, y, 0, 2))
 		y += game.height;
 	if (keyboard_check_pressed(left) && grid_free(x, y, -1, 1))
+	{
 		x -= game.width;
+		image_xscale = -1;
+	}
 	else if (keyboard_check_pressed(right) && grid_free(x, y, 1, 1))
+	{
 		x += game.width;
+		image_xscale = 1;
+	}
+	
+	// animation
+	shake = keys;
+	/*image_index += keys ? 1 : 0;
+	if (image_index > 3)
+		image_index = 0;*/
 
 	if (mouse_check_button_pressed(mb_left))
 	{
 		if (target == noone)
 			target = o_highlight;
-		// ToDo: add mour enemy types
-		// ToDo: attack enemy **Milestone**
-		// ToDo: add inventory **Milestone**
-		// ToDo: add looting  **Milestone**
 	}
 }
 if (keyboard_check_pressed(toggle_inv))
@@ -47,6 +57,3 @@ if (keyboard_check_pressed(toggle_inv))
 		backpack.visible = !backpack.visible;
 	}
 }
-
-shake = keyboard_key == up || keyboard_key == down 
-	|| keyboard_key == left || keyboard_key == right;

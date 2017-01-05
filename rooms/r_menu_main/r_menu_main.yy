@@ -98,22 +98,22 @@
         "mvc": "1.0",
         "clearDisplayBuffer": true,
         "clearViewBackground": true,
-        "enableViews": false,
-        "inheritViewSettings": true
+        "enableViews": true,
+        "inheritViewSettings": false
     },
     "views": [
         {
             "id": "4230aa36-54b9-4744-9ef4-6f5ae91bf903",
             "modelName": "GMRView",
             "mvc": "1.0",
-            "hborder": 32,
+            "hborder": 0,
             "hport": 768,
             "hspeed": -1,
             "hview": 768,
             "inherit": false,
-            "objId": "00000000-0000-0000-0000-000000000000",
-            "vborder": 32,
-            "visible": false,
+            "objId": "47a95231-c1d0-414e-8e80-64624eb00ccb",
+            "vborder": 0,
+            "visible": true,
             "vspeed": -1,
             "wport": 1024,
             "wview": 1024,

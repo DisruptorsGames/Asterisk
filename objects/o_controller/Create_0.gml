@@ -1,42 +1,41 @@
 /// @description Init
 
 // macros
-#macro gw display_get_gui_width()
-#macro gh display_get_gui_height()
+#macro gw display_get_gui_width() / o_controller.aspect
+#macro gh display_get_gui_height() / o_controller.aspect
 #macro sw surface_get_width(application_surface)
 #macro sh surface_get_height(application_surface)
 #macro cam view_camera[camera_get_active()]
-#macro vw camera_get_view_width(cam)
-#macro vh camera_get_view_height(cam)
-#macro vx camera_get_view_x(cam)
-#macro vy camera_get_view_y(cam)
-#macro vt camera_get_view_target(cam)
+#macro vw camera_get_view_width(view_camera[0])
+#macro vh camera_get_view_height(view_camera[0])
+#macro vx camera_get_view_x(view_camera[0])
+#macro vy camera_get_view_y(view_camera[0])
+#macro vt camera_get_view_target(view_camera[0])
 
 // globals
 global.debug = false;
 
 randomize();
 
-//
 game = noone;
 // camera
 cam_a = 0;
 cam_x = 0;
 cam_y = 0;
 cam_w = 160;
-cam_h = 96;
-aspect = cam_w / cam_h;
-resizes = 0;
+cam_h = 90;
+aspect = display_get_width() / display_get_height();
 
 switch(room)
 {
+	case r_base:
+		room_goto(r_menu_main);
+		break;
 	case r_menu_main:
 		instance_create_depth(0, 0, 0, o_menu_main);
 		cam_w = 256;
 		cam_h = 244;
 		break;
-	case r_dynamic:
-		instance_create_layer(16, 16, "Instances", o_player);
 	case r_dungeon:
 	case r_dungeon2:
 		instance_create_depth(0, 0, layer_get_depth("Instances") + 1, o_highlight);
@@ -44,15 +43,11 @@ switch(room)
 		break;
 }
 
-// camera
-view_enabled = true;
-view_visible[0] = true;
-view_camera[0] = camera_create_view(0, 0, cam_w, cam_h, 0, o_player, -1, -1, 0, 0);
-camera_set_default(cam);
+var height = floor(min(768, display_get_height())),
+	width = floor(height * aspect);
+camera_set_view_size(view_camera[0], cam_w, cam_h);
+surface_resize(application_surface, width, height);
+display_set_gui_maximise(aspect, aspect);
 
-// set window size
-if (!window_get_fullscreen())
-{
-	window_set_size(1024, 768);
-	window_set_position((display_get_width() - 1024) / 2, (display_get_height() - 768) / 2);
-}
+
+

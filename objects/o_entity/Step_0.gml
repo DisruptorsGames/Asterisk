@@ -23,7 +23,7 @@ if (instance_exists(target) && grid_snapped(target))
 
 	// find path
 	has_path = mp_grid_path(game.playfield, path, x + xoffset, y + yoffset, target.x, target.y, false);
-	path_set_precision(path, 8);
+	//path_set_precision(path, 8);
 	// delete beginning and unable to move points
 	path_delete_point(path, 0);
 	var last = path_get_number(path) - 1;
@@ -37,6 +37,7 @@ if (instance_exists(target) && grid_snapped(target))
 	{
 		target = noone;
 		alarm[0] = move_time;
+		//path_start(path, 1, 0, false);
 	}
 }
 

@@ -1,38 +1,38 @@
 {
     "id": "e2926d17-98f1-45ad-ac5a-aafcccba08bf",
     "modelName": "GMSprite",
-    "mvc": "1.1",
+    "mvc": "1.11",
     "name": "s_highlight",
     "For3D": false,
     "HTile": false,
     "VTile": false,
-    "bbox_bottom": 63,
+    "bbox_bottom": 15,
     "bbox_left": 0,
-    "bbox_right": 63,
+    "bbox_right": 15,
     "bbox_top": 0,
-    "bboxmode": 0,
+    "bboxmode": 1,
     "colkind": 1,
     "coltolerance": 0,
     "frames": [
         {
-            "id": "9ea9bf07-0861-495d-a662-9c1b0f3c9c89",
+            "id": "f538bcca-2651-4082-a9af-54493ae90ca5",
             "modelName": "GMSpriteFrame",
             "mvc": "1.0",
             "SpriteId": "e2926d17-98f1-45ad-ac5a-aafcccba08bf",
             "compositeImage": {
-                "id": "98b6c55c-3ad7-4267-9546-f440a96d5897",
+                "id": "fb8a8f75-809c-442d-bb2b-5db8c86eaeda",
                 "modelName": "GMSpriteImage",
                 "mvc": "1.0",
-                "FrameId": "9ea9bf07-0861-495d-a662-9c1b0f3c9c89",
+                "FrameId": "f538bcca-2651-4082-a9af-54493ae90ca5",
                 "LayerId": "00000000-0000-0000-0000-000000000000"
             },
             "images": [
                 {
-                    "id": "6350afa2-7b37-4a6a-b76e-42d16e473b19",
+                    "id": "6611d2df-6e67-4666-8b6a-2503b5e54c54",
                     "modelName": "GMSpriteImage",
                     "mvc": "1.0",
-                    "FrameId": "9ea9bf07-0861-495d-a662-9c1b0f3c9c89",
-                    "LayerId": "c8a5ef47-70a5-4d00-9096-03d2c9ca2e39"
+                    "FrameId": "f538bcca-2651-4082-a9af-54493ae90ca5",
+                    "LayerId": "e48260fb-2a5e-4435-9280-efe717f3afe7"
                 }
             ]
         }
@@ -40,7 +40,7 @@
     "height": 16,
     "layers": [
         {
-            "id": "c8a5ef47-70a5-4d00-9096-03d2c9ca2e39",
+            "id": "e48260fb-2a5e-4435-9280-efe717f3afe7",
             "modelName": "GMImageLayer",
             "mvc": "1.0",
             "SpriteId": "e2926d17-98f1-45ad-ac5a-aafcccba08bf",

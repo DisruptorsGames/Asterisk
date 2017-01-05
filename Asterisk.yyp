@@ -571,9 +571,9 @@
             }
         },
         {
-            "Key": "3e9afe5d-1655-4d3c-b5de-e8bead708e72",
+            "Key": "4365f671-4ce4-45f1-8272-b4d8770d50c4",
             "Value": {
-                "id": "9b6e7064-046a-4008-b77e-23659fb50ac6",
+                "id": "04bd6c1c-fde8-4840-99e2-a2395659b28e",
                 "modelName": "GMResourceInfo",
                 "mvc": "1.0",
                 "configDeltaFiles": [
@@ -585,8 +585,8 @@
                 "resourceCreationConfigs": [
                     "default"
                 ],
-                "resourcePath": "rooms\\r_dynamic\\r_dynamic.yy",
-                "resourceType": "GMRoom"
+                "resourcePath": "sprites\\s_bar\\s_bar.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -1155,7 +1155,7 @@
                 "resourceCreationConfigs": [
                     "default"
                 ],
-                "resourcePath": "rooms\\base\\base.yy",
+                "resourcePath": "rooms\\r_base\\r_base.yy",
                 "resourceType": "GMRoom"
             }
         },
@@ -1177,14 +1177,32 @@
                 "resourcePath": "views\\01a9ae61-9631-4599-a48f-8213013b0629-room.yy",
                 "resourceType": "GMFolder"
             }
+        },
+        {
+            "Key": "e9ea72fc-9c0f-497c-a7f4-3f3e52032c6a",
+            "Value": {
+                "id": "dea607e2-fb6b-4c34-a900-9207433b5da1",
+                "modelName": "GMResourceInfo",
+                "mvc": "1.0",
+                "configDeltaFiles": [
+                    
+                ],
+                "configDeltas": [
+                    
+                ],
+                "resourceCreationConfigs": [
+                    "default"
+                ],
+                "resourcePath": "sprites\\s_portrait\\s_portrait.yy",
+                "resourceType": "GMSprite"
+            }
         }
     ],
     "room_order": [
         "01a9ae61-9631-4599-a48f-8213013b0629",
         "87bf9b03-0f01-46c6-b2ea-7adc9e7f3feb",
         "7250acb1-d4e8-4030-a919-7c056dffd6ef",
-        "df778d22-d3d1-440d-8309-afce2c4168e6",
-        "3e9afe5d-1655-4d3c-b5de-e8bead708e72"
+        "df778d22-d3d1-440d-8309-afce2c4168e6"
     ],
     "script_order": [
         "70fd75b2-b846-4621-85d9-ec1085db4cd4",

@@ -1,46 +1,46 @@
 {
     "id": "4ce343b0-acbd-4c88-a106-08cd59cf7e31",
     "modelName": "GMSprite",
-    "mvc": "1.1",
+    "mvc": "1.11",
     "name": "s_tileset",
     "For3D": false,
     "HTile": false,
     "VTile": false,
-    "bbox_bottom": 31,
+    "bbox_bottom": 63,
     "bbox_left": 0,
     "bbox_right": 47,
     "bbox_top": 0,
-    "bboxmode": 0,
+    "bboxmode": 1,
     "colkind": 1,
     "coltolerance": 0,
     "frames": [
         {
-            "id": "652a44ee-c9ee-4d02-a034-37fb4e05cd25",
+            "id": "ffae3567-0543-4f85-a6fa-a96c1a7b3601",
             "modelName": "GMSpriteFrame",
             "mvc": "1.0",
             "SpriteId": "4ce343b0-acbd-4c88-a106-08cd59cf7e31",
             "compositeImage": {
-                "id": "50c1b2b4-f0ad-47a9-99ce-a9ee1bd08052",
+                "id": "8b25145e-f872-42f0-814f-1df2ebaf6d2e",
                 "modelName": "GMSpriteImage",
                 "mvc": "1.0",
-                "FrameId": "652a44ee-c9ee-4d02-a034-37fb4e05cd25",
+                "FrameId": "ffae3567-0543-4f85-a6fa-a96c1a7b3601",
                 "LayerId": "00000000-0000-0000-0000-000000000000"
             },
             "images": [
                 {
-                    "id": "437a884d-784c-4177-87d2-0754c52c7079",
+                    "id": "3884653f-f64a-43ed-b371-8da5fbd80613",
                     "modelName": "GMSpriteImage",
                     "mvc": "1.0",
-                    "FrameId": "652a44ee-c9ee-4d02-a034-37fb4e05cd25",
-                    "LayerId": "8a09a5fa-5fa9-42ce-ba8f-c6b33fc90884"
+                    "FrameId": "ffae3567-0543-4f85-a6fa-a96c1a7b3601",
+                    "LayerId": "f0fe151f-180d-4646-973a-4b5f2f505be6"
                 }
             ]
         }
     ],
-    "height": 32,
+    "height": 64,
     "layers": [
         {
-            "id": "8a09a5fa-5fa9-42ce-ba8f-c6b33fc90884",
+            "id": "f0fe151f-180d-4646-973a-4b5f2f505be6",
             "modelName": "GMImageLayer",
             "mvc": "1.0",
             "SpriteId": "4ce343b0-acbd-4c88-a106-08cd59cf7e31",
