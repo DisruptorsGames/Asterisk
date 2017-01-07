@@ -23,24 +23,42 @@ if (instance_exists(target) && grid_snapped(target))
 
 	// find path
 	has_path = mp_grid_path(game.playfield, path, x + xoffset, y + yoffset, target.x, target.y, false);
-	//path_set_precision(path, 8);
-	// delete beginning and unable to move points
-	path_delete_point(path, 0);
-	var last = path_get_number(path) - 1;
-	while (last >= steps)
-	{
-		path_delete_point(path, last);
-		last = path_get_number(path) - 1;
-	}
+	
 	// move
 	if (has_path)
 	{
 		target = noone;
-		alarm[0] = move_time;
-		//path_start(path, 1, 0, false);
+		path_start(path, 0.75, 0, false);
+		animation_set(anim_type.run);
 	}
 }
 
 // stop moving
 if (path_position == 1)
-	alarm[0] = -1;
+{
+	path_end();
+	path_clear_points(path);
+	steps = moves;
+	animation_set(anim_type.idle);
+}
+
+/*
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*/

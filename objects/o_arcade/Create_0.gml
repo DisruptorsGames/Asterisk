@@ -5,6 +5,8 @@ snap_width = width / 4;
 snap_height = width / 4;
 map = ds_grid_create(room_width / width, room_height / height);
 playfield = mp_grid_create(0, 0, room_width / width, room_height / height, width, height);
+turn = noone;
+combat = false;
 
 // fill in map
 for (var i = 0; i < ds_grid_width(map); i++)

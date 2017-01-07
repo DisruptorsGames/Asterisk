@@ -4,14 +4,15 @@ event_inherited();
 name = "Asterisk";
 shell = c_dkgray;
 steps = 6;
+moves = 6;
 shadow_xscale = -image_xscale;
 shadow_angle = image_angle + 45;
 xoffset = 8;
 yoffset = 31;
-anim_speed = 0;
-anim_start = 0;
-anim_end = 3;
 max_items = 4;
+//
+hp_col = merge_color(c_red, make_color_elm(), random_range(0.5, 0.75));
+mana_col = make_color_comp(hp_col);
 
 // controls
 up = ord("W");
@@ -20,4 +21,28 @@ left = ord("A");
 right = ord("D");
 toggle_inv = ord("I");
 
+ds_map_add(ani_map, anim_type.idle, [0, 1]);
+ds_map_add(ani_map, anim_type.run, [2, 3, 4, 5, 6]);
+ds_map_add(ani_map, anim_type.crouch, [9]);
 depth = -1;
+
+/*
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*/

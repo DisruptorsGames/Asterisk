@@ -609,25 +609,6 @@
             }
         },
         {
-            "Key": "3056bba1-fe08-465f-9dc7-c059f4b7895d",
-            "Value": {
-                "id": "8ac5c817-7d23-4680-8631-120a5d9b7d18",
-                "modelName": "GMResourceInfo",
-                "mvc": "1.0",
-                "configDeltaFiles": [
-                    
-                ],
-                "configDeltas": [
-                    
-                ],
-                "resourceCreationConfigs": [
-                    "default"
-                ],
-                "resourcePath": "views\\3e9afe5d-1655-4d3c-b5de-e8bead708e72-room.yy",
-                "resourceType": "GMFolder"
-            }
-        },
-        {
             "Key": "70fd75b2-b846-4621-85d9-ec1085db4cd4",
             "Value": {
                 "id": "ddd0b6f2-5fd4-498b-8496-295a564b19bd",
@@ -1196,6 +1177,120 @@
                 "resourcePath": "sprites\\s_portrait\\s_portrait.yy",
                 "resourceType": "GMSprite"
             }
+        },
+        {
+            "Key": "eed3840e-1168-489a-ad4e-2ec46b925df4",
+            "Value": {
+                "id": "2b26983f-6c1a-42e4-a56c-5bd2e63268b2",
+                "modelName": "GMResourceInfo",
+                "mvc": "1.0",
+                "configDeltaFiles": [
+                    
+                ],
+                "configDeltas": [
+                    
+                ],
+                "resourceCreationConfigs": [
+                    "default"
+                ],
+                "resourcePath": "sprites\\s_blood\\s_blood.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "f09e4898-6dd6-421e-b9bb-79484378cd93",
+            "Value": {
+                "id": "9fcfa2fa-9a00-4fff-a568-9bf76c9adc87",
+                "modelName": "GMResourceInfo",
+                "mvc": "1.0",
+                "configDeltaFiles": [
+                    
+                ],
+                "configDeltas": [
+                    
+                ],
+                "resourceCreationConfigs": [
+                    "default"
+                ],
+                "resourcePath": "objects\\o_blood\\o_blood.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "d806d6db-00f1-4c03-83da-a3f0bd05a36e",
+            "Value": {
+                "id": "04f28c7e-ba08-43ce-8df1-e56af518e967",
+                "modelName": "GMResourceInfo",
+                "mvc": "1.0",
+                "configDeltaFiles": [
+                    
+                ],
+                "configDeltas": [
+                    
+                ],
+                "resourceCreationConfigs": [
+                    "default"
+                ],
+                "resourcePath": "scripts\\join\\join.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
+            "Key": "bf79dfd8-e491-4e8f-b924-b082126022c1",
+            "Value": {
+                "id": "b36990cd-f67d-4a0f-9cc2-036ac361f324",
+                "modelName": "GMResourceInfo",
+                "mvc": "1.0",
+                "configDeltaFiles": [
+                    
+                ],
+                "configDeltas": [
+                    
+                ],
+                "resourceCreationConfigs": [
+                    "default"
+                ],
+                "resourcePath": "scripts\\animation_set\\animation_set.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
+            "Key": "578405f1-7c7f-4427-890f-c122e6def096",
+            "Value": {
+                "id": "2a6b6e86-c0ff-49b8-aba9-eeb1d7147080",
+                "modelName": "GMResourceInfo",
+                "mvc": "1.0",
+                "configDeltaFiles": [
+                    
+                ],
+                "configDeltas": [
+                    
+                ],
+                "resourceCreationConfigs": [
+                    "default"
+                ],
+                "resourcePath": "sprites\\s_aster_portrait\\s_aster_portrait.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "7c470b84-2318-4e12-b996-6343a5b65f72",
+            "Value": {
+                "id": "f300b571-71d7-4f94-b236-b0030083e871",
+                "modelName": "GMResourceInfo",
+                "mvc": "1.0",
+                "configDeltaFiles": [
+                    
+                ],
+                "configDeltas": [
+                    
+                ],
+                "resourceCreationConfigs": [
+                    "default"
+                ],
+                "resourcePath": "timelines\\timeline_0\\timeline_0.yy",
+                "resourceType": "GMTimeline"
+            }
         }
     ],
     "room_order": [
@@ -1205,11 +1300,13 @@
         "df778d22-d3d1-440d-8309-afce2c4168e6"
     ],
     "script_order": [
+        "bf79dfd8-e491-4e8f-b924-b082126022c1",
         "70fd75b2-b846-4621-85d9-ec1085db4cd4",
         "5b0bf0bd-da61-4283-89d5-a2e4b2977ef7",
         "b9ad362d-e5c2-4671-ba6a-2f202e7174a4",
         "9fbd1dc9-84a1-4d1d-8c7d-cd692cb6cc62",
         "9397ad4e-e010-4da1-acd0-33b0208edcf6",
+        "d806d6db-00f1-4c03-83da-a3f0bd05a36e",
         "a2c1c3f1-0596-4750-8009-daf2e1a6ed73",
         "d4e94d0f-a8d8-477c-99e0-d3eca1c7f556",
         "a471cabd-a47b-40a7-a095-6e8a89864283",

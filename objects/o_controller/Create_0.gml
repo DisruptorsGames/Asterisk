@@ -12,14 +12,23 @@
 #macro vy camera_get_view_y(view_camera[0])
 #macro vt camera_get_view_target(view_camera[0])
 
+// enumerations
+enum anim_type
+{
+	idle,
+	walk,
+	run,
+	crouch
+}
+
 // globals
 global.debug = false;
 
 randomize();
 
 game = noone;
+target = noone;
 // camera
-cam_a = 0;
 cam_x = 0;
 cam_y = 0;
 cam_w = 160;
@@ -34,20 +43,28 @@ switch(room)
 	case r_menu_main:
 		instance_create_depth(0, 0, 0, o_menu_main);
 		cam_w = 256;
-		cam_h = 244;
+		cam_h = 224;
 		break;
 	case r_dungeon:
 	case r_dungeon2:
 		instance_create_depth(0, 0, layer_get_depth("Instances") + 1, o_highlight);
 		game = instance_create_depth(0, 0, 0, o_arcade);
+		target = o_player;
+		// scale surface
+		var height = floor(min(768, display_get_height())),
+			width = floor(height * aspect);
+		surface_resize(application_surface, width, height);
 		break;
 }
 
-var height = floor(min(768, display_get_height())),
-	width = floor(height * aspect);
+camera_set_view_target(view_camera[0], target);
 camera_set_view_size(view_camera[0], cam_w, cam_h);
-surface_resize(application_surface, width, height);
 display_set_gui_maximise(aspect, aspect);
+
+
+
+
+
 
 
 

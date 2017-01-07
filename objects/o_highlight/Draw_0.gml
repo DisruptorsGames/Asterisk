@@ -2,7 +2,7 @@
 if (instance_exists(o_player) && !o_player.inv_show)
 {
 	var game = o_controller.game;
-	image_blend = grid_snapped(id) ? c_green : c_red;
+	image_blend = grid_snapped(id)  ? c_green : c_red;
 	draw_self();
 
 	if (global.debug)

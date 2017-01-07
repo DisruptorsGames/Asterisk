@@ -64,7 +64,7 @@
             "hspeed": 0,
             "htiled": false,
             "spriteId": "6dc87f77-0379-4a23-a663-f0ab0aed262f",
-            "stretch": false,
+            "stretch": true,
             "userdefined_animFPS": false,
             "vspeed": 0,
             "vtiled": false,
@@ -99,7 +99,7 @@
         "clearDisplayBuffer": true,
         "clearViewBackground": true,
         "enableViews": true,
-        "inheritViewSettings": false
+        "inheritViewSettings": true
     },
     "views": [
         {
