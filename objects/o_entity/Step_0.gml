@@ -39,7 +39,24 @@ if (path_position == 1)
 	path_end();
 	path_clear_points(path);
 	steps = moves;
-	animation_set(anim_type.idle);
+	//
+	var anim = anim_type.idle,
+		px = o_player.x / game.width, 
+		py = (o_player.y + o_player.yoffset) / game.height,
+		walls = [8, 9, 10, 11, 12 ,13, 14, 15, 28, 29, 30, 31],
+		tile_l = array_contains(walls, o_arcade.map[# px - 1, py]),
+		tile_r = array_contains(walls, o_arcade.map[# px + 1, py]);
+	
+	if (distance_to_object(o_chest) < 16)
+		anim = anim_type.crouch;
+	else if (tile_l || tile_r)
+	{
+		anim = anim_type.lean;
+		image_xscale = tile_r ? -1 : 1;
+		sprite_set_offset(sprite_index, tile_r ? -sprite_width : 0, 0);
+	}
+	
+	animation_set(anim);
 }
 
 /*

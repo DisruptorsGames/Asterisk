@@ -23,6 +23,7 @@ toggle_inv = ord("I");
 
 ds_map_add(ani_map, anim_type.idle, [0, 1]);
 ds_map_add(ani_map, anim_type.run, [2, 3, 4, 5, 6]);
+ds_map_add(ani_map, anim_type.lean, [8]);
 ds_map_add(ani_map, anim_type.crouch, [9]);
 depth = -1;
 

@@ -18,6 +18,7 @@ enum anim_type
 	idle,
 	walk,
 	run,
+	lean,
 	crouch
 }
 

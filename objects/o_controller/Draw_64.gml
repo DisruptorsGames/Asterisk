@@ -1,6 +1,6 @@
 /// @description Heads up Display
 
-var text = "";
+var text = "", game = o_controller.game;
 
 if (global.debug)
 	text = "Surface: " + string(sw) + "x" + string(sh)
@@ -9,7 +9,8 @@ if (global.debug)
 		+ "\nGUI: " + string(gw) + "x" + string(gh)
 		+ "\nRoom: " + string(room_width) + "x" + string(room_height)
 		+ "\nPlayer: " + string(instance_exists(o_player) ? (string(o_player.animation) + ">" + string(o_player.image_index)) : "???")
-		+ "\nDir: " + string(instance_exists(o_player) ? string(o_player.direction) : "???");
+		+ "\nDir: " + string(instance_exists(o_player) ? string(o_player.direction) : "???")
+		+ "\nMap: " + string(instance_exists(o_player) ? (string(o_player.x / game.width) + "x" + string(o_player.y / game.height)) : "???");
 else
 	text = string(instance_exists(game) ? string(game.combat) : "???");
 

@@ -18,7 +18,8 @@ for (var i = 0; i < ds_grid_width(map); i++)
 			data = tilemap_get(map_id, i, j),
 			index = tile_get_index(data);
 		ds_grid_add(map, i, j, index);
-		if (index < 1 || index > 4)
+		// tileset numbers to block off movmenet
+		if (array_contains([0, 5, 8, 9, 10, 11, 12, 13, 14, 15, 24, 25, 26, 27, 28, 29, 30, 31], index))
 			mp_grid_add_cell(playfield, i, j);
 	}
 }

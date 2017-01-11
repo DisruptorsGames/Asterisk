@@ -17,12 +17,15 @@ if (has_path)
 }
 
 // animation
-var anim = ani_map[? animation];
-if (array_length_1d(anim) > 0 && image_index > anim[array_length_1d(anim) - 1])
-	image_index = anim[0];
+var frame = ani_map[? animation];
+if (array_length_1d(frame) > 0 && image_index > frame[array_length_1d(frame) - 1])
+	image_index = frame[0];
 // flip image
-image_xscale = xprevious > x ? -1 : 1;
-sprite_set_offset(sprite_index, xprevious > x ? (-sprite_width / 2) : 0, 0);
+if (animation == anim_type.walk)
+{
+	image_xscale = xprevious > x ? -1 : 1;
+	sprite_set_offset(sprite_index, xprevious > x ? (-sprite_width / 2) : 0, 0);
+}
 
 // entity
 var hovering = point_in_rectangle(mouse_x, mouse_y, bbox_left, bbox_top, bbox_right, bbox_bottom);
@@ -34,11 +37,8 @@ if (steps > 0)
 	draw_text_color_ext(x, y + yoffset, steps, c_white, 0.75, f_hud, fa_left);
 	
 // health
-//if (object_index != o_player)
-//{
-if (hp > 0)
+if (hp > 0 && hp < 100)
 	draw_healthbar(x, y - 1, x + sprite_width, y, (hp / max_hp) * 100, c_black, c_maroon, c_red, 0, true, true);
-//}
 
 // sight
 if (game.combat)
