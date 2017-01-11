@@ -21,7 +21,7 @@ var frame = ani_map[? animation];
 if (array_length_1d(frame) > 0 && image_index > frame[array_length_1d(frame) - 1])
 	image_index = frame[0];
 // flip image
-if (animation == anim_type.walk)
+if (animation == anim_type.run)
 {
 	image_xscale = xprevious > x ? -1 : 1;
 	sprite_set_offset(sprite_index, xprevious > x ? (-sprite_width / 2) : 0, 0);
@@ -38,7 +38,9 @@ if (steps > 0)
 	
 // health
 if (hp > 0 && hp < 100)
-	draw_healthbar(x, y - 1, x + sprite_width, y, (hp / max_hp) * 100, c_black, c_maroon, c_red, 0, true, true);
+	draw_healthbar(x, y - 2, x + sprite_width, y - 1, (hp / max_hp) * 100, c_black, c_maroon, c_red, 0, true, true);
+if (mana > 0 && mana < 100)
+	draw_healthbar(x, y - 1, x + sprite_width, y, (mana / max_mana) * 100, c_black, c_navy, c_blue, 0, true, true);
 
 // sight
 if (game.combat)

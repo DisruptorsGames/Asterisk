@@ -11,7 +11,7 @@ if (shake)
 }
 
 // move to target
-if (instance_exists(target) && grid_snapped(target))
+if (instance_exists(target))
 {
 	// map all solids
 	for(var i = 0; i < instance_count; i += 1)
@@ -22,7 +22,7 @@ if (instance_exists(target) && grid_snapped(target))
 	}
 
 	// find path
-	has_path = mp_grid_path(game.playfield, path, x + xoffset, y + yoffset, target.x, target.y, false);
+	has_path = mp_grid_path(game.playfield, path, x + xoffset, y + yoffset, target.x + target.xoffset, target.y + target.yoffset, true);
 	
 	// move
 	if (has_path)
@@ -38,22 +38,23 @@ if (path_position == 1)
 {
 	path_end();
 	path_clear_points(path);
+	path_position = 0;
 	steps = moves;
 	//
 	var anim = anim_type.idle,
-		px = o_player.x / game.width, 
-		py = (o_player.y + o_player.yoffset) / game.height,
-		walls = [8, 9, 10, 11, 12 ,13, 14, 15, 28, 29, 30, 31],
-		tile_l = array_contains(walls, o_arcade.map[# px - 1, py]),
-		tile_r = array_contains(walls, o_arcade.map[# px + 1, py]);
+		tiles = [tile_type.wall, tile_type.ceiling],
+		wall_l = tile_get_type(tiles, map_find_value(x + xoffset, y + yoffset, -1, 0)),
+		wall_r = tile_get_type(tiles, map_find_value(x + xoffset, y + yoffset, 1, 0));
 	
-	if (distance_to_object(o_chest) < 16)
+	if (point_distance(x + xoffset, y + yoffset, o_chest.x, o_chest.y) < 32)
 		anim = anim_type.crouch;
-	else if (tile_l || tile_r)
+	else if (wall_l || wall_r)
 	{
-		anim = anim_type.lean;
-		image_xscale = tile_r ? -1 : 1;
-		sprite_set_offset(sprite_index, tile_r ? -sprite_width : 0, 0);
+		var wall_tl = tile_get_type(tiles, map_find_value(x + xoffset, y + yoffset, -1, -1)),
+			wall_tr = tile_get_type(tiles, map_find_value(x + xoffset, y + yoffset, 1, -1));
+		anim = (wall_tl && wall_l) || (wall_tr && wall_r) ? anim_type.lean : anim_type.crouch;
+		image_xscale = wall_r ? -1 : 1;
+		sprite_set_offset(sprite_index, wall_r ? -sprite_width : 0, 0);
 	}
 	
 	animation_set(anim);

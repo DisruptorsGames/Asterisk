@@ -8,9 +8,8 @@ if (global.debug)
 		+ "\nPort: " + string(view_wport[0]) + "x" + string(view_hport[0])
 		+ "\nGUI: " + string(gw) + "x" + string(gh)
 		+ "\nRoom: " + string(room_width) + "x" + string(room_height)
-		+ "\nPlayer: " + string(instance_exists(o_player) ? (string(o_player.animation) + ">" + string(o_player.image_index)) : "???")
-		+ "\nDir: " + string(instance_exists(o_player) ? string(o_player.direction) : "???")
-		+ "\nMap: " + string(instance_exists(o_player) ? (string(o_player.x / game.width) + "x" + string(o_player.y / game.height)) : "???");
+		+ "\nTarget: " + string(instance_exists(o_player) ? string(o_player.target) : "???")
+		+ "\nMap: " + string(instance_exists(o_player) ? string(map_find_value(o_player.x + o_player.xoffset, o_player.y + o_player.yoffset, 0, 0)) : "???");
 else
 	text = string(instance_exists(game) ? string(game.combat) : "???");
 

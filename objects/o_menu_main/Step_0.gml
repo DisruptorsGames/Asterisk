@@ -7,7 +7,7 @@ if (keyboard_check(vk_enter) && !keyboard_check(vk_alt))
     switch (value)
     {
         case "Play":
-            room_goto(r_dungeon2);
+            room_goto(r_outside);
             break;
         case "Quit":
             game_end();

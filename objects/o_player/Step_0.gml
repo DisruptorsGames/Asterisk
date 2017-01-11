@@ -26,11 +26,9 @@ if (keyboard_check_pressed(toggle_inv))
 if (!inv_show)
 {
 	shake = keys;
-	if (mouse_check_button_pressed(mb_left))
-	{
-		if (target == noone)
+	if (mouse_check_button_pressed(mb_left) && target == noone 
+		&& !tile_get_type(tile_type.solids, map_find_value(o_highlight.x, o_highlight.y, 0, 0)))
 			target = o_highlight;
-	}
 }
 
 if (keyboard_check_pressed(down))

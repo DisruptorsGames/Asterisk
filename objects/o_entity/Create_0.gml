@@ -30,6 +30,6 @@ inv_show = false;
 inventory = ds_grid_create(4, 3);
 //
 animation = anim_type.idle;
-leaning = false;
+flip = false;
 ani_map = ds_map_create();
 image_speed = 0.25;

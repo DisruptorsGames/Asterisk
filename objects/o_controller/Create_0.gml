@@ -19,7 +19,17 @@ enum anim_type
 	walk,
 	run,
 	lean,
-	crouch
+	crouch,
+	thumbs_up
+}
+enum tile_type
+{
+	solids,
+	blank,
+	ceiling,
+	ground,
+	door,
+	wall
 }
 
 // globals
@@ -46,10 +56,11 @@ switch(room)
 		cam_w = 256;
 		cam_h = 224;
 		break;
+	case r_outside:
 	case r_dungeon:
 	case r_dungeon2:
 		instance_create_depth(0, 0, layer_get_depth("Instances") + 1, o_highlight);
-		game = instance_create_depth(0, 0, 0, o_arcade);
+		game = instance_create_depth(0, 0, 0, o_adventure);
 		target = o_player;
 		// scale surface
 		var height = floor(min(768, display_get_height())),

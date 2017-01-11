@@ -1,5 +1,5 @@
 /// @description Follow & Snap
-x = mouse_x;
-y = mouse_y;
+x = mouse_x - xoffset;
+y = mouse_y - yoffset;
 var game = o_controller.game;
-move_snap(game.snap_width, game.snap_height);
+move_snap(game.width, game.height);
