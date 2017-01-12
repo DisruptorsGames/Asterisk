@@ -1,10 +1,10 @@
 /// @function tile_get_type
 /// @param tile type
-/// @param spot
+/// @param tile_index
 var type = argument0 == tile_type.solids
-		? [tile_type.blank, tile_type.ceiling, tile_type.door, tile_type.wall] 
+		? [tile_type.blank, tile_type.ceiling, tile_type.door, tile_type.tree, tile_type.wall] 
 		: argument0,
-	spot = argument1,
+	index = argument1,
 	list = ds_list_create();
 // add all tile types
 for (var i = 0; i < array_length_1d(type); i++)
@@ -22,6 +22,8 @@ for (var i = 0; i < array_length_1d(type); i++)
 			break;
 		case tile_type.door:
 			ds_list_add(list, 24, 25, 26, 27);
+		case tile_type.tree:
+			ds_list_add(list, 32/*, 33, 34*/);
 			break;
 		case tile_type.wall:
 			ds_list_add(list, 28, 29, 30, 31);
@@ -29,6 +31,6 @@ for (var i = 0; i < array_length_1d(type); i++)
 	}
 }
 // determine if we have what we're looking for
-var found = ds_list_find_index(list, spot) != -1;
+var found = ds_list_find_index(list, index) != -1;
 ds_list_destroy(list);
 return found;

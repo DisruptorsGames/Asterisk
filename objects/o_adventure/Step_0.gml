@@ -1,5 +1,10 @@
 /// @description Think
-if (turn == noone)
+var turn = ds_priority_find_min(turns);
+if (is_undefined(turn))
 {
-	// ToDo: evaluate initiative
+	// roll for initiative
+}
+else
+{
+	// take turn
 }

@@ -2,6 +2,9 @@
 event_inherited();
 
 name = choose("Ratib", "Ratatack", "Ration", "Ratatat");
+hp = 60;
+max_hp = 60;
+moves = 1;
 sight = 45;
 shell = c_maroon;
 xoffset = 12;

@@ -10,9 +10,9 @@ var xx = sprite_get_width(s_portrait) * aspect + 2,
 	yy = gh - sprite_get_height(s_bar) * aspect;
 draw_healthbar(xx + 1, yy + 1, xx + sprite_get_width(s_bar) * aspect - 1, yy + sprite_get_height(s_bar) * aspect - 1, (health / max_hp) * 100, c_black, hp_col, hp_col, 3, false, true);
 draw_sprite_ext(s_bar, -1, xx, yy, aspect, aspect, 0, c_dkgray, 0.95);
-// mana
+// chi
 xx += sprite_get_width(s_bar) * aspect;
-draw_healthbar(xx + 1, yy + 1, xx + sprite_get_width(s_bar) * aspect - 1, yy + sprite_get_height(s_bar) * aspect - 1, (mana / max_mana) * 100, c_black, mana_col, mana_col, 3, false, true);
+draw_healthbar(xx + 1, yy + 1, xx + sprite_get_width(s_bar) * aspect - 1, yy + sprite_get_height(s_bar) * aspect - 1, (chi / max_chi) * 100, c_black, chi_col, chi_col, 3, false, true);
 draw_sprite_ext(s_bar, -1, xx, yy, aspect, aspect, 0, c_dkgray, 0.95);
 
 // hotbar

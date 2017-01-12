@@ -23,13 +23,14 @@ if (array_length_1d(frame) > 0 && image_index > frame[array_length_1d(frame) - 1
 // flip image
 if (animation == anim_type.run)
 {
-	image_xscale = xprevious > x ? -1 : 1;
-	sprite_set_offset(sprite_index, xprevious > x ? (-sprite_width / 2) : 0, 0);
+	var c = xprevious > x;
+	image_xscale = c ? -1 : 1;
+	sprite_set_offset(sprite_index, c ? -sprite_width : 0, 0);
 }
 
 // entity
 var hovering = point_in_rectangle(mouse_x, mouse_y, bbox_left, bbox_top, bbox_right, bbox_bottom);
-draw_sprite_ext(sprite_index, image_index, x, y - 6, shadow_xscale, image_yscale, shadow_angle, c_black, 0.65);
+draw_sprite_ext(sprite_index, image_index, x - 1, y - 1, image_xscale, image_yscale, image_angle, shell, 0.65);
 draw_sprite_ext(sprite_index, image_index, x, y, image_xscale, image_yscale, image_angle, image_blend, image_alpha);
 
 // steps
@@ -39,8 +40,8 @@ if (steps > 0)
 // health
 if (hp > 0 && hp < 100)
 	draw_healthbar(x, y - 2, x + sprite_width, y - 1, (hp / max_hp) * 100, c_black, c_maroon, c_red, 0, true, true);
-if (mana > 0 && mana < 100)
-	draw_healthbar(x, y - 1, x + sprite_width, y, (mana / max_mana) * 100, c_black, c_navy, c_blue, 0, true, true);
+if (chi > 0 && chi < 100)
+	draw_healthbar(x, y - 1, x + sprite_width, y, (chi / max_chi) * 100, c_black, c_navy, c_blue, 0, true, true);
 
 // sight
 if (game.combat)
@@ -64,24 +65,24 @@ if (game.combat)
 if (global.debug)
 {
 	draw_rectangle_color(bbox_left, bbox_top, bbox_right, bbox_bottom, c_red, c_red, c_red, c_red, true);
-	draw_circle_color(x, y, 2, c_maroon, c_maroon, false);
+	draw_circle_color(x, y, 1, c_maroon, c_maroon, false);
+	draw_text_color_ext(bbox_right, y, depth, c_white, 0.75, f_hud, fa_right);
 }
 
 // inventory
 if (instance_exists(owner) && owner.inv_show)
 {
+	var xx = x + xoffset, yy = y + yoffset; // 10151a
+	draw_roundrect_color(xx, yy, xx + ds_grid_width(inventory) * inv_size, yy + ds_grid_height(inventory) * inv_size, $425469, $425469, false);
+	draw_roundrect_color(xx, yy, xx + ds_grid_width(inventory) * inv_size, yy + ds_grid_height(inventory) * inv_size, $10151a, $10151a, true);
 	for (var i = 0; i < ds_grid_width(inventory); i++)
 	{
 		for (var j = 0; j < ds_grid_height(inventory); j++)
 		{
 			var ix = x + xoffset + i * inv_size, 
 				iy = y + yoffset + j * inv_size, 
-				item = inventory[# i, j],
-				col = item > 0 ? c_red : c_gray;
-			draw_rectangle_color(ix, iy, ix + inv_size, iy + inv_size, $10151a, $10151a, $10151a, $10151a, false);
-			draw_rectangle_color(ix, iy, ix + inv_size, iy + inv_size, c_black, c_black, c_black, c_black, true);
-			// show item
-			draw_circle_color(ix + 4, iy + 4, 1, col, col, false);
+				item = inventory[# i, j];
+			draw_roundrect_color(ix, iy, ix + inv_size, iy + inv_size, $10151a, $10151a, true);
 			if (item > 0)
 			{
 				item.x = ix + 4;

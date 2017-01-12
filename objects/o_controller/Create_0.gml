@@ -29,6 +29,7 @@ enum tile_type
 	ceiling,
 	ground,
 	door,
+	tree,
 	wall
 }
 
@@ -36,6 +37,7 @@ enum tile_type
 global.debug = false;
 
 randomize();
+draw_set_circle_precision(8);
 
 game = noone;
 target = noone;
@@ -73,6 +75,7 @@ camera_set_view_target(view_camera[0], target);
 camera_set_view_size(view_camera[0], cam_w, cam_h);
 display_set_gui_maximise(aspect, aspect);
 
+/*
 
 
 
@@ -80,3 +83,15 @@ display_set_gui_maximise(aspect, aspect);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+*/

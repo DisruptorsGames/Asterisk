@@ -2,6 +2,9 @@
 event_inherited();
 
 name = choose("Rabbit", "Hopper", "Speedy");
+hp = 10;
+max_hp = 10;
+moves = 1;
 sight = 45;
 shell = c_maroon;
 xoffset = 12;

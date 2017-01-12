@@ -1,11 +1,6 @@
 /// @description Init
 event_inherited();
 
-hp = 0;
-max_hp = 0;
-mana = 0;
-max_mana = 0;
-steps = 0;
 xoffset = 4;
 yoffset = 4;
 
@@ -18,7 +13,7 @@ for (var i = 0; i < ds_grid_width(inventory); i++)
 	{
 		if (percent(25))
 		{
-			var icon = choose(s_apple, s_heart, s_potion, s_pouch);
+			var icon = choose(s_apple, s_potion, s_pouch);
 			inventory[# i, j] = icon_create(icon, 0, percent(25) ? make_color_elm() : c_white, random(360) div 45);
 		}
 	}
