@@ -20,6 +20,7 @@ enum anim_type
 	run,
 	lean,
 	crouch,
+	meditation,
 	thumbs_up
 }
 enum tile_type
@@ -74,24 +75,3 @@ switch(room)
 camera_set_view_target(view_camera[0], target);
 camera_set_view_size(view_camera[0], cam_w, cam_h);
 display_set_gui_maximise(aspect, aspect);
-
-/*
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-*/

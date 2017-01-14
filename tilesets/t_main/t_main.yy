@@ -69,7 +69,7 @@
     "tile_animation_frames": [
         
     ],
-    "tile_animation_speed": 15,
+    "tile_animation_speed": 12,
     "tile_count": 40,
     "tileheight": 16,
     "tilehsep": 0,

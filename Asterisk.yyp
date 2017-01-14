@@ -1386,6 +1386,120 @@
                 "resourcePath": "scripts\\array_contains\\array_contains.yy",
                 "resourceType": "GMScript"
             }
+        },
+        {
+            "Key": "486ddf9b-5367-4ff5-b30f-12129857743c",
+            "Value": {
+                "id": "7fb93e4f-18a8-44f7-9363-2b65d9bbe6eb",
+                "modelName": "GMResourceInfo",
+                "mvc": "1.0",
+                "configDeltaFiles": [
+                    
+                ],
+                "configDeltas": [
+                    
+                ],
+                "resourceCreationConfigs": [
+                    "default"
+                ],
+                "resourcePath": "scripts\\draw_border\\draw_border.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
+            "Key": "efb6ea44-7032-411a-921f-0221824d3502",
+            "Value": {
+                "id": "e9b920f7-b8df-423d-9dea-2c0977c1d39e",
+                "modelName": "GMResourceInfo",
+                "mvc": "1.0",
+                "configDeltaFiles": [
+                    
+                ],
+                "configDeltas": [
+                    
+                ],
+                "resourceCreationConfigs": [
+                    "default"
+                ],
+                "resourcePath": "sprites\\s_attack\\s_attack.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "3e2cdde4-1d67-4acd-845e-df31345d8ff9",
+            "Value": {
+                "id": "f0f1a740-4f6b-4f5f-b50b-a2cbec2ea3a9",
+                "modelName": "GMResourceInfo",
+                "mvc": "1.0",
+                "configDeltaFiles": [
+                    
+                ],
+                "configDeltas": [
+                    
+                ],
+                "resourceCreationConfigs": [
+                    "default"
+                ],
+                "resourcePath": "sprites\\s_defend\\s_defend.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "c336e18e-dcd8-4310-aa81-67b2c0ec93a3",
+            "Value": {
+                "id": "b11168b9-637a-454d-8709-98b20bb39c0c",
+                "modelName": "GMResourceInfo",
+                "mvc": "1.0",
+                "configDeltaFiles": [
+                    
+                ],
+                "configDeltas": [
+                    
+                ],
+                "resourceCreationConfigs": [
+                    "default"
+                ],
+                "resourcePath": "sprites\\s_book\\s_book.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "9cd5fa48-97da-4700-95d2-9a6eb44ea565",
+            "Value": {
+                "id": "c12170ae-00db-47b5-9286-e1af5ddd6313",
+                "modelName": "GMResourceInfo",
+                "mvc": "1.0",
+                "configDeltaFiles": [
+                    
+                ],
+                "configDeltas": [
+                    
+                ],
+                "resourceCreationConfigs": [
+                    "default"
+                ],
+                "resourcePath": "sprites\\s_script\\s_script.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "842007ac-16f6-413d-ba36-e41a717d9569",
+            "Value": {
+                "id": "11e26aa7-b013-47ae-8b39-72f3e333b337",
+                "modelName": "GMResourceInfo",
+                "mvc": "1.0",
+                "configDeltaFiles": [
+                    
+                ],
+                "configDeltas": [
+                    
+                ],
+                "resourceCreationConfigs": [
+                    "default"
+                ],
+                "resourcePath": "sprites\\s_ambush\\s_ambush.yy",
+                "resourceType": "GMSprite"
+            }
         }
     ],
     "room_order": [
@@ -1398,6 +1512,7 @@
     "script_order": [
         "c650be7c-4433-4878-9c6b-06cba0dcea90",
         "bf79dfd8-e491-4e8f-b924-b082126022c1",
+        "486ddf9b-5367-4ff5-b30f-12129857743c",
         "70fd75b2-b846-4621-85d9-ec1085db4cd4",
         "d806d6db-00f1-4c03-83da-a3f0bd05a36e",
         "5b0bf0bd-da61-4283-89d5-a2e4b2977ef7",

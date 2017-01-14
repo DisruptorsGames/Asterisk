@@ -16,3 +16,7 @@ for (var i = 0; i < ds_list_size(menu); i++)
         draw_text_color(ix - string_width(indicator) - 4, iy + i * offset, indicator, color, color, color, color, 1);
 }
 draw_set_font(-1);
+
+// add game version
+var version = string(GM_version) + "\n" + string(date_date_string(GM_build_date));
+draw_text_color_ext(gw / 2, gh - string_height(version), version, c_white, 1, f_hud, fa_center);

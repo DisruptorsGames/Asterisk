@@ -13,10 +13,12 @@ for (var i = 0; i < ds_grid_width(inventory); i++)
 	{
 		if (percent(25))
 		{
-			var icon = choose(s_apple, s_potion, s_pouch);
-			inventory[# i, j] = icon_create(icon, 0, percent(25) ? make_color_elm() : c_white, random(360) div 45);
+			var icon = choose(s_apple, s_potion, s_pouch, s_book, s_script);
+			//inventory[# i, j] = icon_create(icon, 0, percent(25) ? make_color_elm() : c_white, random(360) div 45);
+			inventory[# i, j] = icon_create(icon, 0, c_white, 0);
 		}
 	}
 }
 
 ds_map_add(ani_map, anim_type.idle, [0]);
+ds_map_add(ani_map, anim_type.meditation, [0]);
