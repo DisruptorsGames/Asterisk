@@ -9,8 +9,8 @@ if (ds_queue_size(system._pending) > 0) {
 }
 
 // --- advance turn
-system._currentTurnNumber++;
-util_debug_message("\n[TurnSystem] It is now turn #", system._currentTurnNumber, "!");
+system._current_turn_number++;
+util_debug_message("\n[TurnSystem] It is now turn #", system._current_turn_number, "!");
 
 // --- find new pending actions
 
