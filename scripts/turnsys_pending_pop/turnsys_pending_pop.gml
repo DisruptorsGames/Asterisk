@@ -1,4 +1,4 @@
-var system = oTurnSystem;
+var system = o_turn_system;
 
 if (ds_queue_size(system._pending) == 0) {
 	util_debug_crash("[TurnSystem] There are no pending actions!");

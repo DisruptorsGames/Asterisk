@@ -1,6 +1,6 @@
 /// @description Advancing the TurnSystem will populate the pending queue as well as increment the turn counter.
 
-var system = oTurnSystem;
+var system = o_turn_system;
 
 // the TurnSystem can not be advanced when the currently pending list is not empty.
 // this is an undefined state since its not what the client expects
