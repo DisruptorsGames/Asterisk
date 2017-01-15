@@ -54,7 +54,7 @@ for (var n=ds_list_size(system._pending_tmp); n>1; n--) {
 			util_debug_crash("[TurnSystem] Two actors have the same initiative value, disallowed! (value=", initiativeA, ")");
 		}
 		
-		if (initiativeA > initiativeB) {
+		if (initiativeA < initiativeB) {
 			// swap places
 			ds_list_replace(system._pending_tmp, i, actionB);
 			ds_list_replace(system._pending_tmp, i+1, actionA);
