@@ -17,6 +17,8 @@ draw_healthbar(xx + 1, yy + 1, xx + sprite_get_width(s_bar) * aspect - 1, yy + s
 draw_sprite_ext(s_bar, -1, xx, yy, aspect, aspect, 0, c_dkgray, 0.95);
 draw_text_color(xx, yy, chi, c_white, c_white, c_white, c_white, 0.75);
 
+randomize();
+
 // hotbar
 for (var i = 0; i < ds_list_size(hotbar); i++)
 {
@@ -25,14 +27,13 @@ for (var i = 0; i < ds_list_size(hotbar); i++)
 		cx = (gw - ds_list_size(hotbar) * width) / 2,
 		ix = cx + i * (width + 2),
 		iy = gh - height - 2;
-	//draw_rectangle_color(ix, iy, ix + width, iy + height, c_black, c_black, c_black, c_black, false);
 	draw_sprite_ext(s_highlight, -1, ix, iy, aspect, aspect, 0, c_white, 1);
 	for (var j = 0; j < array_length_1d(values); j++)
-	{	
-		if (sprite_exists(values[j]) && (inv_show || j == 0))
-		{
-			var jy = iy - height * j - 2;
-			draw_sprite_ext(values[j], 0, ix, jy, aspect, aspect, 0, c_white, 1);
-		}
+	{
+		var jy = iy - height * j - 2, sprite = values[j];
+		if (sprite_exists(sprite) && (inv_show || j == 0))
+			draw_sprite_ext(sprite, 0, ix, jy, aspect, aspect, 0, c_white, 1);
+		draw_text_color_ext(ix, jy, j, c_white, 0.95, f_hud, fa_left);
+		draw_rectangle_color(ix, jy, ix + width, jy + height, c_white, c_white, c_white, c_white, true);
 	}
 }

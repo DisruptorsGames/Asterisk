@@ -14,7 +14,7 @@ for (var i = 0; i < array_length_1d(type); i++)
 			ds_list_add(list, 8, 9, 10, 11, 12, 13, 14, 15);
 			break;
 		case tile_type.ground:
-			ds_list_add(list, 1, 2, 3, 4, 16, 17, 18, 19, 20, 21);
+			ds_list_add(list, 1, 2, 3, 4, 16, 17, 18, 19, 20, 21, 22);
 			break;
 		case tile_type.door:
 			ds_list_add(list, 24, 25, 26, 27);

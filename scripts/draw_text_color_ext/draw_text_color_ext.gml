@@ -6,8 +6,11 @@
 /// @param alpha
 /// @param font
 /// @param alignment
-draw_set_halign(argument6);
-draw_set_font(argument5);
-draw_text_color(argument0, argument1, argument2, argument3, argument3, argument3, argument3, argument4);
+var xx = argument0, yy = argument1, str = argument2, 
+	color = argument3, alpha = argument4, 
+	font = argument5, alignment = argument6;
+draw_set_halign(alignment);
+draw_set_font(font);
+draw_text_color(xx, yy, str, color, color, color, color, alpha);
 draw_set_font(-1);
 draw_set_halign(-1);

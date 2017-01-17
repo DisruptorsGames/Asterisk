@@ -1,8 +1,8 @@
 {
-    "id": "5b0bf0bd-da61-4283-89d5-a2e4b2977ef7",
+    "id": "0f9deb61-1f3a-4826-ac60-6023f92681ff",
     "modelName": "GMScript",
     "mvc": "1.0",
-    "name": "find_path",
+    "name": "music_set",
     "IsCompatibility": false,
     "IsDnD": false
 }

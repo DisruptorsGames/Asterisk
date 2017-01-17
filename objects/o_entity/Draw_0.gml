@@ -49,7 +49,11 @@ if (idle > 0 && path_position == 0)
 // nearme
 for (var i = 0; i < ds_list_size(nearme); i++)
 {
-	var inst = nearme[| i], 
+	var inst = nearme[| i], name = object_get_name(inst.object_index),
+		ix = i * string_height(name) + 2;
+	draw_text_ext_transformed(inst.x, inst.y + inst.sprite_height + 2 + ix, name, 10, 300, 0.25, 0.25, 0);
+	//draw_text_color_ext(inst.x, inst.y + inst.sprite_height + 2 + ix, name, inst.shell, 0.75, f_hud, fa_left);
+	/*var inst = nearme[| i], 
 		col = inst.shell, comp = make_color_comp(col),
 		size = inst.sprite_width / 2,
 		ix = inst.x + size;
@@ -58,8 +62,7 @@ for (var i = 0; i < ds_list_size(nearme); i++)
 		var cx = ix - array_length_1d(inst.actions) * size / 2,
 			jx = cx + j * (size + 2), jy = inst.y - 2;
 		draw_sprite_ext(s_highlight, -1, jx, jy, 0.5, 0.5, 0, c_white, 0.95);
-	}
-	draw_circle_color(ix, inst.y + size, 0.5, c_red, c_red, false);
+	}*/
 }
 
 // bounding box

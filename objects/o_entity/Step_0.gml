@@ -84,6 +84,9 @@ else if (path_position == 1)
 	sprite_set_offset(sprite_index, tile_r ? -sprite_width : 0, 0);
 	animation_set(anim);
 	fog_update = true;
+	//
+	//if (object_index == o_player)
+		//music_set(in_danger ? sfx_outside_combat : sfx_cave_ambient);
 }
 
 // meditation

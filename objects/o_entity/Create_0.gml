@@ -13,6 +13,7 @@ path = path_add();
 has_path = false;
 idle_t = seconds(10);
 idle = idle_t;
+in_danger = false;
 //
 target = noone;
 owner = noone;
@@ -31,5 +32,6 @@ image_speed = 0.25;
 //
 playfield_update = false;
 fog_update = false;
+//
 nearme = ds_list_create();
 actions = [];

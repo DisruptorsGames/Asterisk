@@ -17,6 +17,7 @@ ds_list_add(hotbar,
 	[s_book, s_script, s_script], 
 	[s_attack, s_defend, s_ambush],
 	[s_chest, s_potion, s_book, s_script]);
+ds_list_shuffle(hotbar);
 // controls
 up = ord("W");
 down = ord("S");

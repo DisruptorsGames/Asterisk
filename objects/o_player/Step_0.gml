@@ -20,4 +20,15 @@ if (path_position == 0)
 				playfield_update = true;
 			}
 	}
+	
+	// look around for danger!
+	for (var i = 0; i < ds_list_size(nearme); i++)
+	{
+		var inst = nearme[| i];
+		if (array_contains([o_rat], inst.object_index))
+		{
+			in_danger = true;
+			break;
+		}
+	}
 }

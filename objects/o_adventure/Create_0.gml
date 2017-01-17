@@ -9,3 +9,5 @@ fog_surf = surface_create(room_width, room_height);
 turns = ds_priority_create();
 combat = false;
 depth = -1;
+
+//music_set(sfx_cave_ambient);

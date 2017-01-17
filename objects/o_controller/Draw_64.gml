@@ -11,7 +11,9 @@ if (global.debug)
 		+ "\nTile: " + string(instance_exists(o_player) ? string(tile_get_value(o_player.x + o_player.xoffset, o_player.y + o_player.yoffset)) : "???")
 		+ "\nPath: " + string(instance_exists(o_player) ? (string(o_player.target) + ":" + string(o_player.path_position)) : "???")
 		+ "\nUpdates: " + string(game.pf_updates)
-			+ ":" + string(instance_exists(o_player) ? string(o_player.idle) : "???");
+			+ ":" + string(instance_exists(o_player) ? string(o_player.idle) : "???")
+		+ "\nDanger: " + string(instance_exists(o_player) ? string(o_player.in_danger) : "???")
+		+" \nMouse: " + string(mouse_x) + "x" + string(mouse_y);
 else
 	text = string(instance_exists(game) ? string(game.combat) : "???");
 
