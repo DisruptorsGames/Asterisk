@@ -34,3 +34,4 @@ ds_map_add(ani_map, anim_type.meditation, [5, 6, 7]);
 //
 playfield_update = true;
 fog_update = true;
+can_exit = false;

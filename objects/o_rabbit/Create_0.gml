@@ -12,3 +12,5 @@ yoffset = 16;
 
 ds_map_add(ani_map, anim_type.idle, [0]);
 ds_map_add(ani_map, anim_type.meditation, [0]);
+
+actions = ["kick", "pet", "attack"];

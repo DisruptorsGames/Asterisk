@@ -3,6 +3,8 @@
 // macros
 #macro gw display_get_gui_width() / o_controller.aspect
 #macro gh display_get_gui_height() / o_controller.aspect
+#macro gmx device_mouse_x_to_gui(0)
+#macro gmy device_mouse_y_to_gui(0)
 #macro sw surface_get_width(application_surface)
 #macro sh surface_get_height(application_surface)
 #macro cam view_camera[camera_get_active()]

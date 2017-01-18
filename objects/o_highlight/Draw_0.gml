@@ -17,7 +17,7 @@ if (instance_exists(o_player) && !o_player.inv_show)
 		{
 			var ix = path_get_point_x(p, i) div game.width * game.width, 
 				iy = path_get_point_y(p, i) div game.height * game.height,
-				col = array_contains([33, 34, 35, 36, 37, 38, 39], tile_get_value(ix, iy)) ? c_yellow : c_blue;
+				col = array_contains([tile_type.tree], tile_get_value(ix, iy)) ? c_yellow : c_blue;
 			draw_set_alpha(0.20)
 			draw_rectangle_color(ix + 1, iy + 1, ix + game.width - 1, iy + game.height - 1, col, col, col, col, false);
 			draw_set_alpha(1);

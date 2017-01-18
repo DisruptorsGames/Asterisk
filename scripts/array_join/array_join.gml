@@ -10,6 +10,6 @@ if (!is_array(array))
 var text = "";
 for (var i = 0; i < array_length_1d(array); i++)
 {
-	text += i > 0 ? ";" : "" + string(array[i]);
+	text += (i > 0 ? ";" : "") + string(array[i]);
 }
 return "[" + text + "]";

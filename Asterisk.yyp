@@ -53,7 +53,7 @@
                 "resourceCreationConfigs": [
                     "default"
                 ],
-                "resourcePath": "rooms\\r_dungeon\\r_dungeon.yy",
+                "resourcePath": "rooms\\r_dungeon2\\r_dungeon2.yy",
                 "resourceType": "GMRoom"
             }
         },
@@ -794,7 +794,7 @@
                 "resourceCreationConfigs": [
                     "default"
                 ],
-                "resourcePath": "rooms\\r_dungeon2\\r_dungeon2.yy",
+                "resourcePath": "rooms\\r_dungeon1\\r_dungeon1.yy",
                 "resourceType": "GMRoom"
             }
         },
@@ -1537,6 +1537,25 @@
                 ],
                 "resourcePath": "scripts\\music_set\\music_set.yy",
                 "resourceType": "GMScript"
+            }
+        },
+        {
+            "Key": "3436555b-dccb-4a9c-98fc-7ff4bed0e2a8",
+            "Value": {
+                "id": "9adb10ac-0fee-44f3-bff4-1af12c43cd69",
+                "modelName": "GMResourceInfo",
+                "mvc": "1.0",
+                "configDeltaFiles": [
+                    
+                ],
+                "configDeltas": [
+                    
+                ],
+                "resourceCreationConfigs": [
+                    "default"
+                ],
+                "resourcePath": "sprites\\s_exit\\s_exit.yy",
+                "resourceType": "GMSprite"
             }
         }
     ],
