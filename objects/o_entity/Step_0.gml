@@ -1,10 +1,11 @@
-/// @description Think
-var game = o_controller.game, 
+/// @description Set
+var game = o_controller.game,
 	behind = tile_get_type([tile_type.tree], [
 		tile_get_value(x + xoffset, y + yoffset), 
-		tile_get_value(x, y)]);
+		tile_get_value(x, y)]),
+	ld = layer_get_depth(behind ? "Decals" : "Instances");
+depth = game.entity == id ? (layer_get_depth("Instances") - 1) : ld;
 move_snap(game.width, game.height);
-depth = layer_get_depth(behind ? "Decals" : "Instances");
 
 if (shake)
 {
@@ -14,64 +15,137 @@ if (shake)
 	shake = false;
 }
 
-if (playfield_update)
+// execute action stack
+if (!ds_stack_empty(actions))
 {
-	// map all solid instances
-	for(var i = 0; i < instance_count; i += 1)
+	var top = ds_stack_pop(actions),
+		action = top[0], args = top[1], t = args[0], 
+		msg = string(top),
+		us = object_get_name(object_index),
+		them = t == noone ? "???" : object_get_name(t.object_index);
+	switch (action)
 	{
-	    var inst = instance_id[i];
-	    if(inst.solid && inst != id)
-	        mp_grid_add_instances(game.playfield, inst, false);
+		case action_type.meditation:
+			var bonus = irandom(10);
+			msg = us + " gained " + string(bonus) + " chi!";
+			if (chi < chi_max)
+				chi += bonus;
+			var frames = animation_set(anim_type.meditation),
+				r = irandom(array_length_1d(frames) - 1);
+			image_speed = 0;
+			image_index = frames[r];
+			image_xscale = choose(-1, 1);
+			sprite_set_offset(sprite_index, image_xscale == -1 ? -sprite_width : 0, 0);
+			break;
+		case action_type.move:
+			// find quickest path to target
+			has_path = mp_grid_path(game.playfield, path, x + xoffset, y + yoffset, t.x + t.xoffset, t.y + t.yoffset, false);
+			if (has_path)
+			{
+				msg = us + " moved to " + string(t.x) + "x" + string(t.y);
+				t = noone;
+				// remove any point the entity cannot move to
+				var last = path_get_number(path) - 1;
+				while (last > steps)
+				{
+					path_delete_point(path, last);
+					last = path_get_number(path) - 1;
+				}
+				path_start(path, 0.75, 0, false);
+				animation_set(anim_type.run);
+			}
+			break;
+		case action_type.ambush:
+			msg = us + " ambushed " + them;
+			// ToDo
+			break;
+		case action_type.attack:
+			var dmg = args[1];
+			t.hp -= dmg;
+			t.shake = true;
+			repeat(5)
+			{
+				var blood = instance_create_depth(
+					t.x + t.image_xscale * t.sprite_width / 2, 
+					t.y + sprite_height / 2, 
+					t.depth - 1, o_blood);
+			}
+			msg = us + " " + (dmg > 0 ? ("did " + string(dmg) + " damage to ") : "missed ") + them;
+			steps -= 1;
+			// ToDo
+			break;
+		case action_type.defend:
+			msg = us + " defended " + them;
+			// ToDo
+			break;
+		case action_type.inspect:
+			var obj = t == noone ? tile_get_value(0, 0) : them;
+			msg = us + " looked at " + obj;
+			// ToDo
+			break;
+		case action_type.peek:
+			msg = us + " peeked around " + them;
+			// ToDo
+			break;
+		case action_type.leave:
+			// ToDo
+			break;
 	}
-	// map all solid tiles
-	for (var i = 0; i < room_width / game.width; i++)
-	{
-		for (var j = 0; j < room_height / game.height; j++)
-		{
-			var ix = i * game.width, iy = j * game.height;
-			if (tile_get_type(tile_type.solids, [tile_get_value(ix, iy)]))
-				mp_grid_add_cell(game.playfield, i, j);
-		}
-	}
-	playfield_update = false;
-	game.pf_updates++;
+	ds_list_add(game.log, msg);
 }
 
-if (instance_exists(target))
+// set action stack
+if (game.entity == id && steps > 0)
 {
-	// find quickest path to target
-	has_path = mp_grid_path(game.playfield, path, x + xoffset, y + yoffset, target.x + target.xoffset, target.y + target.yoffset, false);
-	if (has_path)
+	// avoid solid tiles and current player location
+	var tx = o_highlight.x + o_highlight.xoffset,
+		ty = o_highlight.y + o_highlight.yoffset;
+	if (mouse_check_button_pressed(mb_left))
 	{
-		target = noone;
-		path_start(path, 0.75, 0, false);
-		animation_set(anim_type.run);
+		amenu_x = o_highlight.x;
+		amenu_y = o_highlight.y;
+		var obj = collision_point(tx, ty, o_entity, false, false);
+		// click menu
+		if (amenu_item > 0)
+		{
+			var args = [amenu_target];
+			switch (amenu_item)
+			{
+				case action_type.attack:
+					args = [amenu_target, irandom(5)];
+					break;
+			}
+			ds_stack_push(actions, [amenu_item, args]);
+			// reset
+			amenu = [];
+			amenu_item = -1;
+			amenu_target = noone;
+		}
+		// clicking on solid tiles
+		else if (tile_get_type(tile_type.solids, [tile_get_value(tx, ty)]))
+		{
+			amenu = array_length_1d(amenu) > 0 ? [] : [action_type.inspect, action_type.peek];
+			amenu_target = tile_get_value(tx, ty);
+		}
+		// clicking on solid objects
+		else if (((x + xoffset == tx && y + yoffset == ty) || obj != noone))
+		{
+			amenu = array_length_1d(amenu) > 0 ? [] : [action_type.attack, action_type.defend, action_type.inspect];
+			amenu_target = obj;
+		}
+		// movement
+		else
+			ds_stack_push(actions, [action_type.move, [o_highlight]]);
 	}
 }
-else if (path_position == 1)
+
+// end walk cycle
+if (path_position == 1)
 {
-	// stop moving
+	steps -= path_get_number(path) - 1;
 	path_end();
 	path_clear_points(path);
 	path_position = 0;
-	steps = moves;
-	idle = idle_t;
-	// look around
-	ds_list_clear(nearme);
-	for (var i = 0; i < 3; i++)
-	{
-		for (var j = 0; j < 3; j++)
-		{
-			var ix = x - game.width + i * game.width, 
-				iy = y - (yoffset > 16 ? 0 : game.height) + j * game.height,
-				inst = collision_point(ix, iy, all, false, true),
-				tile = tile_get_value(ix, iy);
-			// add instances
-			if (inst != noone && object_get_parent(inst.object_index) == o_entity)
-				ds_list_add(nearme, inst);
-		}
-	}
-	// set end animation (snapping)
 	var tiles = [tile_type.wall, tile_type.ceiling],
 		tile_tl = tile_get_type(tiles, [tile_get_value(x + xoffset - game.width, y)]),
 		tile_t = tile_get_type(tiles, [tile_get_value(x, y)]),
@@ -83,27 +157,4 @@ else if (path_position == 1)
 	image_xscale = tile_r ? -1 : 1;
 	sprite_set_offset(sprite_index, tile_r ? -sprite_width : 0, 0);
 	animation_set(anim);
-	fog_update = true;
-	//
-	//if (object_index == o_player)
-		//music_set(in_danger ? sfx_outside_combat : sfx_cave_ambient);
-}
-
-// meditation
-if (path_position == 0)
-{
-	if (idle > 0)
-		idle--;
-	else if (idle == 0)
-	{
-		if (chi < chi_max)
-			chi += irandom(10);
-		var frames = animation_set(anim_type.meditation),
-			r = irandom(array_length_1d(frames) - 1);
-		image_speed = 0;
-		image_index = frames[r];
-		image_xscale = choose(-1, 1);
-		sprite_set_offset(sprite_index, image_xscale == -1 ? -sprite_width : 0, 0);
-		idle = irandom(idle_t / 2) + idle_t / 2;
-	}
 }

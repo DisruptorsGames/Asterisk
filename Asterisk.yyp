@@ -856,9 +856,9 @@
             }
         },
         {
-            "Key": "0016726f-3b68-46f6-9a2e-187f03b4fe44",
+            "Key": "cce23b01-a358-4f0b-af64-d1a7c956938e",
             "Value": {
-                "id": "b8b08ce4-529d-4def-aa00-2631c0cf84fa",
+                "id": "5802c58a-6e25-4ecb-b3c0-d2d0aab1210f",
                 "modelName": "GMResourceInfo",
                 "mvc": "1.0",
                 "configDeltaFiles": [
@@ -870,27 +870,8 @@
                 "resourceCreationConfigs": [
                     "default"
                 ],
-                "resourcePath": "objects\\o_icon\\o_icon.yy",
-                "resourceType": "GMObject"
-            }
-        },
-        {
-            "Key": "9397ad4e-e010-4da1-acd0-33b0208edcf6",
-            "Value": {
-                "id": "64c1e7d7-03ef-4f98-97c8-3bb05b60094e",
-                "modelName": "GMResourceInfo",
-                "mvc": "1.0",
-                "configDeltaFiles": [
-                    
-                ],
-                "configDeltas": [
-                    
-                ],
-                "resourceCreationConfigs": [
-                    "default"
-                ],
-                "resourcePath": "scripts\\icon_create\\icon_create.yy",
-                "resourceType": "GMScript"
+                "resourcePath": "sprites\\s_hover\\s_hover.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -1557,6 +1538,63 @@
                 "resourcePath": "sprites\\s_exit\\s_exit.yy",
                 "resourceType": "GMSprite"
             }
+        },
+        {
+            "Key": "ed6c0d13-b802-48dc-bce9-9d89ab31ad87",
+            "Value": {
+                "id": "06d780e7-447e-474e-8468-698cf6bb0957",
+                "modelName": "GMResourceInfo",
+                "mvc": "1.0",
+                "configDeltaFiles": [
+                    
+                ],
+                "configDeltas": [
+                    
+                ],
+                "resourceCreationConfigs": [
+                    "default"
+                ],
+                "resourcePath": "scripts\\playfield_update\\playfield_update.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
+            "Key": "2aaaa847-2c55-42e0-bc3b-f2e846d9c67d",
+            "Value": {
+                "id": "754e1c7a-919b-43fd-8c39-2d192deab8dc",
+                "modelName": "GMResourceInfo",
+                "mvc": "1.0",
+                "configDeltaFiles": [
+                    
+                ],
+                "configDeltas": [
+                    
+                ],
+                "resourceCreationConfigs": [
+                    "default"
+                ],
+                "resourcePath": "sprites\\s_inspect\\s_inspect.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "806d7e22-f86a-478e-9621-bde23755c54c",
+            "Value": {
+                "id": "63029499-881e-4e58-8682-4589df8acbdf",
+                "modelName": "GMResourceInfo",
+                "mvc": "1.0",
+                "configDeltaFiles": [
+                    
+                ],
+                "configDeltas": [
+                    
+                ],
+                "resourceCreationConfigs": [
+                    "default"
+                ],
+                "resourcePath": "sprites\\s_peek\\s_peek.yy",
+                "resourceType": "GMSprite"
+            }
         }
     ],
     "room_order": [
@@ -1572,11 +1610,11 @@
         "bf79dfd8-e491-4e8f-b924-b082126022c1",
         "486ddf9b-5367-4ff5-b30f-12129857743c",
         "70fd75b2-b846-4621-85d9-ec1085db4cd4",
-        "9397ad4e-e010-4da1-acd0-33b0208edcf6",
         "a2c1c3f1-0596-4750-8009-daf2e1a6ed73",
         "d4e94d0f-a8d8-477c-99e0-d3eca1c7f556",
         "a471cabd-a47b-40a7-a095-6e8a89864283",
         "bcf6b26f-bff1-4c55-a7df-b911cac6c881",
+        "ed6c0d13-b802-48dc-bce9-9d89ab31ad87",
         "0f9deb61-1f3a-4826-ac60-6023f92681ff",
         "404188ef-7a41-4cf0-b3ea-26666b5e9edb",
         "b9ad362d-e5c2-4671-ba6a-2f202e7174a4",

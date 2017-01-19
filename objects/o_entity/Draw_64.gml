@@ -1,9 +1,11 @@
-/// @description Player HUD
-
-var aspect = o_controller.aspect;
+/// @description Heads up Display
+var game = o_controller.game, aspect = o_controller.aspect;
+if (game.entity != id)
+	return;
 
 // portrait
-draw_sprite_ext(s_aster_portrait, -1, 0, gh - sprite_get_height(s_portrait) * aspect, aspect, aspect, 0, c_white, 1);
+if (portrait != noone)
+	draw_sprite_ext(portrait, -1, 0, gh - sprite_get_height(s_portrait) * aspect, aspect, aspect, 0, c_white, 1);
 draw_sprite_ext(s_portrait, -1, 0, gh - sprite_get_height(s_portrait) * aspect, aspect, aspect, 0, c_dkgray, 0.95); 
 // health
 var xx = sprite_get_width(s_portrait) * aspect + 2,
@@ -17,8 +19,8 @@ draw_healthbar(xx + 1, yy + 1, xx + sprite_get_width(s_bar) * aspect - 1, yy + s
 draw_sprite_ext(s_bar, -1, xx, yy, aspect, aspect, 0, c_dkgray, 0.95);
 draw_text_color(xx, yy, chi, c_white, c_white, c_white, c_white, 0.75);
 // exit icon
-if (can_exit)
-	draw_sprite_ext(s_exit, 0, xx + sprite_get_width(s_bar) * aspect, yy, aspect, aspect, 0, c_white, 0.95);
+/*if (can_exit)
+	draw_sprite_ext(s_exit, 0, xx + sprite_get_width(s_bar) * aspect, yy, aspect, aspect, 0, c_white, 0.95);*/
 
 // hotbar
 for (var i = 0; i < ds_list_size(hotbar); i++)
@@ -29,12 +31,11 @@ for (var i = 0; i < ds_list_size(hotbar); i++)
 		ix = cx + i * (width + 2),
 		iy = gh - height - 2;
 	draw_sprite_ext(s_highlight, -1, ix, iy, aspect, aspect, 0, c_white, 1);
-	var hover = point_in_rectangle(gmx, gmy, ix, iy, ix + width, iy + height);
-	inv_show = hover;
+	hotbar_hover = point_in_rectangle(gmx, gmy, ix, iy, ix + width, iy + height);
 	for (var j = 0; j < array_length_1d(values); j++)
 	{
 		var jy = iy - height * j - 2, sprite = values[j];
-		if (sprite_exists(sprite) && (/*inv_show &&*/ hover || j == 0))
+		if (sprite_exists(sprite) && (/*inv_show &&*/ hotbar_hover || j == 0))
 			draw_sprite_ext(sprite, 0, ix + sprite_get_xoffset(sprite) * aspect, jy, aspect, aspect, 0, c_white, 1);
 		if (global.debug)
 		{
@@ -43,8 +44,3 @@ for (var i = 0; i < ds_list_size(hotbar); i++)
 		}
 	}
 }
-
-
-
-
-

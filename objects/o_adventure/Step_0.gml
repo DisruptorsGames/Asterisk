@@ -1,9 +1,28 @@
-/// @description Think
-var turn = ds_priority_find_min(turns);
-if (is_undefined(turn))
+/// @description Turns
+if (ds_priority_size(turns) == 0)
 {
+	for (var i = 0; i < instance_count; i++)
+	{
+		var inst = instance_id[i];
+		if (object_get_parent(inst.object_index) == o_entity 
+			&& inst.initiative > 0 && inst.steps > 0)
+				ds_priority_add(turns, inst, inst.initiative);
+	}
 }
-else
+
+entity = ds_priority_find_max(turns);
+if (entity > 0)
 {
-	// take turn
+	if (o_controller.target != entity)
+	{
+		o_controller.target = entity;
+		o_highlight.target = entity;
+		playfield_update(entity);
+		entity.fog_update = true;
+	}
+	if (entity.steps == 0)
+	{
+		entity.steps = entity.moves;
+		ds_priority_delete_value(turns, entity);
+	}
 }

@@ -15,6 +15,17 @@
 #macro vt camera_get_view_target(view_camera[0])
 
 // enumerations
+enum action_type
+{
+	meditation,
+	move,
+	ambush,
+	attack,
+	defend,
+	inspect,
+	peek,
+	leave
+}
 enum anim_type
 {
 	idle,
@@ -74,6 +85,5 @@ switch(room)
 		break;
 }
 
-camera_set_view_target(view_camera[0], target);
 camera_set_view_size(view_camera[0], cam_w, cam_h);
 display_set_gui_maximise(aspect, aspect);

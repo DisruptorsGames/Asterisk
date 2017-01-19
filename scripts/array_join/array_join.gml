@@ -1,15 +1,16 @@
 /// @function array_join
+/// @param delimiter
 /// @param array
-var array = argument0;
+var delimiter = argument0, array = argument1;
 
 // only work with lists
-if (!is_array(array))
+if (!ds_exists(array, ds_type_list))
 	return;
 
 // combine all values into a string
 var text = "";
-for (var i = 0; i < array_length_1d(array); i++)
+for (var i = 0; i < ds_list_size(array); i++)
 {
-	text += (i > 0 ? ";" : "") + string(array[i]);
+	text += (i > 0 ? delimiter : "") + string(array[| i]);
 }
 return "[" + text + "]";

@@ -7,7 +7,7 @@ if (path_position > 0)
 	for (var i = 0; i < path_get_number(path); i++)
 	{
 		var ix = path_get_point_x(path, i), iy = path_get_point_y(path, i),
-			col = i < steps ? c_green : c_red;
+			col = i <= steps ? c_green : c_red;
 		draw_circle_color(ix, iy, 2, c_black, c_black, false);
 		draw_circle_color(ix, iy, 1, col, col, false);
 		if (global.debug)
@@ -28,37 +28,65 @@ if (animation == anim_type.run)
 }
 
 // entity
-var hovering = point_in_rectangle(mouse_x, mouse_y, bbox_left, bbox_top, bbox_right, bbox_bottom), a = hovering ? 0.65 : 0.25;
-draw_sprite_ext(sprite_index, image_index, x + 1, y + 1, image_xscale, image_yscale, image_angle, c_white, a);
-draw_sprite_ext(sprite_index, image_index, x - 1, y - 1, image_xscale, image_yscale, image_angle, shell, a);
+var alpha = point_in_rectangle(mouse_x, mouse_y, bbox_left, bbox_top, bbox_right, bbox_bottom) ? 0.65 : 0.25;
+draw_sprite_ext(sprite_index, image_index, x - 1, y - 1, image_xscale, image_yscale, image_angle, shell, alpha);
 draw_sprite_ext(sprite_index, image_index, x, y, image_xscale, image_yscale, image_angle, image_blend, image_alpha);
+
+// show turn indicator
+if (game.entity == id)
+	draw_sprite_ext(s_hover, -1, x + image_xscale * sprite_width / 2, y - game.height, 0.75, 0.75, 0, shell, 0.5);
 
 // steps
 if (steps > 0)
-	draw_text_color_ext(x, y + yoffset, steps, c_white, 0.75, f_hud, fa_left);
+	draw_text_color_ext(x, y + yoffset, steps, c_white, 0.75, f_hud, fa_left);	
 
 // health & chi
-if (hp > 0 && hp < 100)
+if (hp > 0 && hp < hp_max)
 {
 	draw_border(x, y - 5, x + image_xscale * sprite_width, y - 4, c_black, 1);
 	draw_healthbar(x, y - 5, x + image_xscale * sprite_width, y - 4, (hp / hp_max) * 100, c_black, make_color_dpk(hp_col, 0.75, 0.75), hp_col, 0, true, true);
 }
-if (idle > 0 && path_position == 0)
-	draw_healthbar(x, y - 0.25, x + image_xscale * sprite_width, y, (idle / idle_t) * 100, c_black, c_white, chi_col, 0, false, false);
+/*if (idle > 0 && path_position == 0)
+	draw_healthbar(x, y - 0.25, x + image_xscale * sprite_width, y, (idle / idle_t) * 100, c_black, c_white, chi_col, 0, false, false);*/
 
-// nearme
-for (var i = 0; i < ds_list_size(nearme); i++)
+// context menu
+for (var i = 0; i < array_length_1d(amenu); i++)
 {
-	var inst = nearme[| i], actions = inst.actions,
-		col = inst.shell, comp = make_color_comp(col),
-		size = 4;
-	
-	for (var j = 0; j < array_length_1d(actions); j++)
+	var item = amenu[i], size = 4, sprite = s_apple, 
+		ix = amenu_x + i * (size + 3), 
+		iy = amenu_y - size - 2;
+	switch (item)
 	{
-		var jx = inst.x + j * (size + 2), jy = inst.y - 2;
-		draw_rectangle_color(jx, jy, jx + size, jy + size, c_black, c_black, c_black, c_black, false);
-		draw_sprite_ext(s_highlight, -1, jx, jy, 0.25, 0.25, 0, c_white, 0.95);
+		case action_type.ambush:
+			sprite = s_ambush;
+			break;
+		case action_type.attack:
+			sprite = s_attack;
+			break;
+		case action_type.defend:
+			sprite = s_defend;
+			break;
+		case action_type.inspect:
+			sprite = s_inspect;
+			break;
+		case action_type.peek:
+			sprite = s_peek;
+			break;
+		case action_type.leave:
+			sprite = s_exit;
+			break;
 	}
+	var hover = point_in_rectangle(mouse_x, mouse_y, ix - 0.5, iy - 0.5, ix + size + 0.5, iy + size + 0.5);
+	if (hover)
+		amenu_item = item;
+	var index = hover ? 1 : 0,
+		alpha = hover ? 0.75 : 0.5, 
+		col = hover ? c_yellow : c_ltgray;
+	draw_set_alpha(alpha);
+		draw_border(ix, iy, ix + size, iy + size, col, 0.5);
+		draw_rectangle_color(ix, iy, ix + size, iy + size, c_black, c_black, c_black, c_black, false);
+	draw_set_alpha(1);
+	draw_sprite_ext(sprite, index, ix + 0.5, iy + 0.5, 0.25, 0.25, 0, c_white, 1);
 }
 
 // bounding box
@@ -66,25 +94,11 @@ if (global.debug)
 {
 	draw_rectangle_color(bbox_left, bbox_top, bbox_right, bbox_bottom, c_red, c_red, c_red, c_red, true);
 	draw_circle_color(x, y, 1, c_maroon, c_maroon, false);
-	//draw_text_color_ext(bbox_right, y, depth, c_white, 0.75, f_hud, fa_right);
-	// overlay nearme grid
-	if (object_index == o_player)
-	{
-		for (var i = 0; i < 3; i++)
-		{
-			for (var j = 0; j < 3; j++)
-			{
-				var col = make_color_comp(shell), 
-					ix = x - game.width + i * game.width, 
-					iy = y - (yoffset > 16 ? 0 : game.height) + j * game.height;
-				draw_rectangle_color(ix, iy, ix + game.width, iy + game.height, col, col, col, col, true);
-			}
-		}
-	}
+	draw_text_color_ext(bbox_right, y, depth, c_orange, 0.5, f_hud, fa_right);
 }
 
 // draw fog
-if (fog_update && steps > 0)
+if (fog_update)
 {
 	surface_set_target(game.fog_surf);
 	draw_clear_alpha(c_black, 0);
@@ -93,7 +107,7 @@ if (fog_update && steps > 0)
 		for (var j = 0; j < vh; j++)
 		{
 			var ix = i * game.width, iy = j * game.height, 
-				c = point_distance(x, y, ix, iy) > round(steps * 1.25) * game.width;
+				c = point_distance(x, y, ix, iy) > round(moves * 1.25) * game.width;
 			draw_set_alpha(c ? 0.95 : 0);
 			draw_rectangle_color(ix, iy, ix + game.width, iy + game.height, c_black, c_black, c_black, c_black, false);
 			draw_set_alpha(1);
