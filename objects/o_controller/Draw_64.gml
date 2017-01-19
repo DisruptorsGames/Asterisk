@@ -10,7 +10,8 @@ if (global.debug)
 		+ "\nRoom: " + string(room_width) + "x" + string(room_height)
 		+ "\nMouse: " + string(o_highlight.x) + "x" + string(o_highlight.y)
 		+ "\nEntity:" + string(game.entity > 0 ? (string(game.entity.x) + "x" + string(game.entity.y)) : "???")
-		+ "\nHover: " + string(game.entity > 0 ? string(game.entity.amenu_item) : "???");
+		+ "\nAMenu: " + string(game.entity > 0 ? string(game.entity.amenu_item) : "???")
+		+ "\nInv: " + string(game.entity > 0 ? string(game.entity.inventory_item) : "???");
 
 draw_text_color_ext(gw, 0, text, c_white, 0.95, f_hud, fa_right);
 draw_text_color_ext((gw - string_width(string(fps_real))) / 2, 0, string(fps_real), c_red, 1, f_hud, fa_left);

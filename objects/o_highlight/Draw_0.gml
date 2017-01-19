@@ -1,6 +1,6 @@
 /// @description Debug Stuffz
-var game = o_controller.game;
-if (instance_exists(target) && target.path_position == 0 && array_length_1d(target.amenu) == 0 && !target.hotbar_hover)
+var game = o_controller.game, ovr = target.inventory_item == -1;
+if (instance_exists(target) && target.path_position == 0 && array_length_1d(target.amenu) == 0 && ovr)
 {
 	var p = path_add();
 	image_blend = (tile_get_type(tile_type.solids, [tile_get_value(x, y)]) 

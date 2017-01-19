@@ -30,11 +30,8 @@ if (animation == anim_type.run)
 // entity
 var alpha = point_in_rectangle(mouse_x, mouse_y, bbox_left, bbox_top, bbox_right, bbox_bottom) ? 0.65 : 0.25;
 draw_sprite_ext(sprite_index, image_index, x - 1, y - 1, image_xscale, image_yscale, image_angle, shell, alpha);
+draw_sprite_ext(sprite_index, image_index, x + 1, y + 1, image_xscale, image_yscale, image_angle, shell, alpha);
 draw_sprite_ext(sprite_index, image_index, x, y, image_xscale, image_yscale, image_angle, image_blend, image_alpha);
-
-// show turn indicator
-if (game.entity == id)
-	draw_sprite_ext(s_hover, -1, x + image_xscale * sprite_width / 2, y - game.height, 0.75, 0.75, 0, shell, 0.5);
 
 // steps
 if (steps > 0)
@@ -52,49 +49,55 @@ if (hp > 0 && hp < hp_max)
 // context menu
 for (var i = 0; i < array_length_1d(amenu); i++)
 {
-	var item = amenu[i], size = 4, sprite = s_apple, 
-		ix = amenu_x + i * (size + 3), 
-		iy = amenu_y - size - 2;
-	switch (item)
-	{
-		case action_type.ambush:
-			sprite = s_ambush;
-			break;
-		case action_type.attack:
-			sprite = s_attack;
-			break;
-		case action_type.defend:
-			sprite = s_defend;
-			break;
-		case action_type.inspect:
-			sprite = s_inspect;
-			break;
-		case action_type.peek:
-			sprite = s_peek;
-			break;
-		case action_type.leave:
-			sprite = s_exit;
-			break;
-	}
-	var hover = point_in_rectangle(mouse_x, mouse_y, ix - 0.5, iy - 0.5, ix + size + 0.5, iy + size + 0.5);
-	if (hover)
-		amenu_item = item;
-	var index = hover ? 1 : 0,
+	var item = amenu[i], size = 4, 
+		sprite = action_sprite(item),
+		ix = amenu_x + i * (size + 3),
+		iy = amenu_y - size - 2,
+		hover = point_in_rectangle(mouse_x, mouse_y, ix - 0.5, iy - 0.5, ix + size + 0.5, iy + size + 0.5),
+		index = hover ? 1 : 0,
 		alpha = hover ? 0.75 : 0.5, 
 		col = hover ? c_yellow : c_ltgray;
+	if (hover)
+	{
+		amenu_item = item;
+		if (item == action_type.loot)
+		{
+			for (var j = 0; j < ds_list_size(amenu_target.inventory); j++)
+			{
+				var junk = amenu_target.inventory[| j],
+					jx = ix + j * (size + 2), 
+					jy = iy - size - 2;
+				draw_set_alpha(alpha);
+					draw_border(jx, jy, jx + size, jy + size, make_color_comp(col), 0.5);
+					draw_rectangle_color(jx, jy, jx + size, jy + size, c_black, c_black, c_black, c_black, false);
+				draw_set_alpha(1);
+				draw_sprite_ext(junk, 0, jx, jy, 0.25, 0.25, 0, c_white, 1);
+			}
+		}
+	}
 	draw_set_alpha(alpha);
 		draw_border(ix, iy, ix + size, iy + size, col, 0.5);
 		draw_rectangle_color(ix, iy, ix + size, iy + size, c_black, c_black, c_black, c_black, false);
 	draw_set_alpha(1);
 	draw_sprite_ext(sprite, index, ix + 0.5, iy + 0.5, 0.25, 0.25, 0, c_white, 1);
 }
+if (!point_in_rectangle(mouse_x, mouse_y, amenu_x - 0.5, amenu_y - 6.5, amenu_x + array_length_1d(amenu) * 6, amenu_y - 2))
+	amenu_item = -1;
 
-// bounding box
+// show turn indicator
+if (game.entity == id)
+	draw_sprite_ext(s_hover, -1, x + image_xscale * sprite_width / 2, y - game.height - 6, 0.75, 0.75, 0, shell, 0.5);
+
+// bounding box data
 if (global.debug)
 {
 	draw_rectangle_color(bbox_left, bbox_top, bbox_right, bbox_bottom, c_red, c_red, c_red, c_red, true);
 	draw_circle_color(x, y, 1, c_maroon, c_maroon, false);
 	draw_text_color_ext(bbox_right, y, depth, c_orange, 0.5, f_hud, fa_right);
+	// amenu
+	draw_set_alpha(0.20);
+		draw_rectangle_color(amenu_x - 0.5, amenu_y - 6.5, amenu_x + array_length_1d(amenu) * 6, amenu_y - 2, c_orange, c_orange, c_orange, c_orange, false);
+	draw_set_alpha(1);
 }
 
 // draw fog

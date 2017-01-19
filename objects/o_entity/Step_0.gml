@@ -5,6 +5,7 @@ var game = o_controller.game,
 		tile_get_value(x, y)]),
 	ld = layer_get_depth(behind ? "Decals" : "Instances");
 depth = game.entity == id ? (layer_get_depth("Instances") - 1) : ld;
+dead = hp <= 0;
 move_snap(game.width, game.height);
 
 if (shake)
@@ -25,17 +26,26 @@ if (!ds_stack_empty(actions))
 		them = t == noone ? "???" : object_get_name(t.object_index);
 	switch (action)
 	{
+		case action_type.die:
+			t.shell = c_red;
+			t.image_alpha = 0.75;
+			t.image_blend = c_maroon;
+			t.image_yscale = -1;
+			sprite_set_offset(t.sprite_index, t.sprite_xoffset, -t.sprite_height);
+			t.shake = true;
+			msg = us + " killed " + them;
+			break;
 		case action_type.meditation:
 			var bonus = irandom(10);
 			msg = us + " gained " + string(bonus) + " chi!";
-			if (chi < chi_max)
-				chi += bonus;
+			if (t.chi < t.chi_max)
+				t.chi += bonus;
 			var frames = animation_set(anim_type.meditation),
 				r = irandom(array_length_1d(frames) - 1);
-			image_speed = 0;
-			image_index = frames[r];
-			image_xscale = choose(-1, 1);
-			sprite_set_offset(sprite_index, image_xscale == -1 ? -sprite_width : 0, 0);
+			t.image_speed = 0;
+			t.image_index = frames[r];
+			t.image_xscale = choose(-1, 1);
+			sprite_set_offset(t.sprite_index, t.image_xscale == -1 ? -t.sprite_width : 0, 0);
 			break;
 		case action_type.move:
 			// find quickest path to target
@@ -60,18 +70,27 @@ if (!ds_stack_empty(actions))
 			// ToDo
 			break;
 		case action_type.attack:
-			var dmg = args[1];
+			var dmg = args[1], crit = dmg / t.hp > 0.5;
 			t.hp -= dmg;
-			t.shake = true;
-			repeat(5)
+			t.shake = true
+			if (t.hp <= 0)
+			{
+				var fx = instance_create_depth(
+					t.x + t.image_xscale * t.sprite_width, 
+					t.y + sprite_height / 2, 
+					t.depth - 1, o_spell);
+				fx.sprite_index = s_fire;
+				ds_stack_push(actions, [action_type.die, [t]]);
+			}
+			var gush = t.hp <= 0 || crit ? irandom(35) : (dmg > 0 ? irandom(5) : 0);
+			repeat(gush)
 			{
 				var blood = instance_create_depth(
 					t.x + t.image_xscale * t.sprite_width / 2, 
 					t.y + sprite_height / 2, 
 					t.depth - 1, o_blood);
 			}
-			msg = us + " " + (dmg > 0 ? ("did " + string(dmg) + " damage to ") : "missed ") + them;
-			steps -= 1;
+			msg = us + " " + (dmg > 0 ? ("did " + string(dmg) + (crit ? " critical " : "") + " damage to ") : "missed ") + them;
 			// ToDo
 			break;
 		case action_type.defend:
@@ -79,8 +98,18 @@ if (!ds_stack_empty(actions))
 			// ToDo
 			break;
 		case action_type.inspect:
-			var obj = t == noone ? tile_get_value(0, 0) : them;
+			var obj = t == noone ? tile_get_value(amenu_x, amenu_y) : them;
 			msg = us + " looked at " + obj;
+			// ToDo
+			break;
+		case action_type.loot:
+			var inv = t.inventory;
+			for (var i = 0; i < ds_list_size(inv); i++)
+			{
+				ds_list_add(inventory, inv[| i]);
+			}
+			ds_list_clear(t.inventory);
+			msg = us + " looted " + them;
 			// ToDo
 			break;
 		case action_type.peek:
@@ -108,18 +137,28 @@ if (game.entity == id && steps > 0)
 		// click menu
 		if (amenu_item > 0)
 		{
-			var args = [amenu_target];
+			var args = [amenu_target], ticks = 1;
 			switch (amenu_item)
 			{
 				case action_type.attack:
 					args = [amenu_target, irandom(5)];
 					break;
+				case action_type.meditation:
+					ticks = irandom(3);
+					break;
 			}
-			ds_stack_push(actions, [amenu_item, args]);
+			repeat(ticks)
+			{
+				ds_stack_push(actions, [amenu_item, args]);
+			}
+			steps -= 1;
 			// reset
 			amenu = [];
 			amenu_item = -1;
 			amenu_target = noone;
+		}
+		else if (inventory_item > 0)
+		{
 		}
 		// clicking on solid tiles
 		else if (tile_get_type(tile_type.solids, [tile_get_value(tx, ty)]))
@@ -130,7 +169,14 @@ if (game.entity == id && steps > 0)
 		// clicking on solid objects
 		else if (((x + xoffset == tx && y + yoffset == ty) || obj != noone))
 		{
-			amenu = array_length_1d(amenu) > 0 ? [] : [action_type.attack, action_type.defend, action_type.inspect];
+			if (array_length_1d(amenu) > 0)
+				amenu = [];
+			else if (obj.dead)
+				amenu = [action_type.loot, action_type.inspect];
+			else
+				amenu = obj == id 
+					? [/*action_type.attack, */action_type.ambush, action_type.defend, action_type.meditation]
+					: [action_type.attack, action_type.defend, action_type.inspect];
 			amenu_target = obj;
 		}
 		// movement

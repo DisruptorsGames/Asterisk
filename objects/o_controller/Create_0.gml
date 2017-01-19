@@ -17,12 +17,14 @@
 // enumerations
 enum action_type
 {
+	die,
 	meditation,
 	move,
 	ambush,
 	attack,
 	defend,
 	inspect,
+	loot,
 	peek,
 	leave
 }

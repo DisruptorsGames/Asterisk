@@ -1,4 +1,4 @@
-/// @description Controls
+/// @description Controls (REMOVE ME)
 event_inherited();
 
 // at edge, current map and surrounding map positions
@@ -23,23 +23,5 @@ can_exit = (x + xoffset - game.width < 0 && room_l != -1)
 	{
 		in_danger = true;
 		break;
-	}
-}*/
-
-/*else if (path_position == 0)
-{
-	if (idle > 0)
-		idle--;
-	else if (idle == 0)
-	{
-		if (chi < chi_max)
-			chi += irandom(10);
-		var frames = animation_set(anim_type.meditation),
-			r = irandom(array_length_1d(frames) - 1);
-		image_speed = 0;
-		image_index = frames[r];
-		image_xscale = choose(-1, 1);
-		sprite_set_offset(sprite_index, image_xscale == -1 ? -sprite_width : 0, 0);
-		idle = irandom(idle_t / 2) + idle_t / 2;
 	}
 }*/
