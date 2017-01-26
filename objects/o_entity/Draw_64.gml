@@ -6,7 +6,8 @@ if (game.entity != id)
 // portrait
 if (portrait != noone)
 	draw_sprite_ext(portrait, -1, 0, gh - sprite_get_height(s_portrait) * aspect, aspect, aspect, 0, c_white, 1);
-draw_sprite_ext(s_portrait, -1, 0, gh - sprite_get_height(s_portrait) * aspect, aspect, aspect, 0, c_dkgray, 0.95); 
+draw_sprite_ext(s_portrait, -1, 0, gh - sprite_get_height(s_portrait) * aspect, aspect, aspect, 0, c_dkgray, 0.95);
+draw_text_color_ext(0, gh - sprite_get_height(s_portrait) * aspect - string_height(name), name, shell, 0.75, f_hud, fa_left);
 // health
 var xx = sprite_get_width(s_portrait) * aspect + 2,
 	yy = gh - sprite_get_height(s_bar) * aspect;

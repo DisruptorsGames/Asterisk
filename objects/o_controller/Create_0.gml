@@ -15,6 +15,13 @@
 #macro vt camera_get_view_target(view_camera[0])
 
 // enumerations
+enum effect_type
+{
+	med,
+	heal,
+	damage,
+	drain
+}
 enum action_type
 {
 	die,

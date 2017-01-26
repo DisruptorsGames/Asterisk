@@ -8,6 +8,7 @@ hp_max = 100;
 chi = 0;
 chi_max = 100;
 initiative = 3;
+damage = 10;
 npc = false;
 shell = c_ltgray;
 moves = 3;

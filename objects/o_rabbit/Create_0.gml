@@ -5,6 +5,7 @@ name = choose("Rabbit", "Hopper", "Speedy");
 hp = 10;
 hp_max = 10;
 initiative = 6;
+damage = 1;
 shell = $eeeeff;
 moves = 3;
 steps = moves;

@@ -8,7 +8,7 @@ for(var i = 0; i < instance_count; i += 1)
 {
 	var inst = instance_id[i];
 	if(inst.solid && inst != ignore)
-	    mp_grid_add_instances(game.playfield, inst, false);
+		mp_grid_add_instances(game.playfield, inst, false);
 }
 // map all solid tiles
 for (var i = 0; i < room_width / game.width; i++)

@@ -1,12 +1,14 @@
 /// @description Init
 event_inherited();
 
-name = choose("Ratib", "Ratatack", "Ration", "Ratatat");
-hp = 60;
-hp_max = 60;
-initiative = 10;
-shell = c_red;
-moves = 3;
+name = choose("Ratib", "Ratatack", "Ration", "Ratatat", "King Ratserlot");
+boss = string_count("King", name);
+hp_max = boss ? 120 : 60;
+hp = hp_max;
+initiative = boss ? 10 : 5;
+damage = boss ? 12 : 3;
+shell = boss ? c_purple : c_red;
+moves = boss ? 5 : 3;
 steps = moves;
 xoffset = 12;
 yoffset = 15;

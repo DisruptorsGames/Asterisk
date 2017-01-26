@@ -4,9 +4,9 @@ var game = o_controller.game,
 		tile_get_value(x + xoffset, y + yoffset), 
 		tile_get_value(x, y)]),
 	ld = layer_get_depth(behind ? "Decals" : "Instances");
+move_snap(game.width, game.height);
 depth = game.entity == id ? (layer_get_depth("Instances") - 1) : ld;
 dead = hp <= 0;
-move_snap(game.width, game.height);
 
 if (shake)
 {
@@ -14,6 +14,42 @@ if (shake)
 	x += choose(-r, r);
 	y += choose(r, -r);
 	shake = false;
+}
+
+// trigger effects
+if (effect_update)
+{
+	var effect = ds_map_find_first(effects);
+	for(var i = 0; i < ds_map_size(effects); i++)
+	{
+		// countdown on part value
+		var args = effects[? effect], 
+			ticks = args[0]; // [TICKS,AMT]
+		if (ticks > 0)
+		{
+			switch (effect)
+			{
+				case effect_type.med:
+					var amount = args[1];
+					if (chi < chi_max)
+						chi += amount;
+					var frames = animation_set(anim_type.meditation),
+						r = irandom(array_length_1d(frames) - 1);
+					image_speed = 0;
+					image_index = frames[r];
+					image_xscale = choose(-1, 1);
+					sprite_set_offset(sprite_index, image_xscale < 0 ? -sprite_width : 0, 0);
+					break;
+				case effect_type.damage:
+					var amount = args[1];
+					do_damage(id, amount, amount / hp > 0.5);
+					break;
+			}
+			args[@ 0] -= 1; // is this pass by ref???
+		}
+		effect = ds_map_find_next(effects, effect);
+	}
+	effect_update = false;
 }
 
 // execute action stack
@@ -27,25 +63,19 @@ if (!ds_stack_empty(actions))
 	switch (action)
 	{
 		case action_type.die:
-			t.shell = c_red;
-			t.image_alpha = 0.75;
-			t.image_blend = c_maroon;
-			t.image_yscale = -1;
-			sprite_set_offset(t.sprite_index, t.sprite_xoffset, -t.sprite_height);
-			t.shake = true;
+			shake = true;
+			shell = c_red;
+			solid = false;
+			image_alpha = 0.75;
+			image_blend = c_maroon;
+			image_yscale = -1;
+			sprite_set_offset(sprite_index, sprite_xoffset, -sprite_height);
 			msg = us + " killed " + them;
 			break;
 		case action_type.meditation:
-			var bonus = irandom(10);
-			msg = us + " gained " + string(bonus) + " chi!";
-			if (t.chi < t.chi_max)
-				t.chi += bonus;
-			var frames = animation_set(anim_type.meditation),
-				r = irandom(array_length_1d(frames) - 1);
-			t.image_speed = 0;
-			t.image_index = frames[r];
-			t.image_xscale = choose(-1, 1);
-			sprite_set_offset(t.sprite_index, t.image_xscale == -1 ? -t.sprite_width : 0, 0);
+			var ticks = irandom(3), amount = irandom(10);
+			effects[? effect_type.med] = [ticks, amount]; // if zero = fizzle
+			msg = us + " rolled a " + string(ticks) + " on meditation for " + string(amount) + " amount";
 			break;
 		case action_type.move:
 			// find quickest path to target
@@ -71,27 +101,8 @@ if (!ds_stack_empty(actions))
 			break;
 		case action_type.attack:
 			var dmg = args[1], crit = dmg / t.hp > 0.5;
-			t.hp -= dmg;
-			t.shake = true
-			if (t.hp <= 0)
-			{
-				var fx = instance_create_depth(
-					t.x + t.image_xscale * t.sprite_width, 
-					t.y + sprite_height / 2, 
-					t.depth - 1, o_spell);
-				fx.sprite_index = s_fire;
-				ds_stack_push(actions, [action_type.die, [t]]);
-			}
-			var gush = t.hp <= 0 || crit ? irandom(35) : (dmg > 0 ? irandom(5) : 0);
-			repeat(gush)
-			{
-				var blood = instance_create_depth(
-					t.x + t.image_xscale * t.sprite_width / 2, 
-					t.y + sprite_height / 2, 
-					t.depth - 1, o_blood);
-			}
+			do_damage(t, dmg, crit);
 			msg = us + " " + (dmg > 0 ? ("did " + string(dmg) + (crit ? " critical " : "") + " damage to ") : "missed ") + them;
-			// ToDo
 			break;
 		case action_type.defend:
 			msg = us + " defended " + them;
@@ -110,7 +121,6 @@ if (!ds_stack_empty(actions))
 			}
 			ds_list_clear(t.inventory);
 			msg = us + " looted " + them;
-			// ToDo
 			break;
 		case action_type.peek:
 			msg = us + " peeked around " + them;
@@ -137,21 +147,21 @@ if (game.entity == id && steps > 0)
 		// click menu
 		if (amenu_item > 0)
 		{
-			var args = [amenu_target], ticks = 1;
+			var args = [amenu_target], cost = 1;
 			switch (amenu_item)
 			{
 				case action_type.attack:
-					args = [amenu_target, irandom(5)];
+					args = [amenu_target, irandom(damage)];
 					break;
 				case action_type.meditation:
-					ticks = irandom(3);
+					cost = 2;
 					break;
 			}
-			repeat(ticks)
+			if (steps >= cost)
 			{
 				ds_stack_push(actions, [amenu_item, args]);
+				steps -= cost;
 			}
-			steps -= 1;
 			// reset
 			amenu = [];
 			amenu_item = -1;
@@ -159,6 +169,7 @@ if (game.entity == id && steps > 0)
 		}
 		else if (inventory_item > 0)
 		{
+			// ToDo: click on inventory item!
 		}
 		// clicking on solid tiles
 		else if (tile_get_type(tile_type.solids, [tile_get_value(tx, ty)]))
@@ -167,7 +178,7 @@ if (game.entity == id && steps > 0)
 			amenu_target = tile_get_value(tx, ty);
 		}
 		// clicking on solid objects
-		else if (((x + xoffset == tx && y + yoffset == ty) || obj != noone))
+		else if (obj != noone)
 		{
 			if (array_length_1d(amenu) > 0)
 				amenu = [];

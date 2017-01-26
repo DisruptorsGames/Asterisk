@@ -29,13 +29,18 @@ if (animation == anim_type.run)
 
 // entity
 var alpha = point_in_rectangle(mouse_x, mouse_y, bbox_left, bbox_top, bbox_right, bbox_bottom) ? 0.65 : 0.25;
-draw_sprite_ext(sprite_index, image_index, x - 1, y - 1, image_xscale, image_yscale, image_angle, shell, alpha);
-draw_sprite_ext(sprite_index, image_index, x + 1, y + 1, image_xscale, image_yscale, image_angle, shell, alpha);
+draw_sprite_ext(sprite_index, image_index, x - 1, y - 1, image_xscale, image_yscale, image_angle, shell, 0.25);
+draw_sprite_ext(sprite_index, image_index, x + 1, y + 1, image_xscale, image_yscale, image_angle, shell, 0.25);
 draw_sprite_ext(sprite_index, image_index, x, y, image_xscale, image_yscale, image_angle, image_blend, image_alpha);
 
 // steps
 if (steps > 0)
-	draw_text_color_ext(x, y + yoffset, steps, c_white, 0.75, f_hud, fa_left);	
+	draw_text_color_ext(x, y + yoffset, steps, c_white, 0.75, f_hud, fa_left);
+if (!is_undefined(effects[? effect_type.med]))
+{
+	var e = effects[? effect_type.med];
+	draw_text_color_ext(x + xoffset, y, e[0], c_red, 0.75, f_hud, fa_left);
+}
 
 // health & chi
 if (hp > 0 && hp < hp_max)
@@ -60,6 +65,7 @@ for (var i = 0; i < array_length_1d(amenu); i++)
 	if (hover)
 	{
 		amenu_item = item;
+		// draw loot
 		if (item == action_type.loot)
 		{
 			for (var j = 0; j < ds_list_size(amenu_target.inventory); j++)
@@ -74,7 +80,18 @@ for (var i = 0; i < array_length_1d(amenu); i++)
 				draw_sprite_ext(junk, 0, jx, jy, 0.25, 0.25, 0, c_white, 1);
 			}
 		}
+		// draw tool tip
+		var s_name = string_replace(sprite_get_name(sprite), "s_", ""), 
+			loff = item == action_type.loot ? (size + 0.5) : 0,
+			tx = amenu_x + string_width(s_name) * 0.25, 
+			ty = iy - string_height(s_name) * 0.25 - size - loff;
+		draw_set_alpha(alpha - 0.25);
+			draw_border(amenu_x, ty, tx, iy - size - loff, c_ltgray, 0.75);
+			draw_rectangle_color(amenu_x, ty, tx, iy - size - loff, c_black, c_black, c_black, c_black, false);
+		draw_set_alpha(1);
+		draw_text_transformed_color(amenu_x, ty, s_name, 0.25, 0.25, 0, c_red, c_red, c_red, c_red, 1);
 	}
+	// draw the action item
 	draw_set_alpha(alpha);
 		draw_border(ix, iy, ix + size, iy + size, col, 0.5);
 		draw_rectangle_color(ix, iy, ix + size, iy + size, c_black, c_black, c_black, c_black, false);
@@ -85,8 +102,8 @@ if (!point_in_rectangle(mouse_x, mouse_y, amenu_x - 0.5, amenu_y - 6.5, amenu_x 
 	amenu_item = -1;
 
 // show turn indicator
-if (game.entity == id)
-	draw_sprite_ext(s_hover, -1, x + image_xscale * sprite_width / 2, y - game.height - 6, 0.75, 0.75, 0, shell, 0.5);
+/*if (game.entity == id)
+	draw_sprite_ext(s_hover, -1, x + image_xscale * sprite_width / 2, y - game.height - 2, 0.75, 0.75, 0, shell, 0.75);*/
 
 // bounding box data
 if (global.debug)
