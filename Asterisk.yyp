@@ -1671,6 +1671,25 @@
                 "resourcePath": "scripts\\do_damage\\do_damage.yy",
                 "resourceType": "GMScript"
             }
+        },
+        {
+            "Key": "b150c5b3-ad37-4bf7-aa01-b201a2379af6",
+            "Value": {
+                "id": "195df31c-cbe2-4f95-87f4-44e2be26bacf",
+                "modelName": "GMResourceInfo",
+                "mvc": "1.0",
+                "configDeltaFiles": [
+                    
+                ],
+                "configDeltas": [
+                    
+                ],
+                "resourceCreationConfigs": [
+                    "default"
+                ],
+                "resourcePath": "scripts\\draw_tooltip\\draw_tooltip.yy",
+                "resourceType": "GMScript"
+            }
         }
     ],
     "room_order": [
@@ -1686,7 +1705,9 @@
         "bf79dfd8-e491-4e8f-b924-b082126022c1",
         "486ddf9b-5367-4ff5-b30f-12129857743c",
         "d806d6db-00f1-4c03-83da-a3f0bd05a36e",
+        "b150c5b3-ad37-4bf7-aa01-b201a2379af6",
         "70fd75b2-b846-4621-85d9-ec1085db4cd4",
+        "25981e4a-66ef-4494-a854-e5e047268fdd",
         "a2c1c3f1-0596-4750-8009-daf2e1a6ed73",
         "d4e94d0f-a8d8-477c-99e0-d3eca1c7f556",
         "a471cabd-a47b-40a7-a095-6e8a89864283",
@@ -1696,8 +1717,7 @@
         "0f9deb61-1f3a-4826-ac60-6023f92681ff",
         "404188ef-7a41-4cf0-b3ea-26666b5e9edb",
         "b9ad362d-e5c2-4671-ba6a-2f202e7174a4",
-        "370492d5-4118-41d0-8246-01a6fefad2e2",
-        "25981e4a-66ef-4494-a854-e5e047268fdd"
+        "370492d5-4118-41d0-8246-01a6fefad2e2"
     ],
     "tutorial": ""
 }

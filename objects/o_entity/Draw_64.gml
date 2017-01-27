@@ -30,7 +30,10 @@ for (var i = 0; i < ds_list_size(inventory); i++)
 	draw_sprite_ext(s_highlight, -1, ix, cy, aspect, aspect, 0, c_white, 1);
 	var hover = point_in_rectangle(gmx, gmy, ix, cy, ix + size, cy + size);
 	if (hover)
+	{
 		inventory_item = sprite;
+		draw_tooltip(ix, cy, noone, sprite, size, 1);
+	}
 	draw_sprite_ext(sprite, hover ? 1 : 0, ix + sprite_get_xoffset(sprite) * aspect, cy, aspect, aspect, 0, c_white, 1);
 }
 if (!point_in_rectangle(gmx, gmy, cx, cy, cx + ds_list_size(inventory) * (size + 2), cy + size))

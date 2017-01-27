@@ -81,15 +81,7 @@ for (var i = 0; i < array_length_1d(amenu); i++)
 			}
 		}
 		// draw tool tip
-		var s_name = string_replace(sprite_get_name(sprite), "s_", ""), 
-			loff = item == action_type.loot ? (size + 0.5) : 0,
-			tx = amenu_x + string_width(s_name) * 0.25, 
-			ty = iy - string_height(s_name) * 0.25 - size - loff;
-		draw_set_alpha(alpha - 0.25);
-			draw_border(amenu_x, ty, tx, iy - size - loff, c_ltgray, 0.75);
-			draw_rectangle_color(amenu_x, ty, tx, iy - size - loff, c_black, c_black, c_black, c_black, false);
-		draw_set_alpha(1);
-		draw_text_transformed_color(amenu_x, ty, s_name, 0.25, 0.25, 0, c_red, c_red, c_red, c_red, 1);
+		draw_tooltip(amenu_x, iy, item, sprite, size, alpha);
 	}
 	// draw the action item
 	draw_set_alpha(alpha);
