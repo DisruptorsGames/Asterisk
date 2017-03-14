@@ -20,3 +20,6 @@ part_type_direction(ef_blood, 0, 180, 0, 0);
 part_type_gravity(ef_blood, random_range(0.15, 0.3), 270);
 part_type_life(ef_blood, 5, 15);
 part_particles_create(game.particles, target.x + target.sprite_width / 2, target.y + target.sprite_height / 2, ef_blood, gush);
+
+// ToDo: add floating damage number 
+//       OR add combat log like recount?

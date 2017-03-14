@@ -3,9 +3,9 @@ var game = o_controller.game,
 	behind = tile_get_type([tile_type.tree], [
 		tile_get_value(x + xoffset, y + yoffset), 
 		tile_get_value(x, y)]),
-	ld = layer_get_depth(behind ? "Decals" : "Instances");
+	ld = layer_get_depth("Instances") - (game.entity == id ? 1 : 0);
 move_snap(game.width, game.height);
-depth = game.entity == id ? (layer_get_depth("Instances") - 1) : ld;
+depth = behind ? layer_get_depth("Decals") : ld;
 dead = hp <= 0;
 
 if (shake)
@@ -44,8 +44,13 @@ if (effect_update)
 					var amount = args[1];
 					do_damage(id, amount, amount / hp > 0.5);
 					break;
+				case effect_type.heal:
+					var amount = args[1];
+					// ToDo: update???
+					hp += amount;
+					break;
 			}
-			args[@ 0] -= 1; // is this pass by ref???
+			args[@ 0] -= 1;
 		}
 		effect = ds_map_find_next(effects, effect);
 	}
@@ -114,12 +119,13 @@ if (!ds_stack_empty(actions))
 			// ToDo
 			break;
 		case action_type.loot:
-			var inv = t.inventory;
-			for (var i = 0; i < ds_list_size(inv); i++)
+			var inv = t.inventory, first = ds_map_find_first(inv);
+			for (var i = 0; i < ds_map_size(inv); i++)
 			{
-				ds_list_add(inventory, inv[| i]);
+				ds_map_increment(inventory, first, inv[? first]);
+				first = ds_map_find_next(inv, first);
 			}
-			ds_list_clear(t.inventory);
+			ds_map_clear(inv);
 			msg = us + " looted " + them;
 			break;
 		case action_type.peek:
@@ -141,9 +147,9 @@ if (game.entity == id && steps > 0)
 		ty = o_highlight.y + o_highlight.yoffset;
 	if (mouse_check_button_pressed(mb_left))
 	{
-		amenu_x = o_highlight.x;
-		amenu_y = o_highlight.y;
 		var obj = collision_point(tx, ty, o_entity, false, false);
+		amenu_x = obj != noone ? obj.x : o_highlight.x;
+		amenu_y = obj != noone ? obj.y : o_highlight.y;
 		// click menu
 		if (amenu_item > 0)
 		{
@@ -174,7 +180,12 @@ if (game.entity == id && steps > 0)
 		// clicking on solid tiles
 		else if (tile_get_type(tile_type.solids, [tile_get_value(tx, ty)]))
 		{
-			amenu = array_length_1d(amenu) > 0 ? [] : [action_type.inspect, action_type.peek];
+			if (array_length_1d(amenu) > 0)
+				amenu = [];
+			else
+				amenu = (distance_to_point(tx, ty) < range * game.width) 
+					? [action_type.inspect, action_type.peek] 
+					: [action_type.inspect];
 			amenu_target = tile_get_value(tx, ty);
 		}
 		// clicking on solid objects
@@ -183,16 +194,27 @@ if (game.entity == id && steps > 0)
 			if (array_length_1d(amenu) > 0)
 				amenu = [];
 			else if (obj.dead)
-				amenu = [action_type.loot, action_type.inspect];
+				amenu = ds_map_size(obj.inventory) > 0 
+					? [action_type.loot, action_type.inspect]
+					: [action_type.inspect];
 			else
 				amenu = obj == id 
-					? [/*action_type.attack, */action_type.ambush, action_type.defend, action_type.meditation]
-					: [action_type.attack, action_type.defend, action_type.inspect];
+					? [action_type.ambush, action_type.defend, action_type.meditation]
+					: (distance_to_object(obj) < range * game.width
+						? [action_type.attack, action_type.defend, action_type.inspect]
+						: [action_type.inspect]);
 			amenu_target = obj;
 		}
 		// movement
-		else
+		else if (array_length_1d(amenu) == 0)
 			ds_stack_push(actions, [action_type.move, [o_highlight]]);
+		// reset
+		else
+		{
+			amenu = [];
+			amenu_item = -1;
+			amenu_target = noone;
+		}
 	}
 }
 

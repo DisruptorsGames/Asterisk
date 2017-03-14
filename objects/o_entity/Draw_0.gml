@@ -14,42 +14,66 @@ if (path_position > 0)
 			draw_text_color_ext(ix, iy, i, c_white, 0.75, f_hud, fa_left);
 	}
 }
+// draw damage range
+if (game.entity == id)
+{
+	for (var i = 0; i < 3; i++)
+	{
+		for (var j = 0; j < 3; j++)
+		{
+			var ox = floor(xoffset / game.width) * game.width,
+				oy = floor(yoffset / game.height) * game.height,
+				ix = x + ox - game.width + i * game.width,
+				iy = y + oy - game.height + j * game.height;
+			draw_set_alpha(0.35);
+				draw_rectangle_color(ix, iy, ix + game.width, iy + game.height, c_gray, c_gray, c_gray, c_gray, false);
+			draw_set_alpha(1);
+		}
+	}
+}
 
 // animation
-var frame = ani_map[? animation];
-if (array_length_1d(frame) > 0 && image_index > frame[array_length_1d(frame) - 1])
-	image_index = frame[0];
-// flip image
-if (animation == anim_type.run)
+if (dead)
+	image_speed = 0;
+else
 {
-	var c = xprevious > x;
-	image_xscale = c ? -1 : 1;
-	sprite_set_offset(sprite_index, c ? -sprite_width : 0, 0);
+	var frame = ani_map[? animation];
+	if (array_length_1d(frame) > 0 && image_index > frame[array_length_1d(frame) - 1])
+		image_index = frame[0];
+	// flip image
+	if (animation == anim_type.run)
+	{
+		var c = xprevious > x;
+		image_xscale = c ? -1 : 1;
+		sprite_set_offset(sprite_index, c ? -sprite_width : 0, 0);
+	}
 }
 
 // entity
-var alpha = point_in_rectangle(mouse_x, mouse_y, bbox_left, bbox_top, bbox_right, bbox_bottom) ? 0.65 : 0.25;
-draw_sprite_ext(sprite_index, image_index, x - 1, y - 1, image_xscale, image_yscale, image_angle, shell, 0.25);
-draw_sprite_ext(sprite_index, image_index, x + 1, y + 1, image_xscale, image_yscale, image_angle, shell, 0.25);
+var alpha = point_in_rectangle(mouse_x, mouse_y, bbox_left, bbox_top, bbox_right, bbox_bottom) ? 0.25 : 0;
+draw_sprite_ext(sprite_index, image_index, x - 1, y - 1, image_xscale, image_yscale, image_angle, shell, alpha);
+draw_sprite_ext(sprite_index, image_index, x + 1, y + 1, image_xscale, image_yscale, image_angle, shell, alpha);
 draw_sprite_ext(sprite_index, image_index, x, y, image_xscale, image_yscale, image_angle, image_blend, image_alpha);
 
 // steps
 if (steps > 0)
 	draw_text_color_ext(x, y + yoffset, steps, c_white, 0.75, f_hud, fa_left);
-if (!is_undefined(effects[? effect_type.med]))
+// effects
+var first = ds_map_find_first(effects);
+for (var i = 0; i < ds_map_size(effects); i++)
 {
-	var e = effects[? effect_type.med];
-	draw_text_color_ext(x + xoffset, y, e[0], c_red, 0.75, f_hud, fa_left);
+	var value = effects[? first], ticks = value[0], 
+		col = first == effect_type.heal ? c_green : c_white;
+	draw_text_color_ext(x + xoffset + i * string_width(string(ticks)) + 2, y, string(ticks), col, 0.75, f_hud, fa_left);
+	first = ds_map_find_next(effects, first);
 }
 
-// health & chi
+// health
 if (hp > 0 && hp < hp_max)
 {
 	draw_border(x, y - 5, x + image_xscale * sprite_width, y - 4, c_black, 1);
 	draw_healthbar(x, y - 5, x + image_xscale * sprite_width, y - 4, (hp / hp_max) * 100, c_black, make_color_dpk(hp_col, 0.75, 0.75), hp_col, 0, true, true);
 }
-/*if (idle > 0 && path_position == 0)
-	draw_healthbar(x, y - 0.25, x + image_xscale * sprite_width, y, (idle / idle_t) * 100, c_black, c_white, chi_col, 0, false, false);*/
 
 // context menu
 for (var i = 0; i < array_length_1d(amenu); i++)
@@ -65,22 +89,25 @@ for (var i = 0; i < array_length_1d(amenu); i++)
 	if (hover)
 	{
 		amenu_item = item;
-		// draw loot
 		if (item == action_type.loot)
 		{
-			for (var j = 0; j < ds_list_size(amenu_target.inventory); j++)
+			var first = ds_map_find_first(amenu_target.inventory);
+			for (var j = 0; j < ds_map_size(amenu_target.inventory); j++)
 			{
-				var junk = amenu_target.inventory[| j],
-					jx = ix + j * (size + 2), 
+				var value = amenu_target.inventory[? first],
+					jx = ix + j * (size + 2),
 					jy = iy - size - 2;
 				draw_set_alpha(alpha);
 					draw_border(jx, jy, jx + size, jy + size, make_color_comp(col), 0.5);
 					draw_rectangle_color(jx, jy, jx + size, jy + size, c_black, c_black, c_black, c_black, false);
 				draw_set_alpha(1);
-				draw_sprite_ext(junk, 0, jx, jy, 0.25, 0.25, 0, c_white, 1);
+				draw_sprite_ext(first, 0, jx, jy, 0.25, 0.25, 0, c_white, 1);
+				draw_set_font(f_hud);
+					draw_text_transformed_color(jx, jy, string(value), 0.25, 0.25, 0, c_white, c_white, c_white, c_white, 0.75);
+				draw_set_font(-1);
+				first = ds_map_find_next(amenu_target.inventory, first);
 			}
 		}
-		// draw tool tip
 		draw_tooltip(amenu_x, iy, item, sprite, size, alpha);
 	}
 	// draw the action item

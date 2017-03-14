@@ -1,20 +1,21 @@
 /// @description Init
 event_inherited();
 
-name = choose("Rabbit", "Hopper", "Speedy");
-hp = 10;
-hp_max = 10;
-initiative = 6;
-damage = 1;
-shell = $eeeeff;
-moves = 3;
+name = choose("Mr. Wabbit", "Hopper", "Speedy");
+boss = string_count("Mr", name);
+hp_max = boss ? 75 : 10;
+hp = hp_max;
+initiative = boss ? 12 : 6;
+damage = boss ? 8 : 1;
+moves = boss ? 7 : 3;
 steps = moves;
-xoffset = 12;
+xoffset = 15;
 yoffset = 15;
 
 // populate inventory
 repeat(3)
 {
-	ds_list_add(inventory, choose(s_potion, s_apple, s_pouch, s_book, s_script));
+	ds_map_increment(inventory, choose(s_potion, s_apple, s_pouch, s_book, s_script), 1);
 }
-ds_list_shuffle(inventory);
+
+ani_map[? anim_type.run] = [0, 1, 2, 3];

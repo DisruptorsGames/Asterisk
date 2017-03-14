@@ -7,6 +7,5 @@ shell = c_yellow;
 // populate inventory
 repeat(6)
 {
-	ds_list_add(inventory, choose(s_potion, s_apple, s_pouch, s_book, s_script));
+	ds_map_increment(inventory, choose(s_potion, s_apple, s_pouch, s_book, s_script), 1);
 }
-ds_list_shuffle(inventory);
