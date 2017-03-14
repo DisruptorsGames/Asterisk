@@ -51,6 +51,8 @@ if (effect_update)
 					break;
 			}
 			args[@ 0] -= 1;
+			if (args[0] == 0)
+				ds_map_delete(effects, effect);
 		}
 		effect = ds_map_find_next(effects, effect);
 	}

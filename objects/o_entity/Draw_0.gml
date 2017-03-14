@@ -14,27 +14,13 @@ if (path_position > 0)
 			draw_text_color_ext(ix, iy, i, c_white, 0.75, f_hud, fa_left);
 	}
 }
-// draw damage range
-if (game.entity == id)
-{
-	for (var i = 0; i < 3; i++)
-	{
-		for (var j = 0; j < 3; j++)
-		{
-			var ox = floor(xoffset / game.width) * game.width,
-				oy = floor(yoffset / game.height) * game.height,
-				ix = x + ox - game.width + i * game.width,
-				iy = y + oy - game.height + j * game.height;
-			draw_set_alpha(0.35);
-				draw_rectangle_color(ix, iy, ix + game.width, iy + game.height, c_gray, c_gray, c_gray, c_gray, false);
-			draw_set_alpha(1);
-		}
-	}
-}
 
 // animation
 if (dead)
+{
+	animation_set(anim_type.death);
 	image_speed = 0;
+}
 else
 {
 	var frame = ani_map[? animation];
@@ -58,15 +44,6 @@ draw_sprite_ext(sprite_index, image_index, x, y, image_xscale, image_yscale, ima
 // steps
 if (steps > 0)
 	draw_text_color_ext(x, y + yoffset, steps, c_white, 0.75, f_hud, fa_left);
-// effects
-var first = ds_map_find_first(effects);
-for (var i = 0; i < ds_map_size(effects); i++)
-{
-	var value = effects[? first], ticks = value[0], 
-		col = first == effect_type.heal ? c_green : c_white;
-	draw_text_color_ext(x + xoffset + i * string_width(string(ticks)) + 2, y, string(ticks), col, 0.75, f_hud, fa_left);
-	first = ds_map_find_next(effects, first);
-}
 
 // health
 if (hp > 0 && hp < hp_max)
@@ -75,6 +52,19 @@ if (hp > 0 && hp < hp_max)
 	draw_healthbar(x, y - 5, x + image_xscale * sprite_width, y - 4, (hp / hp_max) * 100, c_black, make_color_dpk(hp_col, 0.75, 0.75), hp_col, 0, true, true);
 }
 
+// effects
+var first = ds_map_find_first(effects);
+for (var i = 0; i < ds_map_size(effects); i++)
+{
+	var value = effects[? first], ticks = value[0], size = 4, 
+		ix = x - size - 2, 
+		iy = y + i * (size + 2);
+	draw_sprite_ext(action_sprite(first), 0, x - size - 2, y + i * (size + 2), 0.25, 0.25, 0, c_white, 1);
+	draw_set_font(f_hud);
+		draw_text_transformed_color(ix , iy, string(ticks), 0.25, 0.25, 0, c_white, c_white, c_white, c_white, 0.75);
+	draw_set_font(-1);
+	first = ds_map_find_next(effects, first);
+}
 // context menu
 for (var i = 0; i < array_length_1d(amenu); i++)
 {

@@ -39,5 +39,5 @@ ds_map_add(ani_map, anim_type.idle, [0]);
 ds_map_add(ani_map, anim_type.run, [0]);
 ds_map_add(ani_map, anim_type.lean, [0]);
 ds_map_add(ani_map, anim_type.crouch, [0]);
-ds_map_add(ani_map, anim_type.thumbs_up, [0]);
+ds_map_add(ani_map, anim_type.death, [0]);
 ds_map_add(ani_map, anim_type.meditation, [0]);

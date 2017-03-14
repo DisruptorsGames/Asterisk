@@ -43,7 +43,7 @@ enum anim_type
 	lean,
 	crouch,
 	meditation,
-	thumbs_up
+	death
 }
 enum tile_type
 {
