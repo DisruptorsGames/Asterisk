@@ -1,6 +1,7 @@
 /// @function action_sprite
+/// @param target
 /// @param action_type
-var type = argument0, sprite = s_peek;
+var target = argument0, type = argument1, sprite = s_heart;
 switch (type)
 {
 	case action_type.meditation:
@@ -19,7 +20,7 @@ switch (type)
 		sprite = s_inspect;
 		break;
 	case action_type.loot:
-		sprite = s_loot;
+		sprite = target.locked ? s_lock : s_loot;
 		break;
 	case action_type.peek:
 		sprite = s_peek;

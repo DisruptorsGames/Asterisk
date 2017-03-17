@@ -12,9 +12,12 @@ initiative = 0;
 damage = 0;
 range = 1;
 npc = true;
+passive = false;
+think = seconds(1);
 moves = 0;
 steps = moves;
 path = path_add();
+locked = false;
 inventory = ds_map_create();
 inventory_item = -1;
 actions = ds_stack_create();
@@ -25,6 +28,7 @@ amenu_x = x;
 amenu_y = y;
 amenu_item = -1;
 amenu_target = noone;
+inspect = noone;
 shell = c_dkgray;
 xoffset = sprite_xoffset;
 yoffset = sprite_yoffset;
@@ -34,10 +38,20 @@ ani_map = ds_map_create();
 fog_update = true;
 image_speed = 0.25;
 
+// default inventory
+if (object_index != o_player && instance_exists(o_chest) && distance_to_object(o_chest) < 64)
+	inventory[? s_key] = 1;
+
 // default animations
 ds_map_add(ani_map, anim_type.idle, [0]);
 ds_map_add(ani_map, anim_type.run, [0]);
+ds_map_add(ani_map, anim_type.fight, [0]);
 ds_map_add(ani_map, anim_type.lean, [0]);
 ds_map_add(ani_map, anim_type.crouch, [0]);
 ds_map_add(ani_map, anim_type.death, [0]);
 ds_map_add(ani_map, anim_type.meditation, [0]);
+
+
+
+
+

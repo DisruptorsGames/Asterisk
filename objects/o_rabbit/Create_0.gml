@@ -2,11 +2,12 @@
 event_inherited();
 
 name = choose("Mr. Wabbit", "Hopper", "Speedy");
-boss = string_count("Mr", name);
+boss = string_count("Mr", name) > 0;
 hp_max = boss ? 75 : 10;
 hp = hp_max;
 initiative = boss ? 12 : 6;
 damage = boss ? 8 : 1;
+passive = true;
 moves = boss ? 7 : 3;
 steps = moves;
 xoffset = 15;

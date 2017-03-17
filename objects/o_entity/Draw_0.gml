@@ -18,7 +18,7 @@ if (path_position > 0)
 // animation
 if (dead)
 {
-	animation_set(anim_type.death);
+	animation_set(id, anim_type.death);
 	image_speed = 0;
 }
 else
@@ -36,10 +36,11 @@ else
 }
 
 // entity
-var alpha = point_in_rectangle(mouse_x, mouse_y, bbox_left, bbox_top, bbox_right, bbox_bottom) ? 0.25 : 0;
-draw_sprite_ext(sprite_index, image_index, x - 1, y - 1, image_xscale, image_yscale, image_angle, shell, alpha);
-draw_sprite_ext(sprite_index, image_index, x + 1, y + 1, image_xscale, image_yscale, image_angle, shell, alpha);
+var hover = point_in_rectangle(mouse_x, mouse_y, bbox_left, bbox_top, bbox_right, bbox_bottom);
+draw_sprite_ext(sprite_index, image_index, x - 1, y - 1, image_xscale, image_yscale, image_angle, shell, hover ? 0.25 : 0);
+draw_sprite_ext(sprite_index, image_index, x + 1, y + 1, image_xscale, image_yscale, image_angle, shell, hover ? 0.25 : 0);
 draw_sprite_ext(sprite_index, image_index, x, y, image_xscale, image_yscale, image_angle, image_blend, image_alpha);
+
 
 // steps
 if (steps > 0)
@@ -59,27 +60,29 @@ for (var i = 0; i < ds_map_size(effects); i++)
 	var value = effects[? first], ticks = value[0], size = 4, 
 		ix = x - size - 2, 
 		iy = y + i * (size + 2);
-	draw_sprite_ext(action_sprite(first), 0, x - size - 2, y + i * (size + 2), 0.25, 0.25, 0, c_white, 1);
+	draw_sprite_ext(effect_sprite(first), 0, x - size - 2, y + i * (size + 2), 0.25, 0.25, 0, c_white, 1);
 	draw_set_font(f_hud);
 		draw_text_transformed_color(ix , iy, string(ticks), 0.25, 0.25, 0, c_white, c_white, c_white, c_white, 0.75);
 	draw_set_font(-1);
 	first = ds_map_find_next(effects, first);
 }
+
 // context menu
 for (var i = 0; i < array_length_1d(amenu); i++)
 {
 	var item = amenu[i], size = 4, 
-		sprite = action_sprite(item),
+		sprite = action_sprite(amenu_target, item),
 		ix = amenu_x + i * (size + 3),
 		iy = amenu_y - size - 2,
 		hover = point_in_rectangle(mouse_x, mouse_y, ix - 0.5, iy - 0.5, ix + size + 0.5, iy + size + 0.5),
+		scale = 0.25,
 		index = hover ? 1 : 0,
 		alpha = hover ? 0.75 : 0.5, 
 		col = hover ? c_yellow : c_ltgray;
 	if (hover)
 	{
 		amenu_item = item;
-		if (item == action_type.loot)
+		if (item == action_type.loot && !amenu_target.locked)
 		{
 			var first = ds_map_find_first(amenu_target.inventory);
 			for (var j = 0; j < ds_map_size(amenu_target.inventory); j++)
@@ -91,14 +94,14 @@ for (var i = 0; i < array_length_1d(amenu); i++)
 					draw_border(jx, jy, jx + size, jy + size, make_color_comp(col), 0.5);
 					draw_rectangle_color(jx, jy, jx + size, jy + size, c_black, c_black, c_black, c_black, false);
 				draw_set_alpha(1);
-				draw_sprite_ext(first, 0, jx, jy, 0.25, 0.25, 0, c_white, 1);
+				draw_sprite_ext(first, 0, jx, jy, scale, scale, 0, c_white, 1);
 				draw_set_font(f_hud);
-					draw_text_transformed_color(jx, jy, string(value), 0.25, 0.25, 0, c_white, c_white, c_white, c_white, 0.75);
+					draw_text_transformed_color(jx, jy, string(value), scale, scale, 0, c_white, c_white, c_white, c_white, 0.75);
 				draw_set_font(-1);
 				first = ds_map_find_next(amenu_target.inventory, first);
 			}
 		}
-		draw_tooltip(amenu_x, iy, item, sprite, size, alpha);
+		draw_tooltip(amenu_x, iy, item, sprite, 0, size, scale, alpha);
 	}
 	// draw the action item
 	draw_set_alpha(alpha);
@@ -110,6 +113,17 @@ for (var i = 0; i < array_length_1d(amenu); i++)
 if (!point_in_rectangle(mouse_x, mouse_y, amenu_x - 0.5, amenu_y - 6.5, amenu_x + array_length_1d(amenu) * 6, amenu_y - 2))
 	amenu_item = -1;
 
+//inspect
+if (inspect != noone)
+{
+	var width = sprite_get_width(s_inspect_box), 
+		height = sprite_get_height(s_inspect_box),
+		xx = inspect.x + (x > inspect.x ? -(width + 2) : (inspect.sprite_width + 2));
+	draw_rectangle_color(xx, inspect.y, xx + width, inspect.y + height, c_black, c_black, c_black, c_black, false);
+	draw_sprite_ext(s_inspect_box, 0, xx, inspect.y, 1, 1, 0, c_white, 1);
+	draw_text_transformed_color(xx, inspect.y, "Name: " + string(inspect.name) + "\nInit: " + string(inspect.initiative), 0.25, 0.25, 0, c_white, c_white, c_white, c_white, 1);
+}
+
 // show turn indicator
 /*if (game.entity == id)
 	draw_sprite_ext(s_hover, -1, x + image_xscale * sprite_width / 2, y - game.height - 2, 0.75, 0.75, 0, shell, 0.75);*/
@@ -119,7 +133,7 @@ if (global.debug)
 {
 	draw_rectangle_color(bbox_left, bbox_top, bbox_right, bbox_bottom, c_red, c_red, c_red, c_red, true);
 	draw_circle_color(x, y, 1, c_maroon, c_maroon, false);
-	draw_text_color_ext(bbox_right, y, depth, c_orange, 0.5, f_hud, fa_right);
+	draw_text_color_ext(bbox_right, y, ds_stack_size(actions), c_orange, 0.5, f_hud, fa_right);
 	// amenu
 	draw_set_alpha(0.20);
 		draw_rectangle_color(amenu_x - 0.5, amenu_y - 6.5, amenu_x + array_length_1d(amenu) * 6, amenu_y - 2, c_orange, c_orange, c_orange, c_orange, false);

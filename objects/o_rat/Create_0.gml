@@ -18,4 +18,6 @@ repeat(3)
 	ds_map_increment(inventory, choose(s_potion, s_apple, s_pouch, s_book, s_script), 1);
 }
 
-ani_map[? anim_type.run] = [0, 1, 2, 3, 4, 5];
+ani_map[? anim_type.idle] = [0, 1, 2, 3, 4, 5, 6, 7];
+ani_map[? anim_type.run] = [8, 9, 10, 11, 12, 13];
+ani_map[? anim_type.death] = [26];

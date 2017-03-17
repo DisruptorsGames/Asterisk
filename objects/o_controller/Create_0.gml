@@ -22,6 +22,7 @@ enum effect_type
 	damage,
 	drain
 }
+// ToDo: map to lookup cost of each action
 enum action_type
 {
 	die,
@@ -40,6 +41,7 @@ enum anim_type
 	idle,
 	walk,
 	run,
+	fight,
 	lean,
 	crouch,
 	meditation,

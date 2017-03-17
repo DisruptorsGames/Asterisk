@@ -3,6 +3,7 @@ event_inherited();
 
 name = choose("Chest of doom!", "Chest of luck", "Treasure Chest");
 shell = c_yellow;
+locked = true;
 
 // populate inventory
 repeat(6)
