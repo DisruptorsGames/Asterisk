@@ -15,9 +15,6 @@ steps = moves;
 xoffset = 8;
 yoffset = 24;
 
-// ToDo: REMOVE ME!
-//effects[? effect_type.damage] = [3, 5]; // amt, time
-
 // populate inventory
 items = [s_potion, s_apple, s_pouch, s_script];
 for (var i = 0; i < array_length_1d(items); i++)

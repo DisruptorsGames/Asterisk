@@ -10,7 +10,7 @@ entity = noone;
 time = seconds(1.75);
 timer = time;
 turns = ds_priority_create();
-log = ds_list_create();
+order = ds_list_create();
 fog_surf = surface_create(room_width, room_height);
 particles = part_system_create();
 part_system_depth(particles, layer_get_depth("Instances") - 10);

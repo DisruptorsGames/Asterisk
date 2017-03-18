@@ -48,7 +48,6 @@ if (effect_update)
 					break;
 				case effect_type.heal:
 					var amount = args[1];
-					// ToDo: update???
 					hp += amount;
 					break;
 			}
@@ -65,8 +64,7 @@ if (effect_update)
 if (!ds_stack_empty(actions))
 {
 	var top = ds_stack_pop(actions),
-		action = top[0], args = top[1], t = args[0], 
-		msg = "",
+		action = top[0], args = top[1], t = args[0],
 		us = object_get_name(object_index),
 		them = t == noone ? "???" : object_get_name(t.object_index);
 	switch (action)
@@ -79,19 +77,15 @@ if (!ds_stack_empty(actions))
 			image_blend = c_maroon;
 			moves = 0;
 			steps = moves;
-			msg = us + " killed " + them;
 			break;
 		case action_type.meditation:
 			var ticks = args[1], amount = args[2];
-			effects[? effect_type.med] = [ticks, amount]; // if zero = fizzle
-			msg = us + " rolled a " + string(ticks) + " on meditation for " + string(amount) + " amount";
+			effects[? effect_type.med] = [ticks, amount];
 			break;
 		case action_type.move:
-			// find quickest path to target
-			has_path = mp_grid_path(game.playfield, path, x + xoffset, y + yoffset, t.x + t.xoffset, t.y + t.yoffset, false);
-			if (has_path)
+			// ToDo: fix issue with AI selecting a position that is already filled
+			if (mp_grid_path(game.playfield, path, x + xoffset, y + yoffset, t.x + t.xoffset, t.y + t.yoffset, false))
 			{
-				msg = us + " moved to " + string(t.x) + "x" + string(t.y);
 				t = noone;
 				// remove any point the entity cannot move to
 				var last = path_get_number(path) - 1;
@@ -105,8 +99,7 @@ if (!ds_stack_empty(actions))
 			}
 			break;
 		case action_type.ambush:
-			msg = us + " ambushed " + them;
-			// ToDo
+			// ToDo: add code
 			break;
 		case action_type.attack:
 			var dmg = args[1], crit = dmg / t.hp > 0.5;
@@ -118,15 +111,12 @@ if (!ds_stack_empty(actions))
 				animation_set(t, anim_type.fight);
 				ds_map_delete(t.effects, effect_type.med);
 			}
-			msg = us + " " + (dmg > 0 ? ("did " + string(dmg) + (crit ? " critical " : "") + " damage to ") : "missed ") + them;
 			break;
 		case action_type.defend:
-			msg = us + " defended " + them;
-			// ToDo
+			// ToDo: add code
 			break;
 		case action_type.inspect:
 			var obj = t == noone ? tile_get_value(amenu_x, amenu_y) : them;
-			msg = us + " looked at " + obj;
 			inspect = inspect == noone ? t : noone;
 			// ToDo
 			break;
@@ -152,35 +142,33 @@ if (!ds_stack_empty(actions))
 					first = ds_map_find_next(inv, first);
 				}
 				ds_map_clear(inv);
-				msg = us + " looted " + them;
 				var message = instance_create_depth(t.x, t.y, t.depth - 1, o_float);
 				message = choose("YONK!", "KTHXBYE!", "GOTCHA!");
 			}
 			break;
 		case action_type.peek:
-			msg = us + " peeked around " + them;
-			// ToDo
+			// ToDo: add code
 			break;
 		case action_type.leave:
-			// ToDo
+			// ToDo: add code
 			break;
 	}
-	ds_list_add(game.log, msg);
 }
 // set action stack
 if (game.entity == id && steps > 0)
 {
-	var args = [amenu_target], cost = 1;
+	var cost = 1;
 	if (npc)
 	{
 		if (think > 0)
 			think--;
 		else if (think == 0)
 		{
-			var args = (!passive || hp < hp_max) && distance_to_object(amenu_target) < game.width
+			var	args = can_has(action_type.attack, amenu_target)
 				? [action_type.attack, [amenu_target, irandom(damage)]]
-				: [choose(action_type.meditation, action_type.ambush),
-					[id, roll(0, 3, 0),  irandom(10)]];
+				: (!can_has(action_type.meditation, id)
+					? [action_type.meditation, [id, roll(0, 3, 0),  irandom_range(1, 10)]]
+					: [action_type.move, [object_index == o_rabbit ? o_chest : o_player]]);
 			if (cost > 0 && steps >= cost)
 			{
 				ds_stack_push(actions, args);
@@ -192,7 +180,8 @@ if (game.entity == id && steps > 0)
 	// avoid solid tiles and current player location
 	else if (mouse_check_button_pressed(mb_left))
 	{
-		var tx = o_highlight.x + o_highlight.xoffset,
+		var args = [amenu_target],
+			tx = o_highlight.x + o_highlight.xoffset,
 			ty = o_highlight.y + o_highlight.yoffset,
 			obj = collision_point(tx, ty, o_entity, false, false);
 		amenu_x = obj != noone ? obj.x : o_highlight.x;
@@ -248,13 +237,11 @@ if (game.entity == id && steps > 0)
 					: [action_type.inspect];
 			else
 			{
-				amenu = obj == id 
+				amenu = obj == id
 					? [action_type.ambush, action_type.defend, action_type.meditation]
-					: (distance_to_object(obj) < range * game.width
-						? (ds_map_exists(effects, effect_type.med) 
-							? [action_type.inspect]
-							: [action_type.attack, action_type.defend, action_type.inspect])
-						: [action_type.inspect]);
+					: (can_has(action_type.attack, obj)
+						? [action_type.attack, action_type.defend, action_type.inspect]
+						: [action_type.inspect])
 			}
 			amenu_target = obj;
 		}

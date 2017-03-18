@@ -9,6 +9,7 @@ hp_col = merge_color(c_red, make_color_elm(), random_range(0.5, 0.75));
 chi_col = merge_color(c_white, make_color_elm(), random_range(0.5, 0.75));
 dead = false;
 initiative = 0;
+priority = 0;
 damage = 0;
 range = 1;
 npc = true;

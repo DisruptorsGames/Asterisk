@@ -21,7 +21,8 @@ repeat(3)
 
 ani_map[? anim_type.idle] = [0, 1, 2, 3, 4, 5, 6, 7];
 ani_map[? anim_type.run] = [8, 9, 10, 11];
-ani_map[? anim_type.lean] = [25];
+ani_map[? anim_type.fight] = [16, 17, 18];
+ani_map[? anim_type.lean] = [24];
 ani_map[? anim_type.crouch] = [25];
 ani_map[? anim_type.death] = [26];
-ani_map[? anim_type.meditation] = [16, 17, 18/*, 19, 20, 21, 22, 23*/];
+ani_map[? anim_type.meditation] = [27, 28, 29];

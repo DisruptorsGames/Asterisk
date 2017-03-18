@@ -27,9 +27,11 @@ else
 	if (array_length_1d(frame) > 0 && image_index > frame[array_length_1d(frame) - 1])
 		image_index = frame[0];
 	// flip image
-	if (animation == anim_type.run)
+	if (animation == anim_type.run || animation == anim_type.fight)
 	{
-		var c = xprevious > x;
+		var c = animation == anim_type.run || amenu_target == noone 
+			? xprevious > x 
+			: amenu_target.x < x;
 		image_xscale = c ? -1 : 1;
 		sprite_set_offset(sprite_index, c ? -sprite_width : 0, 0);
 	}
@@ -58,9 +60,9 @@ var first = ds_map_find_first(effects);
 for (var i = 0; i < ds_map_size(effects); i++)
 {
 	var value = effects[? first], ticks = value[0], size = 4, 
-		ix = x - size - 2, 
+		ix = x/* - size - 2*/,
 		iy = y + i * (size + 2);
-	draw_sprite_ext(effect_sprite(first), 0, x - size - 2, y + i * (size + 2), 0.25, 0.25, 0, c_white, 1);
+	draw_sprite_ext(effect_sprite(first), 0, ix, iy, 0.25, 0.25, 0, c_white, 1);
 	draw_set_font(f_hud);
 		draw_text_transformed_color(ix , iy, string(ticks), 0.25, 0.25, 0, c_white, c_white, c_white, c_white, 0.75);
 	draw_set_font(-1);
@@ -102,6 +104,10 @@ for (var i = 0; i < array_length_1d(amenu); i++)
 			}
 		}
 		draw_tooltip(amenu_x, iy, item, sprite, 0, size, scale, alpha);
+		// type[action_type.meditation, [s_meditation, 2]];
+		// act = type[action_type.meditation];
+		// act[0] = sprite
+		// act[1] = cost
 	}
 	// draw the action item
 	draw_set_alpha(alpha);

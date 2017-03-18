@@ -6,7 +6,11 @@ if (ds_priority_size(turns) == 0)
 		var inst = instance_id[i];
 		if (object_get_parent(inst.object_index) == o_entity 
 			&& inst.initiative > 0 && inst.steps > 0 && !inst.dead)
-				ds_priority_add(turns, inst, irandom_range(1, inst.initiative));
+		{
+			inst.priority = irandom_range(1, inst.initiative);
+			ds_priority_add(turns, inst, inst.priority);
+			ds_list_add(order, inst);
+		}
 	}
 	// ToDo update playfield
 }
@@ -27,7 +31,8 @@ else if (entity.steps == 0)
 	else if (timer == 0)
 	{
 		entity.steps = entity.moves;
-		ds_priority_delete_value(turns, entity)
+		ds_priority_delete_value(turns, entity);
+		ds_list_delete(order, ds_list_find_index(order, entity));
 		entity = noone;
 		timer = time;
 	}
