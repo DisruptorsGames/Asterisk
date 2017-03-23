@@ -25,14 +25,14 @@ part_type_speed(ef_blood, 1, 3, 0, 0);
 part_type_direction(ef_blood, 0, 180, 0, 0);
 part_type_gravity(ef_blood, random_range(0.15, 0.3), 270);
 part_type_life(ef_blood, 8, 18);
-var gush = target.hp <= 0 || crit ? irandom(damage * 4) : (damage > 0 ? irandom(damage * 3) : 0);
-part_particles_create(game.particles, tx, ty, ef_blood, gush);
+var gush = target.hp <= 0 || crit ? 6 : 3;
+part_particles_create(game.particles, tx, ty, ef_blood, irandom(damage) * gush);
 //
 if (target.hp <= 0)
 {
 	var ef_skull = part_type_create();
 	part_type_sprite(ef_skull, s_actions, false, true, true);
-	part_type_size(ef_skull, 0.75, 1.25, 0, 0);
+	part_type_size(ef_skull, 1, 1.5, 0, 0);
 	part_type_scale(ef_skull, choose(1, -1), 1);
 	part_type_speed(ef_skull, 0.25, 0.75, 0, 0);
 	part_type_direction(ef_skull, 0, 180, 0, 0);
