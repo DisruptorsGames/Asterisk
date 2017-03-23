@@ -1,6 +1,20 @@
 /// @description Camera
 
-// follow target
+aspect = room == r_menu_main ? 4/3 : display_get_width() / display_get_height();
+cam_w = room == r_menu_main ? 256 : floor(cam_h * aspect);
+
+// surface
+var surf_h = floor(min(window_get_height(), display_get_height())),
+	surf_w = floor(surf_h * aspect);
+if (surf_w != sw || surf_h != sh)
+{
+	surface_resize(application_surface, surf_w, surf_h);
+	display_set_gui_maximise(aspect, aspect);
+	camera_set_view_size(view_camera[0], cam_w, cam_h);
+	resizes[0]++;
+}
+
+// target
 if (vt != target)
 	camera_set_view_target(view_camera[0], target);
 if (instance_exists(vt))

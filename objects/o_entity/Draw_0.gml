@@ -6,12 +6,12 @@ if (path_position > 0)
 	//draw_path(path, x, y, true);
 	for (var i = 0; i < path_get_number(path); i++)
 	{
-		var ix = path_get_point_x(path, i), iy = path_get_point_y(path, i),
-			col = i <= steps ? c_green : c_red;
+		var ix = path_get_point_x(path, i), 
+			iy = path_get_point_y(path, i);
 		draw_circle_color(ix, iy, 2, c_black, c_black, false);
-		draw_circle_color(ix, iy, 1, col, col, false);
+		draw_circle_color(ix, iy, 1, c_green, c_green, false);
 		if (global.debug)
-			draw_text_color_ext(ix, iy, i, c_white, 0.75, f_hud, fa_left);
+			printf(ix, iy, i, c_white, 0.75, f_hud, fa_left, 1, 0, false);
 	}
 }
 
@@ -41,15 +41,15 @@ else
 var hover = point_in_rectangle(mouse_x, mouse_y, bbox_left, bbox_top, bbox_right, bbox_bottom);
 draw_sprite_ext(sprite_index, image_index, x - 1, y - 1, image_xscale, image_yscale, image_angle, shell, hover ? 0.25 : 0);
 draw_sprite_ext(sprite_index, image_index, x + 1, y + 1, image_xscale, image_yscale, image_angle, shell, hover ? 0.25 : 0);
-draw_sprite_ext(sprite_index, image_index, x, y, image_xscale, image_yscale, image_angle, image_blend, image_alpha);
+draw_sprite_ext(sprite_index, image_index, x, y, image_xscale, image_yscale, image_angle, merge_color((boss ? hp_col : image_blend), c_red, (hit / 100)), image_alpha);
 
 
 // steps
-if (steps > 0)
-	draw_text_color_ext(x, y + yoffset, steps, c_white, 0.75, f_hud, fa_left);
+if (game.entity == id && steps > 0)
+	printf(x, y + yoffset, steps, c_white, 0.75, f_hud, fa_left, 1, 0, false);
 
 // health
-if (hp > 0 && hp < hp_max)
+if (game.entity != id && hp > 0 && hp < hp_max)
 {
 	draw_border(x, y - 5, x + image_xscale * sprite_width, y - 4, c_black, 1);
 	draw_healthbar(x, y - 5, x + image_xscale * sprite_width, y - 4, (hp / hp_max) * 100, c_black, make_color_dpk(hp_col, 0.75, 0.75), hp_col, 0, true, true);
@@ -59,27 +59,22 @@ if (hp > 0 && hp < hp_max)
 var first = ds_map_find_first(effects);
 for (var i = 0; i < ds_map_size(effects); i++)
 {
-	var value = effects[? first], ticks = value[0], size = 4, 
-		ix = x/* - size - 2*/,
+	var value = effects[? first], ticks = value[0], size = 4,
 		iy = y + i * (size + 2);
-	draw_sprite_ext(effect_sprite(first), 0, ix, iy, 0.25, 0.25, 0, c_white, 1);
-	draw_set_font(f_hud);
-		draw_text_transformed_color(ix , iy, string(ticks), 0.25, 0.25, 0, c_white, c_white, c_white, c_white, 0.75);
-	draw_set_font(-1);
+	draw_sprite_ext(s_effects, first, x, iy, 0.25, 0.25, 0, c_white, 1);
+	printf(x , iy, string(ticks), c_white, 0.75, f_hud, fa_left, 0.25, 0, false);
 	first = ds_map_find_next(effects, first);
 }
 
 // context menu
 for (var i = 0; i < array_length_1d(amenu); i++)
 {
-	var item = amenu[i], size = 4, 
-		sprite = action_sprite(amenu_target, item),
+	var item = amenu[i], size = 4,
 		ix = amenu_x + i * (size + 3),
 		iy = amenu_y - size - 2,
 		hover = point_in_rectangle(mouse_x, mouse_y, ix - 0.5, iy - 0.5, ix + size + 0.5, iy + size + 0.5),
 		scale = 0.25,
-		index = hover ? 1 : 0,
-		alpha = hover ? 0.75 : 0.5, 
+		alpha = hover ? 0.75 : 0.5,
 		col = hover ? c_yellow : c_ltgray;
 	if (hover)
 	{
@@ -96,25 +91,20 @@ for (var i = 0; i < array_length_1d(amenu); i++)
 					draw_border(jx, jy, jx + size, jy + size, make_color_comp(col), 0.5);
 					draw_rectangle_color(jx, jy, jx + size, jy + size, c_black, c_black, c_black, c_black, false);
 				draw_set_alpha(1);
-				draw_sprite_ext(first, 0, jx, jy, scale, scale, 0, c_white, 1);
-				draw_set_font(f_hud);
-					draw_text_transformed_color(jx, jy, string(value), scale, scale, 0, c_white, c_white, c_white, c_white, 0.75);
-				draw_set_font(-1);
+				draw_sprite_ext(s_items, first, jx, jy, scale, scale, 0, c_white, 1);
+				printf(jx, jy, string(value), c_white, 0.75, f_hud, fa_left, scale, 0, false);
 				first = ds_map_find_next(amenu_target.inventory, first);
 			}
+			amenu_target.image_index = 1;
 		}
-		draw_tooltip(amenu_x, iy, item, sprite, 0, size, scale, alpha);
-		// type[action_type.meditation, [s_meditation, 2]];
-		// act = type[action_type.meditation];
-		// act[0] = sprite
-		// act[1] = cost
+		draw_tooltip(amenu_x, iy, item, size, scale, alpha);
 	}
 	// draw the action item
 	draw_set_alpha(alpha);
 		draw_border(ix, iy, ix + size, iy + size, col, 0.5);
 		draw_rectangle_color(ix, iy, ix + size, iy + size, c_black, c_black, c_black, c_black, false);
 	draw_set_alpha(1);
-	draw_sprite_ext(sprite, index, ix + 0.5, iy + 0.5, 0.25, 0.25, 0, c_white, 1);
+	draw_sprite_ext(s_actions, item, ix + 0.5, iy + 0.5, 0.25, 0.25, 0, c_white, 1);
 }
 if (!point_in_rectangle(mouse_x, mouse_y, amenu_x - 0.5, amenu_y - 6.5, amenu_x + array_length_1d(amenu) * 6, amenu_y - 2))
 	amenu_item = -1;
@@ -122,24 +112,15 @@ if (!point_in_rectangle(mouse_x, mouse_y, amenu_x - 0.5, amenu_y - 6.5, amenu_x 
 //inspect
 if (inspect != noone)
 {
-	var width = sprite_get_width(s_inspect_box), 
-		height = sprite_get_height(s_inspect_box),
-		xx = inspect.x + (x > inspect.x ? -(width + 2) : (inspect.sprite_width + 2));
-	draw_rectangle_color(xx, inspect.y, xx + width, inspect.y + height, c_black, c_black, c_black, c_black, false);
-	draw_sprite_ext(s_inspect_box, 0, xx, inspect.y, 1, 1, 0, c_white, 1);
-	draw_text_transformed_color(xx, inspect.y, "Name: " + string(inspect.name) + "\nInit: " + string(inspect.initiative), 0.25, 0.25, 0, c_white, c_white, c_white, c_white, 1);
+	// ToDo:
 }
-
-// show turn indicator
-/*if (game.entity == id)
-	draw_sprite_ext(s_hover, -1, x + image_xscale * sprite_width / 2, y - game.height - 2, 0.75, 0.75, 0, shell, 0.75);*/
 
 // bounding box data
 if (global.debug)
 {
 	draw_rectangle_color(bbox_left, bbox_top, bbox_right, bbox_bottom, c_red, c_red, c_red, c_red, true);
 	draw_circle_color(x, y, 1, c_maroon, c_maroon, false);
-	draw_text_color_ext(bbox_right, y, ds_stack_size(actions), c_orange, 0.5, f_hud, fa_right);
+	printf(bbox_right, y, string(path) + ":" + string(path_get_number(path)), c_orange, 0.5, f_hud, fa_right, 1, 0, false);
 	// amenu
 	draw_set_alpha(0.20);
 		draw_rectangle_color(amenu_x - 0.5, amenu_y - 6.5, amenu_x + array_length_1d(amenu) * 6, amenu_y - 2, c_orange, c_orange, c_orange, c_orange, false);
@@ -155,11 +136,9 @@ if (fog_update)
 	{
 		for (var j = 0; j < vh; j++)
 		{
-			var ix = i * game.width, iy = j * game.height, 
-				c = point_distance(x, y, ix, iy) > round(moves * 1.25) * game.width;
-			draw_set_alpha(c ? 0.95 : 0);
-			draw_rectangle_color(ix, iy, ix + game.width, iy + game.height, c_black, c_black, c_black, c_black, false);
-			draw_set_alpha(1);
+			var ix = i * game.width, iy = j * game.height;
+			if (point_distance(x + xoffset, y + yoffset, ix + game.width / 2, iy + game.height / 2) > round(moves * 1.25) * game.width)
+				draw_rectangle_color(ix, iy, ix + game.width, iy + game.height, c_black, c_black, c_black, c_black, false);
 		}
 	}
 	surface_reset_target();

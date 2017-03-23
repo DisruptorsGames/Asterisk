@@ -4,9 +4,10 @@ portrait = noone;
 hp = 0;
 hp_max = 0;
 chi = 0;
-chi_max = 0;
+chi_max = 10;
 hp_col = merge_color(c_red, make_color_elm(), random_range(0.5, 0.75));
 chi_col = merge_color(c_white, make_color_elm(), random_range(0.5, 0.75));
+boss = false;
 dead = false;
 initiative = 0;
 priority = 0;
@@ -34,6 +35,7 @@ shell = c_dkgray;
 xoffset = sprite_xoffset;
 yoffset = sprite_yoffset;
 shake = false;
+hit = 0;
 animation = anim_type.idle;
 ani_map = ds_map_create();
 fog_update = true;
@@ -41,7 +43,7 @@ image_speed = 0.25;
 
 // default inventory
 if (object_index != o_player && instance_exists(o_chest) && distance_to_object(o_chest) < 64)
-	inventory[? s_key] = 1;
+	inventory[? item_type.key] = 1;
 
 // default animations
 ds_map_add(ani_map, anim_type.idle, [0]);

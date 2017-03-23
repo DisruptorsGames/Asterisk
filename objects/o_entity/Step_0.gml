@@ -14,7 +14,10 @@ if (shake)
 	x += choose(-r, r);
 	y += choose(r, -r);
 	shake = false;
+	hit = seconds(0.75);
 }
+if (hit > 0)
+	hit--;
 
 // trigger effects
 if (effect_update)
@@ -40,7 +43,7 @@ if (effect_update)
 					image_xscale = choose(-1, 1);
 					sprite_set_offset(sprite_index, image_xscale < 0 ? -sprite_width : 0, 0);
 					break;
-				case effect_type.damage:
+				case effect_type.bleed:
 					var amount = args[1];
 					do_damage(id, amount, amount / hp > 0.5);
 					if (amount > 0)
@@ -66,7 +69,7 @@ if (!ds_stack_empty(actions))
 	var top = ds_stack_pop(actions),
 		action = top[0], args = top[1], t = args[0],
 		us = object_get_name(object_index),
-		them = t == noone ? "???" : object_get_name(t.object_index);
+		them = !instance_exists(t) ? "???" : object_get_name(t.object_index);
 	switch (action)
 	{
 		case action_type.die:
@@ -84,16 +87,9 @@ if (!ds_stack_empty(actions))
 			break;
 		case action_type.move:
 			// ToDo: fix issue with AI selecting a position that is already filled
-			if (mp_grid_path(game.playfield, path, x + xoffset, y + yoffset, t.x + t.xoffset, t.y + t.yoffset, false))
+			if (path != -1)
 			{
 				t = noone;
-				// remove any point the entity cannot move to
-				var last = path_get_number(path) - 1;
-				while (last > steps)
-				{
-					path_delete_point(path, last);
-					last = path_get_number(path) - 1;
-				}
 				path_start(path, 0.75, 0, false);
 				animation_set(id, anim_type.run);
 			}
@@ -143,7 +139,7 @@ if (!ds_stack_empty(actions))
 				}
 				ds_map_clear(inv);
 				var message = instance_create_depth(t.x, t.y, t.depth - 1, o_float);
-				message = choose("YONK!", "KTHXBYE!", "GOTCHA!");
+				message.text = choose("YONK!", "KTHXBYE!", "GOTCHA!");
 			}
 			break;
 		case action_type.peek:
@@ -164,17 +160,30 @@ if (game.entity == id && steps > 0)
 			think--;
 		else if (think == 0)
 		{
-			var	args = can_has(action_type.attack, amenu_target)
-				? [action_type.attack, [amenu_target, irandom(damage)]]
-				: (!can_has(action_type.meditation, id)
-					? [action_type.meditation, [id, roll(0, 3, 0),  irandom_range(1, 10)]]
-					: [action_type.move, [object_index == o_rabbit ? o_chest : o_player]]);
-			if (cost > 0 && steps >= cost)
+			// find priority target
+			var priority = noone;
+			for (var i = 0; i < instance_count; i++)
 			{
-				ds_stack_push(actions, args);
+				var inst = instance_id[i];
+				if (object_get_parent(inst.object_index) == o_entity && !inst.npc
+					&& can_has(action_type.attack, inst))
+						priority = inst;
+			}
+			// [type, [tick/dmg, amt]]
+			var	action = priority != noone
+				? [action_type.attack, [priority, irandom(damage)]]
+				: (can_has(action_type.meditation, id)
+					? [action_type.meditation, [id, roll(0, 3, 0), irandom_range(1, 10)]]
+					: [action_type.defend, [id]]),
+				args = action[1];
+			if (cost > 0 && steps >= cost 
+				&& (action[0] == action_type.attack || args[0] > 0))
+			{
+				ds_stack_push(actions, action);
 				steps -= cost;
 			}
-			think = seconds(1);
+			amenu_target = priority;
+			think = seconds(0.75);
 		}
 	}
 	// avoid solid tiles and current player location
@@ -186,6 +195,8 @@ if (game.entity == id && steps > 0)
 			obj = collision_point(tx, ty, o_entity, false, false);
 		amenu_x = obj != noone ? obj.x : o_highlight.x;
 		amenu_y = obj != noone ? obj.y : o_highlight.y;
+		if (amenu_item == -1)
+			path_clear_points(path);
 		// click menu
 		if (amenu_item > 0)
 		{
@@ -200,11 +211,21 @@ if (game.entity == id && steps > 0)
 					args = [amenu_target, ticks, amount]; // TICKS, AMOUNT
 					cost = 2;
 					break;
+				case action_type.move:
+					ds_stack_push(actions, [action_type.move, [o_highlight]]);
+					var p = path_get_number(path) - 1;
+					roll(p, p, 0);
+					steps -= p;
+					break;
+				case action_type.skip:
+					cost = steps;
+					break;
 			}
 			if (cost > 0 && steps >= cost)
 			{
 				ds_stack_push(actions, [amenu_item, args]);
-				steps -= cost;
+				if (amenu_item != action_type.move)
+					steps -= cost;
 			}
 			// reset
 			amenu = [];
@@ -238,7 +259,7 @@ if (game.entity == id && steps > 0)
 			else
 			{
 				amenu = obj == id
-					? [action_type.ambush, action_type.defend, action_type.meditation]
+					? [action_type.ambush, action_type.defend, action_type.meditation, action_type.skip]
 					: (can_has(action_type.attack, obj)
 						? [action_type.attack, action_type.defend, action_type.inspect]
 						: [action_type.inspect])
@@ -247,7 +268,20 @@ if (game.entity == id && steps > 0)
 		}
 		// movement
 		else if (array_length_1d(amenu) == 0)
-			ds_stack_push(actions, [action_type.move, [o_highlight]]);
+		{
+			amenu = [action_type.move];
+			mp_grid_path(game.playfield, path, x + xoffset, y + yoffset, tx, ty, false);
+			// remove any point the entity cannot move to
+			var last = path_get_number(path) - 1;
+			while (last > steps)
+			{
+				path_delete_point(path, last);
+				last = path_get_number(path) - 1;
+			}
+			// realign action menu to be above last point in path
+			amenu_x = path_get_point_x(path, last) - game.width / 2;
+			amenu_y = path_get_point_y(path, last) - game.height / 2;
+		}
 		// reset
 		else
 		{
@@ -260,7 +294,7 @@ if (game.entity == id && steps > 0)
 // end walk cycle
 if (path_position == 1)
 {
-	steps -= path_get_number(path) - 1;
+	//steps -= path_get_number(path) - 1;
 	path_end();
 	path_clear_points(path);
 	path_position = 0;
@@ -276,7 +310,9 @@ if (path_position == 1)
 			? anim_type.lean 
 			: ((tile_l || tile_r) 
 				? anim_type.crouch 
-				: (hp == 100 ? anim_type.idle : anim_type.fight));
+				: (can_has(action_type.attack, amenu_target) 
+					? anim_type.fight
+					: anim_type.idle));
 	image_xscale = tile_r ? -1 : 1;
 	sprite_set_offset(sprite_index, tile_r ? -sprite_width : 0, 0);
 	animation_set(id, anim);

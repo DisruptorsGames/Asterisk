@@ -2,10 +2,7 @@
 if (sprite_index != -1)
 	draw_self();
 // floating text
-draw_set_font(f_hud);
-	draw_text_transformed_color(x - 1, y - 1, text, image_xscale, image_yscale, 0, c_black, c_black, c_black, c_black, image_alpha);
-	draw_text_transformed_color(x, y, text, image_xscale, image_yscale, 0, image_blend, image_blend, image_blend, image_blend, image_alpha);
-draw_set_font(-1);
+printf(x, y, text, image_blend, image_alpha, f_hud, fa_left, image_xscale, 0, true);
 
 if (global.debug)
 {

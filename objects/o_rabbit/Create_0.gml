@@ -14,9 +14,11 @@ xoffset = 15;
 yoffset = 15;
 
 // populate inventory
-repeat(3)
+items = [item_type.apple];
+for (var i = 0; i < array_length_1d(items); i++)
 {
-	ds_map_increment(inventory, choose(s_potion, s_apple, s_pouch, s_book, s_script), 1);
+	if (irandom(100) < 35)
+		inventory[? items[i]] = 1;
 }
 
 ani_map[? anim_type.idle] = [0, 1, 2, 3, 4, 5, 6, 7];

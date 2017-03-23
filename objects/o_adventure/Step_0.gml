@@ -12,7 +12,6 @@ if (ds_priority_size(turns) == 0)
 			ds_list_add(order, inst);
 		}
 	}
-	// ToDo update playfield
 }
 
 if (entity == noone)

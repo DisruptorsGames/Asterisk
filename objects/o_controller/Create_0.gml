@@ -15,50 +15,13 @@
 #macro vt camera_get_view_target(view_camera[0])
 
 // enumerations
-enum effect_type
-{
-	med,
-	heal,
-	damage,
-	drain
-}
-// ToDo: map to lookup cost of each action
-enum action_type
-{
-	die,
-	meditation,
-	move,
-	ambush,
-	attack,
-	defend,
-	inspect,
-	loot,
-	peek,
-	leave
-}
-enum anim_type
-{
-	idle,
-	walk,
-	run,
-	fight,
-	lean,
-	crouch,
-	meditation,
-	death
-}
-enum tile_type
-{
-	solids,
-	blank,
-	ceiling,
-	ground,
-	door,
-	tree,
-	wall
-}
+enum action_type { ambush, attack, defend, die, inspect, leave, loot, meditation, move, peek, skip, unlock }
+enum anim_type { crouch, death, fight, idle, lean, meditation, run, walk }
+enum effect_type { bleed, drain, heal, med }
+enum enum_type { actions, animations, effects, tiles } // <<<???
+enum item_type { apple, backpack, book, key, potion, pouch, script }
+enum tile_type { blank, ceiling, door, ground, solids, tree, wall }
 
-// globals
 global.debug = false;
 
 randomize();
@@ -66,12 +29,12 @@ draw_set_circle_precision(8);
 
 game = noone;
 target = noone;
-// camera
+aspect = window_get_width() / window_get_height();
+resizes = [0, 0];
 cam_x = 0;
 cam_y = 0;
-cam_w = 160;
 cam_h = 90;
-aspect = display_get_width() / display_get_height();
+cam_w = cam_h * aspect;
 
 switch(room)
 {
@@ -84,17 +47,10 @@ switch(room)
 		cam_h = 224;
 		break;
 	case r_outside:
-	case r_dungeon:
-	case r_dungeon2:
 		instance_create_depth(0, 0, layer_get_depth("Instances") + 1, o_highlight);
 		game = instance_create_depth(0, 0, 0, o_adventure);
 		target = o_player;
-		// scale surface
-		var height = floor(min(768, display_get_height())),
-			width = floor(height * aspect);
-		surface_resize(application_surface, width, height);
 		break;
 }
-
 camera_set_view_size(view_camera[0], cam_w, cam_h);
 display_set_gui_maximise(aspect, aspect);
