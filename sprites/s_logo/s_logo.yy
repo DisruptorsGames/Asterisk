@@ -6,43 +6,43 @@
     "For3D": false,
     "HTile": false,
     "VTile": false,
-    "bbox_bottom": 223,
+    "bbox_bottom": 255,
     "bbox_left": 0,
-    "bbox_right": 255,
+    "bbox_right": 325,
     "bbox_top": 0,
     "bboxmode": 1,
     "colkind": 1,
     "coltolerance": 0,
     "frames": [
         {
-            "id": "a1d8ced8-07ee-4504-93f6-ccb48b946560",
+            "id": "24f73104-461b-4a6b-b62e-62a5736c70aa",
             "modelName": "GMSpriteFrame",
             "mvc": "1.0",
             "SpriteId": "6dc87f77-0379-4a23-a663-f0ab0aed262f",
             "compositeImage": {
-                "id": "82d25a95-3aed-4c69-af36-6dedc73780ee",
+                "id": "eb40b732-f0f3-476a-82fd-a49a797756a2",
                 "modelName": "GMSpriteImage",
                 "mvc": "1.0",
-                "FrameId": "a1d8ced8-07ee-4504-93f6-ccb48b946560",
+                "FrameId": "24f73104-461b-4a6b-b62e-62a5736c70aa",
                 "LayerId": "00000000-0000-0000-0000-000000000000"
             },
             "images": [
                 {
-                    "id": "9193357d-815f-49de-9eb4-b0e382222fc5",
+                    "id": "1d4a45c1-5082-4e4e-a8d9-2a96ab8fd174",
                     "modelName": "GMSpriteImage",
                     "mvc": "1.0",
-                    "FrameId": "a1d8ced8-07ee-4504-93f6-ccb48b946560",
-                    "LayerId": "9e86e03f-3f5d-45cd-9280-0d605a995fd0"
+                    "FrameId": "24f73104-461b-4a6b-b62e-62a5736c70aa",
+                    "LayerId": "258ac0fb-9c7f-4f56-bb7c-72f206499d98"
                 }
             ]
         }
     ],
     "gridX": 0,
     "gridY": 0,
-    "height": 224,
+    "height": 256,
     "layers": [
         {
-            "id": "9e86e03f-3f5d-45cd-9280-0d605a995fd0",
+            "id": "258ac0fb-9c7f-4f56-bb7c-72f206499d98",
             "modelName": "GMImageLayer",
             "mvc": "1.0",
             "SpriteId": "6dc87f77-0379-4a23-a663-f0ab0aed262f",
@@ -61,7 +61,7 @@
     "swfPrecision": 0,
     "textureGroup": 0,
     "type": 0,
-    "width": 256,
+    "width": 326,
     "xorig": 0,
     "yorig": 0
 }

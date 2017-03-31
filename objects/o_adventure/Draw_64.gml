@@ -13,5 +13,6 @@ for (var i = 0; i < ds_list_size(order); i++)
 	draw_rectangle_color(ix, iy, ix + size, iy + size, e.hp_col, e.hp_col, e.hp_col, e.hp_col, false);
 	draw_sprite_part_ext(e.sprite_index, 0, e.image_xscale * left, 0, 16, 16, ix, iy, aspect, aspect, c_white, 1);
 	printf(ix, iy, string(e.priority), c_white, 1, f_hud, fa_left, 1, 0, true);
-	printf(ix, iy + 32, string(e.sprite_xoffset), c_red, 0.5, f_hud, fa_left, 1, 0 , false);
+	if (global.debug)
+		printf(ix, iy + 32, string(e.sprite_xoffset), c_red, 0.5, f_hud, fa_left, 1, 0 , false);
 }

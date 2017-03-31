@@ -10,7 +10,11 @@ draw_sprite_ext(s_portrait, -1, 0, gh - sprite_get_height(s_portrait) * aspect, 
 // name
 printf(0, gh - sprite_get_height(s_portrait) * aspect - string_height(name), name, hp_col, 0.75, f_hud, fa_left, 1.25, 0, true);
 var tname = instance_exists(amenu_target) ? ("-> " + amenu_target.name) : "",
-	tcol = instance_exists(amenu_target) ? amenu_target.hp_col : c_white;
+	tcol = instance_exists(amenu_target)
+		? (object_get_parent(amenu_target.object_index) == o_entity
+			? amenu_target.hp_col
+			: amenu_target.shell)
+		: c_white;
 // target
 printf(string_width(name) * 1.25, gh - sprite_get_height(s_portrait) * aspect - string_height(name), tname, tcol, 0.75, f_hud, fa_left, 1.25, 0, true);
 // health
@@ -41,7 +45,7 @@ for (var i = 0; i < ds_map_size(inventory); i++)
 	if (hover)
 	{
 		inventory_item = first;
-		draw_tooltip(ix, cy, first, size, aspect, 1);
+		draw_tooltip(ix, cy, enum_type.item, first, size, aspect, 1);
 	}
 	printf(ix, cy, value, c_white, npc ? 0.25 : 0.95, f_hud, fa_left, 1, 0, true);
 	if (npc)

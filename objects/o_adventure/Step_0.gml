@@ -19,8 +19,8 @@ if (entity == noone)
 	entity = ds_priority_find_max(turns);
 	o_controller.target = entity;
 	o_highlight.target = !entity.npc ? entity : noone;
-	entity.fog_update = true;
 	entity.effect_update = true;
+	fog_update = true;
 	playfield_update(entity);
 }
 else if (entity.steps == 0)
@@ -35,4 +35,45 @@ else if (entity.steps == 0)
 		entity = noone;
 		timer = time;
 	}
+}
+
+if (fog_update)
+{
+	var size = 4;
+	surface_set_target(fog_surf);
+	draw_clear_alpha(c_black, 0);
+	for (var i = 0; i < room_width / size; i++)
+	{
+		for (var j = 0; j < room_height / size; j++)
+		{
+			var ix = i * size, iy = j * size;
+			if (point_distance(entity.x + entity.xoffset, entity.y + entity.yoffset, ix + size / 2, iy + size / 2) > round(entity.moves * width))
+				draw_rectangle_color(ix, iy, ix + size, iy + size, c_black, c_black, c_black, c_black, false);
+		}
+	}
+	surface_reset_target();
+	fog_update = false;
+}
+
+if (map_update)
+{
+	surface_resize(map_surf, ds_grid_width(map) * 10, ds_grid_height(map) * 10);
+	surface_set_target(map_surf);
+	draw_clear_alpha(c_ltgray, 0);
+	for (var i = 0; i < ds_grid_width(map); i++)
+	{
+		for (var j = 0; j < ds_grid_height(map); j++)
+		{
+			var item = map[# i, j], s = 8, 
+				ix = i * (s + 2), iy = j * (s + 2),
+				col = item == r_outside ? make_color_elm() : c_dkgray;
+			if (item > 0)
+			{
+				draw_rectangle_color(ix, iy, ix + s, iy + s, col, col, col, col, false);
+				printf(ix, iy, item, c_white, 1, f_hud, fa_left, 0.5, 0, false);
+			}
+		}
+	}
+	surface_reset_target();
+	map_update = false;
 }

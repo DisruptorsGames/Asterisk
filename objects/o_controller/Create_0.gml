@@ -18,7 +18,7 @@
 enum action_type { ambush, attack, defend, die, inspect, leave, loot, meditation, move, peek, skip, unlock }
 enum anim_type { crouch, death, fight, idle, lean, meditation, run, walk }
 enum effect_type { bleed, drain, heal, med }
-enum enum_type { actions, animations, effects, tiles } // <<<???
+enum enum_type { action, animation, effect, item }
 enum item_type { apple, backpack, book, key, potion, pouch, script }
 enum tile_type { blank, ceiling, door, ground, solids, tree, wall }
 
@@ -43,8 +43,8 @@ switch(room)
 		break;
 	case r_menu_main:
 		instance_create_depth(0, 0, 0, o_menu_main);
-		cam_w = 256;
-		cam_h = 224;
+		cam_w = 326;
+		cam_h = 256;
 		break;
 	case r_outside:
 		instance_create_depth(0, 0, layer_get_depth("Instances") + 1, o_highlight);

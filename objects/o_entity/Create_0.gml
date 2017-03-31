@@ -1,5 +1,6 @@
 /// @description Init
-name = "Nobody";
+event_inherited();
+
 portrait = noone;
 hp = 0;
 hp_max = 0;
@@ -19,31 +20,15 @@ think = seconds(1);
 moves = 0;
 steps = moves;
 path = path_add();
-locked = false;
-inventory = ds_map_create();
 inventory_item = -1;
 actions = ds_stack_create();
 effects = ds_map_create();
 effect_update = false;
-amenu = [];
-amenu_x = x;
-amenu_y = y;
-amenu_item = -1;
-amenu_target = noone;
-inspect = noone;
-shell = c_dkgray;
-xoffset = sprite_xoffset;
-yoffset = sprite_yoffset;
 shake = false;
 hit = 0;
 animation = anim_type.idle;
 ani_map = ds_map_create();
-fog_update = true;
 image_speed = 0.25;
-
-// default inventory
-if (object_index != o_player && instance_exists(o_chest) && distance_to_object(o_chest) < 64)
-	inventory[? item_type.key] = 1;
 
 // default animations
 ds_map_add(ani_map, anim_type.idle, [0]);
@@ -53,8 +38,3 @@ ds_map_add(ani_map, anim_type.lean, [0]);
 ds_map_add(ani_map, anim_type.crouch, [0]);
 ds_map_add(ani_map, anim_type.death, [0]);
 ds_map_add(ani_map, anim_type.meditation, [0]);
-
-
-
-
-

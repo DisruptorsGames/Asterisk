@@ -1,10 +1,11 @@
 /// @description Set
+event_inherited();
+
 var game = o_controller.game,
 	behind = tile_get_type([tile_type.tree], [
 		tile_get_value(x + xoffset, y + yoffset), 
 		tile_get_value(x, y)]),
 	ld = layer_get_depth("Instances") - (game.entity == id ? 1 : 0);
-move_snap(game.width, game.height);
 depth = behind ? layer_get_depth("Decals") : ld;
 dead = hp <= 0;
 
@@ -25,9 +26,8 @@ if (effect_update)
 	var effect = ds_map_find_first(effects);
 	for(var i = 0; i < ds_map_size(effects); i++)
 	{
-		// countdown on part value
 		var args = effects[? effect], 
-			ticks = args[0]; // [TICKS,AMT]
+			ticks = args[0];
 		if (ticks > 0)
 		{
 			switch (effect)
@@ -45,9 +45,11 @@ if (effect_update)
 					break;
 				case effect_type.bleed:
 					var amount = args[1];
-					do_damage(id, amount, amount / hp > 0.5);
-					if (amount > 0)
-						animation_set(id, anim_type.fight);
+					hp -= amount;
+					shake = true;
+					fx_bleed(id, amount);
+					fx_float(id, string(amount));
+					animation_set(id, anim_type.fight);
 					break;
 				case effect_type.heal:
 					var amount = args[1];
@@ -72,6 +74,23 @@ if (!ds_stack_empty(actions))
 		them = !instance_exists(t) ? "???" : object_get_name(t.object_index);
 	switch (action)
 	{
+		case action_type.ambush: break;
+		case action_type.attack:
+			var dmg = args[1], crit = dmg / t.hp > 0.5;
+			t.hp -= dmg;
+			t.shake = true;
+			t.amenu_target = id; // aggressor ???
+			fx_bleed(t, dmg);
+			fx_float(t, dmg > 0 ? string(dmg) : choose("MISS", "!@#$", "OOPS", "WIFF"));
+			animation_set(id, anim_type.fight);
+			animation_set(t, anim_type.fight);
+			if (t.hp <= 0)
+				ds_stack_push(t.actions, [action_type.die, [t]]);
+			if (dmg > 0)
+				ds_map_delete(t.effects, effect_type.med);
+			break;
+		case action_type.defend: break;
+		case action_type.inspect: break;
 		case action_type.die:
 			shake = true;
 			shell = c_red;
@@ -81,72 +100,42 @@ if (!ds_stack_empty(actions))
 			moves = 0;
 			steps = moves;
 			break;
+		case action_type.leave: break;
+		case action_type.loot:
+			var inv = t.inventory, first = ds_map_find_first(inv);
+			for (var i = 0; i < ds_map_size(inv); i++)
+			{
+				ds_map_increment(inventory, first, inv[? first]);
+				first = ds_map_find_next(inv, first);
+			}
+			ds_map_clear(inv);
+			fx_float(t, choose("YONK", "KTHXBYE", "GOTCHA"));
+			break;
 		case action_type.meditation:
 			var ticks = args[1], amount = args[2];
-			effects[? effect_type.med] = [ticks, amount];
+			fx_float(id, ticks > 0 ? string(ticks) : choose("FIZZLE", "NIL", "FAIL"));
+			if (ticks > 0)
+				effects[? effect_type.med] = [ticks, amount];
 			break;
 		case action_type.move:
-			// ToDo: fix issue with AI selecting a position that is already filled
-			if (path != -1)
-			{
-				t = noone;
-				path_start(path, 0.75, 0, false);
-				animation_set(id, anim_type.run);
-			}
+			fx_float(id, string(path_get_number(path) - 1));
+			path_start(path, 0.75, 0, false);
+			animation_set(id, anim_type.run);
+			t = noone;
 			break;
-		case action_type.ambush:
-			// ToDo: add code
-			break;
-		case action_type.attack:
-			var dmg = args[1], crit = dmg / t.hp > 0.5;
-			do_damage(t, dmg, crit);
-			t.amenu_target = id; // aggressor ???
-			if (dmg > 0)
-			{
-				animation_set(id, anim_type.fight);
-				animation_set(t, anim_type.fight);
-				ds_map_delete(t.effects, effect_type.med);
-			}
-			break;
-		case action_type.defend:
-			// ToDo: add code
-			break;
-		case action_type.inspect:
-			var obj = t == noone ? tile_get_value(amenu_x, amenu_y) : them;
-			inspect = inspect == noone ? t : noone;
-			// ToDo
-			break;
-		case action_type.loot:
-			if (t.locked && inventory[? s_key] >= 1)
+		case action_type.peek: break;
+		case action_type.skip: break;
+		case action_type.unlock:
+			var text = "";
+			if (inventory[? item_type.key] > 0)
 			{
 				t.locked = false;
-				ds_map_decrement(inventory, s_key, 1);
-				var poof = instance_create_depth(t.x, t.y, t.depth - 1, o_float);
-				poof.text = choose("POOF!", "KAZAM!");
-			}
-			else if (t.locked)
-			{
-				var message = instance_create_depth(t.x, t.y, t.depth - 1, o_float);
-				message.text = "You need a KEY!";
+				ds_map_decrement(inventory, item_type.key, 1);
+				text = choose("POOF", "KAZAM");
 			}
 			else
-			{
-				var inv = t.inventory, first = ds_map_find_first(inv);
-				for (var i = 0; i < ds_map_size(inv); i++)
-				{
-					ds_map_increment(inventory, first, inv[? first]);
-					first = ds_map_find_next(inv, first);
-				}
-				ds_map_clear(inv);
-				var message = instance_create_depth(t.x, t.y, t.depth - 1, o_float);
-				message.text = choose("YONK!", "KTHXBYE!", "GOTCHA!");
-			}
-			break;
-		case action_type.peek:
-			// ToDo: add code
-			break;
-		case action_type.leave:
-			// ToDo: add code
+				text = "You need a key";
+			fx_float(t, text);
 			break;
 	}
 }
@@ -173,10 +162,10 @@ if (game.entity == id && steps > 0)
 			var	action = priority != noone
 				? [action_type.attack, [priority, irandom(damage)]]
 				: (can_has(action_type.meditation, id)
-					? [action_type.meditation, [id, roll(0, 3, 0), irandom_range(1, 10)]]
+					? [action_type.meditation, [id, irandom_range(0, 3), irandom_range(1, 10)]]
 					: [action_type.defend, [id]]),
 				args = action[1];
-			if (cost > 0 && steps >= cost 
+			if (cost > 0 && steps >= cost
 				&& (action[0] == action_type.attack || args[0] > 0))
 			{
 				ds_stack_push(actions, action);
@@ -192,7 +181,7 @@ if (game.entity == id && steps > 0)
 		var args = [amenu_target],
 			tx = o_highlight.x + o_highlight.xoffset,
 			ty = o_highlight.y + o_highlight.yoffset,
-			obj = collision_point(tx, ty, o_entity, false, false);
+			obj = collision_point(tx, ty, o_base, false, false);
 		amenu_x = obj != noone ? obj.x : o_highlight.x;
 		amenu_y = obj != noone ? obj.y : o_highlight.y;
 		if (amenu_item == -1)
@@ -203,19 +192,15 @@ if (game.entity == id && steps > 0)
 			switch (amenu_item)
 			{
 				case action_type.attack:
-					var dmg = irandom(damage);
-					args = [amenu_target, dmg];
+					args = [amenu_target, irandom(damage)];
 					break;
 				case action_type.meditation:
-					var ticks = roll(0, 3, 0), amount = irandom(10);
-					args = [amenu_target, ticks, amount]; // TICKS, AMOUNT
+					args = [amenu_target, irandom_range(0, 3), irandom(10)];
 					cost = 2;
 					break;
 				case action_type.move:
-					ds_stack_push(actions, [action_type.move, [o_highlight]]);
-					var p = path_get_number(path) - 1;
-					roll(p, p, 0);
-					steps -= p;
+					args = [o_highlight];
+					cost = path_get_number(path) - 1;
 					break;
 				case action_type.skip:
 					cost = steps;
@@ -224,8 +209,7 @@ if (game.entity == id && steps > 0)
 			if (cost > 0 && steps >= cost)
 			{
 				ds_stack_push(actions, [amenu_item, args]);
-				if (amenu_item != action_type.move)
-					steps -= cost;
+				steps -= cost;
 			}
 			// reset
 			amenu = [];
@@ -252,9 +236,11 @@ if (game.entity == id && steps > 0)
 		{
 			if (array_length_1d(amenu) > 0)
 				amenu = [];
-			else if (obj.dead)
-				amenu = ds_map_size(obj.inventory) > 0 
-					? [action_type.loot, action_type.inspect]
+			else if (object_get_parent(obj.object_index) != o_entity || obj.dead)
+				amenu = ds_map_size(obj.inventory) > 0
+					? (obj.locked
+						? [action_type.unlock, action_type.inspect]
+						: [action_type.loot, action_type.inspect])
 					: [action_type.inspect];
 			else
 			{
@@ -316,4 +302,5 @@ if (path_position == 1)
 	image_xscale = tile_r ? -1 : 1;
 	sprite_set_offset(sprite_index, tile_r ? -sprite_width : 0, 0);
 	animation_set(id, anim);
+	game.fog_update = true;
 }

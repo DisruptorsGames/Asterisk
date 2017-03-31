@@ -2,7 +2,7 @@
 event_inherited();
 
 name = choose("Chest of doom!", "Chest of luck", "Treasure Chest");
-shell = c_yellow;
+shell = merge_color(c_yellow, make_color_elm(), 0.5);
 locked = true;
 
 // populate inventory

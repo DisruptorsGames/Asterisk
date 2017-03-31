@@ -15,16 +15,7 @@ steps = moves;
 xoffset = 8;
 yoffset = 24;
 
-// populate inventory
-items = [item_type.apple, item_type.book, item_type.potion, item_type.pouch, item_type.script];
-for (var i = 0; i < array_length_1d(items); i++)
-{
-	if (irandom(100) < 35)
-		inventory[? items[i]] = 1;
-}
-
-// controls
-toggle_inv = ord("I");
+inventory[? item_type.script] = 5;
 
 // animations
 ani_map[? anim_type.idle] = [0, 1, 2, 3, 4, 5, 6, 7];

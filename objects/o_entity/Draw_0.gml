@@ -1,5 +1,9 @@
 /// @description Draw Entity
+event_inherited();
+
 var game = o_controller.game;
+image_blend = merge_color((boss ? hp_col : c_white), c_red, (hit / 100));
+
 // path
 if (path_position > 0)
 {
@@ -37,14 +41,6 @@ else
 	}
 }
 
-// entity
-var hover = point_in_rectangle(mouse_x, mouse_y, bbox_left, bbox_top, bbox_right, bbox_bottom),
-	col = merge_color((boss ? hp_col : image_blend), c_red, (hit / 100));
-draw_sprite_ext(sprite_index, image_index, x - 1, y - 1, image_xscale, image_yscale, image_angle, shell, hover ? 0.25 : 0);
-draw_sprite_ext(sprite_index, image_index, x + 1, y + 1, image_xscale, image_yscale, image_angle, shell, hover ? 0.25 : 0);
-draw_sprite_ext(sprite_index, image_index, x, y, image_xscale, image_yscale, image_angle, col, image_alpha);
-
-
 // steps
 if (game.entity == id && steps > 0)
 	printf(x, y + yoffset, steps, c_white, 0.75, f_hud, fa_left, 1, 0, false);
@@ -67,81 +63,5 @@ for (var i = 0; i < ds_map_size(effects); i++)
 	first = ds_map_find_next(effects, first);
 }
 
-// context menu
-for (var i = 0; i < array_length_1d(amenu); i++)
-{
-	var item = amenu[i], size = 4,
-		ix = amenu_x + i * (size + 3),
-		iy = amenu_y - size - 2,
-		hover = point_in_rectangle(mouse_x, mouse_y, ix - 0.5, iy - 0.5, ix + size + 0.5, iy + size + 0.5),
-		scale = 0.25,
-		alpha = hover ? 0.75 : 0.5,
-		col = hover ? c_yellow : c_ltgray;
-	if (hover)
-	{
-		amenu_item = item;
-		if (item == action_type.loot && !amenu_target.locked)
-		{
-			var first = ds_map_find_first(amenu_target.inventory);
-			for (var j = 0; j < ds_map_size(amenu_target.inventory); j++)
-			{
-				var value = amenu_target.inventory[? first],
-					jx = ix + j * (size + 2),
-					jy = iy - size - 2;
-				draw_set_alpha(alpha);
-					draw_border(jx, jy, jx + size, jy + size, make_color_comp(col), 0.5);
-					draw_rectangle_color(jx, jy, jx + size, jy + size, c_black, c_black, c_black, c_black, false);
-				draw_set_alpha(1);
-				draw_sprite_ext(s_items, first, jx, jy, scale, scale, 0, c_white, 1);
-				printf(jx, jy, string(value), c_white, 0.75, f_hud, fa_left, scale, 0, false);
-				first = ds_map_find_next(amenu_target.inventory, first);
-			}
-			amenu_target.image_index = 1;
-		}
-		draw_tooltip(amenu_x, iy, item, size, scale, alpha);
-	}
-	// draw the action item
-	draw_set_alpha(alpha);
-		draw_border(ix, iy, ix + size, iy + size, col, 0.5);
-		draw_rectangle_color(ix, iy, ix + size, iy + size, c_black, c_black, c_black, c_black, false);
-	draw_set_alpha(1);
-	draw_sprite_ext(s_actions, item, ix + 0.5, iy + 0.5, 0.25, 0.25, 0, c_white, 1);
-}
-if (!point_in_rectangle(mouse_x, mouse_y, amenu_x - 0.5, amenu_y - 6.5, amenu_x + array_length_1d(amenu) * 6, amenu_y - 2))
-	amenu_item = -1;
-
-//inspect
-if (inspect != noone)
-{
-	// ToDo:
-}
-
-// bounding box data
 if (global.debug)
-{
-	draw_rectangle_color(bbox_left, bbox_top, bbox_right, bbox_bottom, c_red, c_red, c_red, c_red, true);
-	draw_circle_color(x, y, 1, c_maroon, c_maroon, false);
 	printf(bbox_right, y, string(path) + ":" + string(path_get_number(path)), c_orange, 0.5, f_hud, fa_right, 1, 0, false);
-	// amenu
-	draw_set_alpha(0.20);
-		draw_rectangle_color(amenu_x - 0.5, amenu_y - 6.5, amenu_x + array_length_1d(amenu) * 6, amenu_y - 2, c_orange, c_orange, c_orange, c_orange, false);
-	draw_set_alpha(1);
-}
-
-// draw fog
-if (fog_update)
-{
-	surface_set_target(game.fog_surf);
-	draw_clear_alpha(c_black, 0);
-	for (var i = 0; i < vw; i++)
-	{
-		for (var j = 0; j < vh; j++)
-		{
-			var ix = i * game.width, iy = j * game.height;
-			if (point_distance(x + xoffset, y + yoffset, ix + game.width / 2, iy + game.height / 2) > round(moves * 1.25) * game.width)
-				draw_rectangle_color(ix, iy, ix + game.width, iy + game.height, c_black, c_black, c_black, c_black, false);
-		}
-	}
-	surface_reset_target();
-	fog_update = false;
-}
