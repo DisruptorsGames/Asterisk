@@ -1,7 +1,8 @@
 /// @description Cleanup
-mp_grid_destroy(playfield);
 ds_grid_destroy(map);
-ds_priority_destroy(turns);
 ds_list_destroy(order);
-surface_free(fog_surf);
+ds_list_destroy(segments);
+ds_priority_destroy(turns);
+mp_grid_destroy(playfield);
 part_system_destroy(particles);
+surface_free(fog_surf);

@@ -9,13 +9,19 @@ var game = o_controller.game,
 depth = behind ? layer_get_depth("Decals") : ld;
 dead = hp <= 0;
 
+if (agro)
+{
+	fx_float(id, "!!!");
+	hit = seconds(1);
+	agro = false;
+}
 if (shake)
 {
 	var r = random(0.75) + 0.25;
 	x += choose(-r, r);
 	y += choose(r, -r);
-	shake = false;
 	hit = seconds(0.75);
+	shake = false;
 }
 if (hit > 0)
 	hit--;
@@ -79,7 +85,7 @@ if (!ds_stack_empty(actions))
 			var dmg = args[1], crit = dmg / t.hp > 0.5;
 			t.hp -= dmg;
 			t.shake = true;
-			t.amenu_target = id; // aggressor ???
+			//t.amenu_target = id; // aggressor ???
 			fx_bleed(t, dmg);
 			fx_float(t, dmg > 0 ? string(dmg) : choose("MISS", "!@#$", "OOPS", "WIFF"));
 			animation_set(id, anim_type.fight);
@@ -155,13 +161,13 @@ if (game.entity == id && steps > 0)
 			{
 				var inst = instance_id[i];
 				if (object_get_parent(inst.object_index) == o_entity && !inst.npc
-					&& can_has(action_type.attack, inst))
+					&& can_has(action_type.attack, id, inst))
 						priority = inst;
 			}
 			// [type, [tick/dmg, amt]]
 			var	action = priority != noone
 				? [action_type.attack, [priority, irandom(damage)]]
-				: (can_has(action_type.meditation, id)
+				: (can_has(action_type.meditation, id, id)
 					? [action_type.meditation, [id, irandom_range(0, 3), irandom_range(1, 10)]]
 					: [action_type.defend, [id]]),
 				args = action[1];
@@ -175,7 +181,6 @@ if (game.entity == id && steps > 0)
 			think = seconds(0.75);
 		}
 	}
-	// avoid solid tiles and current player location
 	else if (mouse_check_button_pressed(mb_left))
 	{
 		var args = [amenu_target],
@@ -184,9 +189,8 @@ if (game.entity == id && steps > 0)
 			obj = collision_point(tx, ty, o_base, false, false);
 		amenu_x = obj != noone ? obj.x : o_highlight.x;
 		amenu_y = obj != noone ? obj.y : o_highlight.y;
-		if (amenu_item == -1)
-			path_clear_points(path);
-		// click menu
+		/*if (amenu_item == -1)
+			path_clear_points(path);*/
 		if (amenu_item > 0)
 		{
 			switch (amenu_item)
@@ -211,10 +215,7 @@ if (game.entity == id && steps > 0)
 				ds_stack_push(actions, [amenu_item, args]);
 				steps -= cost;
 			}
-			// reset
-			amenu = [];
-			amenu_item = -1;
-			amenu_target = noone;
+			amenu_reset = true;
 		}
 		else if (inventory_item > 0)
 		{
@@ -246,7 +247,7 @@ if (game.entity == id && steps > 0)
 			{
 				amenu = obj == id
 					? [action_type.ambush, action_type.defend, action_type.meditation, action_type.skip]
-					: (can_has(action_type.attack, obj)
+					: (can_has(action_type.attack, id, obj)
 						? [action_type.attack, action_type.defend, action_type.inspect]
 						: [action_type.inspect])
 			}
@@ -270,17 +271,24 @@ if (game.entity == id && steps > 0)
 		}
 		// reset
 		else
-		{
-			amenu = [];
-			amenu_item = -1;
-			amenu_target = noone;
-		}
+			amenu_reset = true;
 	}
 }
+
+// reset amenu
+if (amenu_reset)
+{
+	amenu = [];
+	amenu_item = -1;
+	amenu_reset = false;
+	amenu_target = noone;
+	amenu_x = x;
+	amenu_y = y;
+}
+
 // end walk cycle
 if (path_position == 1)
 {
-	//steps -= path_get_number(path) - 1;
 	path_end();
 	path_clear_points(path);
 	path_position = 0;
@@ -296,7 +304,7 @@ if (path_position == 1)
 			? anim_type.lean 
 			: ((tile_l || tile_r) 
 				? anim_type.crouch 
-				: (can_has(action_type.attack, amenu_target) 
+				: (can_has(action_type.attack, id, amenu_target) 
 					? anim_type.fight
 					: anim_type.idle));
 	image_xscale = tile_r ? -1 : 1;

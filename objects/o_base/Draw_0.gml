@@ -48,14 +48,3 @@ for (var i = 0; i < array_length_1d(amenu); i++)
 }
 if (!point_in_rectangle(mouse_x, mouse_y, amenu_x - 0.5, amenu_y - 6.5, amenu_x + array_length_1d(amenu) * 6, amenu_y - 2))
 	amenu_item = -1;
-
-// bounding box data
-if (global.debug)
-{
-	draw_rectangle_color(bbox_left, bbox_top, bbox_right, bbox_bottom, c_red, c_red, c_red, c_red, true);
-	draw_circle_color(x, y, 1, c_maroon, c_maroon, false);
-	// amenu
-	draw_set_alpha(0.20);
-		draw_rectangle_color(amenu_x - 0.5, amenu_y - 6.5, amenu_x + array_length_1d(amenu) * 6, amenu_y - 2, c_orange, c_orange, c_orange, c_orange, false);
-	draw_set_alpha(1);
-}

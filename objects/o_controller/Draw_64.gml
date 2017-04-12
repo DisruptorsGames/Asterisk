@@ -14,8 +14,8 @@ if (global.debug)
 		+ "\nRoom: " + string(room_width) + "x" + string(room_height)
 		+ "\nResizes: " + string(resizes);
 	//
-	draw_line_color(gw / 2, 0, gw / 2, gh, c_red, c_red);
-	draw_line_color(0, gh / 2, gw, gh / 2, c_red, c_red);
+	draw_line_color(gw / 2, 0, gw / 2, gh, c_white, c_white);
+	draw_line_color(0, gh / 2, gw, gh / 2, c_white, c_white);
 }
 
 printf(gw, 0, text, c_white, 0.95, f_hud, fa_right, 1, 0, false);

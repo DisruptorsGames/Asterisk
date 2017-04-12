@@ -1,6 +1,7 @@
 /// @description Init
 amenu = [];
 amenu_item = -1;
+amenu_reset = false;
 amenu_target = noone;
 amenu_x = x;
 amenu_y = y;

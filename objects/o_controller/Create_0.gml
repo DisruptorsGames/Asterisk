@@ -20,6 +20,7 @@ enum anim_type { crouch, death, fight, idle, lean, meditation, run, walk }
 enum effect_type { bleed, drain, heal, med }
 enum enum_type { action, animation, effect, item }
 enum item_type { apple, backpack, book, key, potion, pouch, script }
+enum point { xx, yy, angle }
 enum tile_type { blank, ceiling, door, ground, solids, tree, wall }
 
 global.debug = false;

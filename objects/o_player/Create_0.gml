@@ -15,8 +15,6 @@ steps = moves;
 xoffset = 8;
 yoffset = 24;
 
-inventory[? item_type.script] = 5;
-
 // animations
 ani_map[? anim_type.idle] = [0, 1, 2, 3, 4, 5, 6, 7];
 ani_map[? anim_type.run] = [8, 9, 10, 11, 12, 13, 14];

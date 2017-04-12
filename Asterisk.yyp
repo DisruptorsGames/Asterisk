@@ -135,6 +135,14 @@
             }
         },
         {
+            "Key": "2f4f4dae-c97b-493e-aa41-943c4e6b78d2",
+            "Value": {
+                "id": "2ca29b31-bd52-4b63-9d63-efbae940ca63",
+                "resourcePath": "scripts\\draw_shadows\\draw_shadows.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
             "Key": "3484a923-7327-4f0f-8744-cb06a6532470",
             "Value": {
                 "id": "8f29b50d-e2f4-43cf-8d58-ac70bf13d691",
@@ -652,6 +660,7 @@
         "7c92e001-52e0-431a-904f-37d8241cb55f",
         "486ddf9b-5367-4ff5-b30f-12129857743c",
         "b150c5b3-ad37-4bf7-aa01-b201a2379af6",
+        "2f4f4dae-c97b-493e-aa41-943c4e6b78d2",
         "a354a50f-9ddc-40fd-8aea-60f23ada536e",
         "1dd1886c-dab2-4a9e-97e5-8c5eb3253c4f",
         "a11eb884-5ce3-4374-98d1-2dbcf9350022",

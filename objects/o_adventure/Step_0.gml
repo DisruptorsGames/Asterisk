@@ -5,7 +5,8 @@ if (ds_priority_size(turns) == 0)
 	{
 		var inst = instance_id[i];
 		if (object_get_parent(inst.object_index) == o_entity 
-			&& inst.initiative > 0 && inst.steps > 0 && !inst.dead)
+			&& inst.initiative > 0 && inst.steps > 0 && !inst.dead
+			&& (inst.agro || !inst.npc))
 		{
 			inst.priority = irandom_range(1, inst.initiative);
 			ds_priority_add(turns, inst, inst.priority);
@@ -39,18 +40,9 @@ else if (entity.steps == 0)
 
 if (fog_update)
 {
-	var size = 4;
 	surface_set_target(fog_surf);
-	draw_clear_alpha(c_black, 0);
-	for (var i = 0; i < room_width / size; i++)
-	{
-		for (var j = 0; j < room_height / size; j++)
-		{
-			var ix = i * size, iy = j * size;
-			if (point_distance(entity.x + entity.xoffset, entity.y + entity.yoffset, ix + size / 2, iy + size / 2) > round(entity.moves * width))
-				draw_rectangle_color(ix, iy, ix + size, iy + size, c_black, c_black, c_black, c_black, false);
-		}
-	}
+		draw_clear_alpha(c_black, 0);
+		draw_shadows(entity);
 	surface_reset_target();
 	fog_update = false;
 }

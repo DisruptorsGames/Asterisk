@@ -62,6 +62,3 @@ for (var i = 0; i < ds_map_size(effects); i++)
 	printf(x , iy, string(ticks), c_white, 0.75, f_hud, fa_left, 0.25, 0, false);
 	first = ds_map_find_next(effects, first);
 }
-
-if (global.debug)
-	printf(bbox_right, y, string(path) + ":" + string(path_get_number(path)), c_orange, 0.5, f_hud, fa_right, 1, 0, false);
