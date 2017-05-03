@@ -17,14 +17,14 @@ yoffset = 15;
 items = [item_type.apple];
 for (var i = 0; i < array_length_1d(items); i++)
 {
-	if (irandom(100) < 35)
-		inventory[? items[i]] = 1;
+    if (irandom(100) < 35)
+        inventory[? items[i]] = 1;
 }
 
 ani_map[? anim_type.idle] = [0, 1, 2, 3, 4, 5, 6, 7];
 ani_map[? anim_type.run] = [8, 9, 10, 11];
-ani_map[? anim_type.fight] = [16, 17, 18];
+ani_map[? anim_type.fight] = [16, 17, 18, 19];
 ani_map[? anim_type.lean] = [24];
-ani_map[? anim_type.crouch] = [25];
+//ani_map[? anim_type.crouch] = [25];
 ani_map[? anim_type.death] = [26];
-ani_map[? anim_type.meditation] = [27, 28, 29];
+//ani_map[? anim_type.meditation] = [27, 28, 29];

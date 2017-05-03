@@ -39,19 +39,19 @@ cam_w = cam_h * aspect;
 
 switch(room)
 {
-	case r_base:
-		room_goto(r_menu_main);
-		break;
-	case r_menu_main:
-		instance_create_depth(0, 0, 0, o_menu_main);
-		cam_w = 326;
-		cam_h = 256;
-		break;
-	case r_outside:
-		instance_create_depth(0, 0, layer_get_depth("Instances") + 1, o_highlight);
-		game = instance_create_depth(0, 0, 0, o_adventure);
-		target = o_player;
-		break;
+    case r_base:
+        room_goto(r_menu_main);
+        break;
+    case r_menu_main:
+        instance_create_depth(0, 0, 0, o_menu_main);
+        cam_w = 326;
+        cam_h = 256;
+        break;
+    case r_outside:
+        instance_create_depth(0, 0, layer_get_depth("Instances") + 1, o_highlight);
+        game = instance_create_depth(0, 0, 0, o_adventure);
+        target = o_player;
+        break;
 }
 camera_set_view_size(view_camera[0], cam_w, cam_h);
 display_set_gui_maximise(aspect, aspect);

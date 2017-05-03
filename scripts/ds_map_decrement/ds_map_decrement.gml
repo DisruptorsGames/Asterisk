@@ -4,6 +4,6 @@
 /// @param value
 var map = argument0, key = argument1, value = argument2;
 if (map[? key] > 1)
-	map[? key] -= value;
+    map[? key] -= value;
 else
-	ds_map_delete(map, key);
+    ds_map_delete(map, key);

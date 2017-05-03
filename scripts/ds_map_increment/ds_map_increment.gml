@@ -4,6 +4,6 @@
 /// @param value
 var map = argument0, key = argument1, value = argument2;
 if (is_undefined(map[? key]))
-	map[? key] = value;
+    map[? key] = value;
 else
-	map[? key] += value;
+    map[? key] += value;

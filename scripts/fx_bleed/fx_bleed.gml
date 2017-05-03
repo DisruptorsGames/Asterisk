@@ -15,12 +15,12 @@ part_particles_create(game.particles, target.x + target.xoffset, target.y + targ
 
 if (target.hp <= 0)
 {
-	var ef_skull = part_type_create();
-	part_type_sprite(ef_skull, s_blood, false, true, true);
-	part_type_size(ef_skull, 1, 2.25, -0.01, 0);
-	part_type_color_mix(ef_skull, c_red, target.chi_col);
-	part_type_scale(ef_skull, choose(1, -1), choose(-1, 1));
-	part_type_speed(ef_skull, 1, 3, 0, 0);
-	//part_type_life(ef_skull, 8, 18);
-	part_particles_create(game.particles, target.x + target.xoffset, target.y + target.yoffset, ef_blood, amount * 3);
+    var ef_skull = part_type_create();
+    part_type_sprite(ef_skull, s_blood, false, true, true);
+    part_type_size(ef_skull, 1, 2.25, -0.01, 0);
+    part_type_color_mix(ef_skull, c_red, target.chi_col);
+    part_type_scale(ef_skull, choose(1, -1), choose(-1, 1));
+    part_type_speed(ef_skull, 1, 3, 0, 0);
+    //part_type_life(ef_skull, 8, 18);
+    part_particles_create(game.particles, target.x + target.xoffset, target.y + target.yoffset, ef_blood, amount * 3);
 }

@@ -16,8 +16,8 @@ yoffset = 15;
 items = [item_type.apple, item_type.book, item_type.potion, item_type.pouch, item_type.script];
 for (var i = 0; i < array_length_1d(items); i++)
 {
-	if (irandom(100) < 35)
-		inventory[? items[i]] = 1;
+    if (irandom(100) < 35)
+        inventory[? items[i]] = 1;
 }
 
 ani_map[? anim_type.idle] = [0, 1, 2, 3, 4, 5, 6, 7];

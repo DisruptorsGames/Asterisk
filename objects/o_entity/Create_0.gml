@@ -22,6 +22,7 @@ npc = true;
 passive = false;
 agro = false;
 think = seconds(1);
+target = noone;
 //
 path = path_add();
 inventory_item = -1;
