@@ -2,7 +2,7 @@
 
 // bounding box
 if (global.debug)
-    draw_rectangle_color(bbox_left, bbox_top, bbox_right, bbox_bottom, c_black, c_black, c_black, c_black, false);
+    draw_border(bbox_left, bbox_top, bbox_right, bbox_bottom, c_red, 0.75);
 
 // actual sprite
 var hover = point_in_rectangle(mouse_x, mouse_y, bbox_left, bbox_top, bbox_right, bbox_bottom);

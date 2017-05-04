@@ -9,13 +9,6 @@ if (portrait != noone)
 draw_sprite_ext(s_portrait, -1, 0, gh - sprite_get_height(s_portrait) * aspect, aspect, aspect, 0, c_dkgray, 0.95);
 // name
 printf(0, gh - sprite_get_height(s_portrait) * aspect - string_height(name), name, hp_col, 0.75, f_hud, fa_left, 1.25, 0, true);
-var tname = instance_exists(target) ? ("-> " + object_get_name(target.object_index)) : "",
-    tcol = instance_exists(target)
-        && object_get_parent(target.object_index) == o_entity
-            ? target.hp_col
-            : c_white;
-// target
-printf(string_width(name) * 1.25, gh - sprite_get_height(s_portrait) * aspect - string_height(name), tname, tcol, 0.75, f_hud, fa_left, 1.25, 0, true);
 // health
 var xx = sprite_get_width(s_portrait) * aspect + 2,
     yy = gh - sprite_get_height(s_bar) * aspect;

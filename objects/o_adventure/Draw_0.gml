@@ -1,7 +1,7 @@
 /// @description Draw Game
 if (global.debug)
 {
-    draw_set_alpha(0.25);
+    draw_set_alpha(0.10);
         mp_grid_draw(playfield);
     draw_set_alpha(1);
 }

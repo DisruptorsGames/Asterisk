@@ -78,6 +78,8 @@ if (!ds_stack_empty(actions))
         action = top[0], args = top[1], t = args[0],
         us = object_get_name(object_index),
         them = !instance_exists(t) ? "???" : object_get_name(t.object_index);
+    // me->action->target:x:y
+    show_debug_message(tostr([tostr([us,x,y],":"), enum_get_name(enum_type.action, top[0]),tostr([them,t.x,t.y],":")],"->"));
     switch (action)
     {
         case action_type.ambush: break;
@@ -146,6 +148,7 @@ if (!ds_stack_empty(actions))
             fx_float(t, text);
             break;
     }
+    instance_destroy(o_amenu);
 }
 // set action stack
 if (game.entity == id && steps > 0)
@@ -188,8 +191,9 @@ if (game.entity == id && steps > 0)
         var amenu_x = o_highlight.x, amenu_y = o_highlight.y,
             amenu_obj = collision_point(amenu_x + o_highlight.xoffset, amenu_y + o_highlight.yoffset, o_base, false, false),
             amenu_tile = tile_get_type(tile_type.solids, [tile_get_value(amenu_x, amenu_y)]),
-            amenu_len = instance_exists(o_amenu) ? array_length_1d(o_amenu.menu) : 0;
-        target = amenu_len > 0 ? noone : (amenu_obj == noone ? o_highlight : amenu_obj);
+            amenu_ex = instance_exists(o_amenu) ? array_length_1d(o_amenu.menu) > 0 : false;
+        target = amenu_obj == noone ? o_highlight : amenu_obj;
+        show_debug_message(tostr([target,amenu_tile?"S":"~",amenu_ex?"M":"~"], "|"));
         if (mp_grid_path(game.playfield, path, x + xoffset, y + yoffset, amenu_x + o_highlight.xoffset, amenu_y + o_highlight.yoffset, false))
         {
             var last = path_get_number(path) - 1;
@@ -203,12 +207,16 @@ if (game.entity == id && steps > 0)
         }
         else
             path_clear_points(path);
-        ui_amenu(amenu_x, amenu_y, s_actions, 0.25, target == o_highlight
+        ui_amenu(amenu_x, amenu_y, s_actions, 0.25, amenu_ex ? [] : (target == o_highlight
+            // tiles
             ? (amenu_tile
                 ? [action_type.inspect]
                 : [action_type.move])
-            : (target == noone ? [] : (target != id
-                ? [action_type.attack, action_type.defend, action_type.inspect] 
+            // objects
+            : (target != id
+                ? (can_has(action_type.attack, id, target)
+                    ? [action_type.attack, action_type.defend, action_type.inspect]
+                    : [action_type.inspect])
                 : [action_type.ambush, action_type.defend, action_type.meditation, action_type.skip])));
     }
 }

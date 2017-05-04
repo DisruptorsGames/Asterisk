@@ -32,7 +32,8 @@ surface_set_target(amenu.surf);
     for (var i = 0; i < array_length_1d(menu); i++)
     {
         var ix = i * (size + 2);
-        draw_rectangle_color(ix, 0, ix + size, size, c_dkgray, c_dkgray, c_dkgray, c_dkgray, false);
+        draw_rectangle_color(ix, 0, ix + size, size, c_ltgray, c_ltgray, c_ltgray, c_ltgray, false);
+        draw_border(ix, 0, ix + size, size, c_dkgray, 1);
         draw_sprite_ext(sprite, menu[i], ix, 0, 1, 1, 0, c_white, 1);
     }
 surface_reset_target();

@@ -47,10 +47,7 @@ if (game.entity == id && steps > 0)
 
 // health
 if (game.entity != id && hp > 0 && hp < hp_max)
-{
-    draw_border(x, y - 5, x + image_xscale * sprite_width, y - 4, c_black, 1);
-    draw_healthbar(x, y - 5, x + image_xscale * sprite_width, y - 4, (hp / hp_max) * 100, c_black, make_color_dpk(hp_col, 0.75, 0.75), hp_col, 0, true, true);
-}
+    draw_healthbar(x, y - 5, x + image_xscale * sprite_width, y - 4, (hp / hp_max) * 100, chi_col, make_color_dpk(hp_col, 0.75, 0.75), hp_col, 0, true, false);
 
 // effects
 var first = ds_map_find_first(effects);
