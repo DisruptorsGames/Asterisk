@@ -7,33 +7,40 @@
 var xx = argument0, yy = argument1, sprite = argument2,
     scale = argument3, menu = argument4,
     size = sprite_get_width(sprite),
-    amenu = instance_exists(o_amenu) ? o_amenu : instance_create_depth(0, 0, depth - 1, o_amenu);
+    bsize = 1,
+    col = c_dkgray,
+    surf_width = array_length_1d(menu) > 0
+        ? array_length_1d(menu) * (size + 4 + bsize)
+        : sprite_get_width(sprite),
+    amenu = instance_exists(o_amenu)
+        ? o_amenu
+        : instance_create_depth(0, 0, depth - 1, o_amenu);
 // toggle object
 if (array_length_1d(menu) == 0)
     instance_deactivate_object(o_menu);
 else
     instance_activate_object(o_menu);
 // populate menu object
+amenu.x = xx;
+amenu.y = yy - amenu.size;
 amenu.menu = menu;
 amenu.owner = id;
 amenu.scale = scale;
 amenu.sprite = sprite;
-amenu.size = sprite_get_width(sprite) * scale;
-amenu.x = xx;
-amenu.y = yy - size * scale;
+// scale menu
+amenu.size = size * scale;
+amenu.offset = 4 * scale;
+amenu.bsize = bsize * scale;
 // resize the surface to the size of the menu
-var surf_width = array_length_1d(menu) > 0
-    ? array_length_1d(menu) * (size + 2)
-    : sprite_get_width(sprite);
-surface_resize(amenu.surf, surf_width, size + 4);
+surface_resize(amenu.surf, surf_width, size + bsize * 2);
 // fill in the surface
 surface_set_target(amenu.surf);
-    draw_clear_alpha(c_black, 0);
+    draw_clear_alpha(c_black, global.debug ? 0.5 : 0);
     for (var i = 0; i < array_length_1d(menu); i++)
     {
-        var ix = i * (size + 2);
-        draw_rectangle_color(ix, 0, ix + size, size, c_ltgray, c_ltgray, c_ltgray, c_ltgray, false);
-        draw_border(ix, 0, ix + size, size, c_dkgray, 1);
-        draw_sprite_ext(sprite, menu[i], ix, 0, 1, 1, 0, c_white, 1);
+        var ix = bsize + i * (size + 4);
+        draw_border(ix, bsize, ix + size, size, c_ltgray, 1, bsize);
+        draw_rectangle_color(ix, bsize, ix + size, size, col, col, col, col, false);
+        draw_sprite_ext(sprite, menu[i], ix, bsize, 1, 1, 0, c_white, 1);
     }
 surface_reset_target();

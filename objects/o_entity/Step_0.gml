@@ -176,6 +176,7 @@ if (game.entity == id && steps > 0)
                     ? [action_type.meditation, [id, irandom_range(0, 3), irandom_range(1, 10)]]
                     : [action_type.defend, [id]]),
                 args = action[1];
+            // use action points
             if (cost > 0 && steps >= cost
                 && (action[0] == action_type.attack || args[0] > 0))
             {
@@ -186,6 +187,7 @@ if (game.entity == id && steps > 0)
             think = seconds(0.75);
         }
     }
+    // set action stack
     else if (mouse_check_button_pressed(mb_left))
     {
         var amenu_x = o_highlight.x, amenu_y = o_highlight.y,
@@ -194,6 +196,7 @@ if (game.entity == id && steps > 0)
             amenu_ex = instance_exists(o_amenu) ? array_length_1d(o_amenu.menu) > 0 : false;
         target = amenu_obj == noone ? o_highlight : amenu_obj;
         show_debug_message(tostr([target,amenu_tile?"S":"~",amenu_ex?"M":"~"], "|"));
+        // find a path
         if (mp_grid_path(game.playfield, path, x + xoffset, y + yoffset, amenu_x + o_highlight.xoffset, amenu_y + o_highlight.yoffset, false))
         {
             var last = path_get_number(path) - 1;
@@ -202,15 +205,19 @@ if (game.entity == id && steps > 0)
                 path_delete_point(path, last);
                 last = path_get_number(path) - 1;
             }
+            // move to last point on path
             amenu_x = path_get_point_x(path, last) - game.width / 2;
             amenu_y = path_get_point_y(path, last) - game.height / 2;
         }
         else
             path_clear_points(path);
+        // display the action menu
         ui_amenu(amenu_x, amenu_y, s_actions, 0.25, amenu_ex ? [] : (target == o_highlight
             // tiles
             ? (amenu_tile
-                ? [action_type.inspect]
+                ? (distance_to_point(amenu_x, amenu_y) < game.width
+                    ? [action_type.inspect, action_type.peek]
+                    : [action_type.inspect])
                 : [action_type.move])
             // objects
             : (target != id

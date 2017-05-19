@@ -20,16 +20,6 @@ particles = part_system_create();
 part_system_depth(particles, layer_get_depth("Instances") - 10);
 //
 depth = layer_get_depth("Instances") - 1;
-
-// build the world
-for (var i = 0; i < ds_grid_width(map); i++)
-{
-    for (var j = 0; j < ds_grid_height(map); j++)
-    {
-        ds_grid_add(map, i, j, irandom(1));
-    }
-}
-ds_grid_set(map, ds_grid_width(map) / 2, ds_grid_height(map) / 2, r_outside);
-//
+// add the backpack to the map
 var pack = instance_create_layer(32, 64, "Instances", o_item);
 pack.sprite_index = sprite_create(s_items, 1);

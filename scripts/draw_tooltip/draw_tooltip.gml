@@ -17,7 +17,7 @@ var xx = argument0, yy = argument1,
     tx = xx + string_width(name) * sc,
     ty = yy - 2 - loff;
 draw_set_alpha(a - 0.25);
-    draw_border(xx, ty - s, tx, ty, c_ltgray, 1 * sc);
+    draw_border(xx, ty - s, tx, ty, c_ltgray, 1 * sc, 0);
     draw_rectangle_color(xx, ty - s, tx, ty, c_black, c_black, c_black, c_black, false);
 draw_set_alpha(1);
 printf(xx, ty - s, name, c_red, 1, f_hud, fa_left, sc, 0, false);

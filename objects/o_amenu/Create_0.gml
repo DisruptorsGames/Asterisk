@@ -6,5 +6,6 @@ menu = [];
 owner = noone;
 scale = 1;
 size = 1;
+bsize = 0;
 sprite = noone;
 surf = surface_create(16, 16);

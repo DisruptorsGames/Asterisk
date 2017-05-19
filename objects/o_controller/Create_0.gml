@@ -13,6 +13,10 @@
 #macro vx camera_get_view_x(view_camera[0])
 #macro vy camera_get_view_y(view_camera[0])
 #macro vt camera_get_view_target(view_camera[0])
+// prims constants
+#macro HEX o_controller.hex
+#macro HIGHEST ord(string(HEX[array_length_1d(HEX) - 1]))
+#macro PASSAGE ord("#")
 
 // enumerations
 enum action_type { ambush, attack, defend, die, inspect, leave, loot, meditation, move, peek, skip, unlock }
@@ -28,14 +32,15 @@ global.debug = false;
 randomize();
 draw_set_circle_precision(8);
 
-game = noone;
-target = noone;
 aspect = window_get_width() / window_get_height();
-resizes = [0, 0];
-cam_x = 0;
-cam_y = 0;
 cam_h = 90;
 cam_w = cam_h * aspect;
+cam_x = 0;
+cam_y = 0;
+game = noone;
+hex = [/*0, */1, 2, 3, 4, 5, 6, 7, 8, 9, "a", "b", "c", "d", "e", "f"];
+resizes = [0, 0];
+target = noone;
 
 switch(room)
 {

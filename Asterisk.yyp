@@ -63,6 +63,14 @@
             }
         },
         {
+            "Key": "11dac4e0-2460-41d9-8755-4381ada73bd9",
+            "Value": {
+                "id": "96e771f3-d27a-4ae2-8d39-0c13029ce627",
+                "resourcePath": "scripts\\neighbors\\neighbors.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
             "Key": "1436dab0-662f-4201-9f71-e6dca0a34787",
             "Value": {
                 "id": "110e93d1-a777-4ce5-b079-836067d00aff",
@@ -311,6 +319,14 @@
             }
         },
         {
+            "Key": "76f8b1cd-8e3a-44fa-83a5-43c7edd1a74f",
+            "Value": {
+                "id": "61577dcf-5268-497a-a853-e15134b8068d",
+                "resourcePath": "scripts\\array_contains\\array_contains.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
             "Key": "77dc1fdc-3416-4a81-ba14-4e7035cc3373",
             "Value": {
                 "id": "6513d01f-964a-4526-b240-e280b85b505f",
@@ -436,6 +452,14 @@
                 "id": "ee733920-c88c-4080-85cb-505a209c537d",
                 "resourcePath": "sounds\\sfx_outside_combat\\sfx_outside_combat.yy",
                 "resourceType": "GMSound"
+            }
+        },
+        {
+            "Key": "a5b9b5b6-1144-45d8-977f-45f7067d0369",
+            "Value": {
+                "id": "c83cbc39-20d9-4f0f-b022-00d41a8f2260",
+                "resourcePath": "scripts\\prims\\prims.yy",
+                "resourceType": "GMScript"
             }
         },
         {
@@ -599,6 +623,14 @@
             }
         },
         {
+            "Key": "dafb4e69-24c6-42df-a0a5-c9d8292ec198",
+            "Value": {
+                "id": "c39b75f7-d43e-412a-ac46-14cb1a5297ce",
+                "resourcePath": "scripts\\generate_key\\generate_key.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
             "Key": "de3a34f3-d48b-4dd0-8875-7b5e6b91c3ff",
             "Value": {
                 "id": "a68e67d0-ea0f-43fa-80c4-47bce97e86a9",
@@ -688,10 +720,14 @@
         }
     ],
     "script_order": [
+        "76f8b1cd-8e3a-44fa-83a5-43c7edd1a74f",
+        "dafb4e69-24c6-42df-a0a5-c9d8292ec198",
         "a2745647-ab5f-4280-90b4-bde8e885df02",
         "70fd75b2-b846-4621-85d9-ec1085db4cd4",
         "404188ef-7a41-4cf0-b3ea-26666b5e9edb",
         "ca2c03cc-21de-4890-b201-7829a0bf3510",
+        "a5b9b5b6-1144-45d8-977f-45f7067d0369",
+        "11dac4e0-2460-41d9-8755-4381ada73bd9",
         "bf79dfd8-e491-4e8f-b924-b082126022c1",
         "7c92e001-52e0-431a-904f-37d8241cb55f",
         "486ddf9b-5367-4ff5-b30f-12129857743c",
